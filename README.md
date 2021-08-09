@@ -20,4 +20,13 @@ r.texturestreaming 0
   - in order to edit/modify any model in the scene you have to enable **Modeling Tools Editor mode** plugin,,, you can enable any plugin by going to (Edit >> Plugins >> Search for PLUGIN_NAME >> Enable >> Restart Now)
   - (EditPivot) after restarting the project,, select any Object/Actor you'd like to modify/edit in the scene then press _Shift+6_ in order to open the modeling tool bar ,, go to Transform and edit Pivot.
 
+### Keytrigger Events/Custom Events
+  - **Left Shift** : It triggers _The Inspector Vision_ which it gives specific items different covered materials based on the tag name _highlight_
+    - it's located in PATH **../Content/VFX_UIUX/Blueprints/InspectorVisionController**
+
+  - **Left Ctrl** : It makes the whole global diliation in time.
+    - it's located in PATH **../Content/ThirdPersonBP/Blueprints/ThirdPersonCharacter**
+  
+  - 
+
 
