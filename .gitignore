@@ -4,6 +4,9 @@
 # Rider specific files
 .idea/
 
+# Plugins folder
+Plugins/
+
 # Compiled Object files
 *.slo
 *.lo
