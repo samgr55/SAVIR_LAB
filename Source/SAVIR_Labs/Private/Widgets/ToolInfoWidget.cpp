@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ToolInfoWidget.h"
+#include "Widgets/ToolInfoWidget.h"
 
 void UToolInfoWidget::SetUpWidget(FLabTools* Tool)
 {

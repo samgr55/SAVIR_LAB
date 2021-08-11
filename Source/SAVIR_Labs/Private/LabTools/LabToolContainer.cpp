@@ -3,7 +3,7 @@
 
 #include "LabTools/LabToolContainer.h"
 
-#include "ToolInfoWidget.h"
+#include "Widgets/ToolInfoWidget.h"
 #include "Components/WidgetComponent.h"
 
 // Sets default values

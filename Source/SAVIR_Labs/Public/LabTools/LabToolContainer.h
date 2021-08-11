@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 
 #include "LabTool.h"
-#include "GameFramework/Actor.h"
 #include "General/InformationActor.h"
 
 #include "LabToolContainer.generated.h"

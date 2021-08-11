@@ -3,7 +3,7 @@
 
 #include "ChemicalMaterial/ChemicalContainer.h"
 
-#include "ChemicalInfoWidgets.h"
+#include "Widgets/ChemicalInfoWidgets.h"
 #include "ChemicalMaterial/ChemicalSubstance.h"
 
 // Sets default values
