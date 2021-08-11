@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "LabTools/LabToolContiner.h"
+#include "LabTools/LabToolContainer.h"
 
 #include "ToolInfoWidget.h"
 #include "Components/WidgetComponent.h"
 
 // Sets default values
-ALabToolContiner::ALabToolContiner()
+ALabToolContainer::ALabToolContainer()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -17,14 +17,14 @@ ALabToolContiner::ALabToolContiner()
 }
 
 // Called when the game starts or when spawned
-void ALabToolContiner::BeginPlay()
+void ALabToolContainer::BeginPlay()
 {
 	Super::BeginPlay();
 
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
 
-	OnActorHit.AddDynamic(this, &ALabToolContiner::OnHit);
+	OnActorHit.AddDynamic(this, &ALabToolContainer::OnHit);
 
 	WidgetComponent = Cast<UWidgetComponent>(GetComponentByClass(UWidgetComponent::StaticClass()));
 	
@@ -47,12 +47,12 @@ void ALabToolContiner::BeginPlay()
 }
 
 // Called every frame
-void ALabToolContiner::Tick(float DeltaTime)
+void ALabToolContainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void ALabToolContiner::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
+void ALabToolContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (!OriginalParent)
 	{
