@@ -8,16 +8,16 @@
 #include "GameFramework/Actor.h"
 #include "General/InformationActor.h"
 
-#include "LabToolContiner.generated.h"
+#include "LabToolContainer.generated.h"
 
 UCLASS()
-class SAVIR_LABS_API ALabToolContiner : public AInformationActor
+class SAVIR_LABS_API ALabToolContainer : public AInformationActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ALabToolContiner();
+	ALabToolContainer();
 
 	UPROPERTY()
 	AActor* CurrentParent;
@@ -32,7 +32,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Data)
 	ALabTool* ElementsArray;
 	
-	UPROPERTY(EditAnywhere, Category=Data)
+
 	FLabTools* ToolElement;
 
 private:
