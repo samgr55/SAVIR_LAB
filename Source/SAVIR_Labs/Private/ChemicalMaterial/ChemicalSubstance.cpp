@@ -24,6 +24,7 @@ void AChemicalSubstance::BeginPlay()
 	Super::BeginPlay();
 	ChemicalElement = ElementsArray->GetElementByAtomicNumber(SubstanceID);
 	Description = ChemicalElement->Description;
+	ImageDescription = NewObject<UImage>(GetWorld());
 	ImageDescription->SetBrushFromTexture(ChemicalElement->Image);
 }
 
