@@ -6,11 +6,13 @@
 
 #include "ChemicalElement.h"
 #include "GameFramework/Actor.h"
+#include "General/InformationActor.h"
+
 #include "ChemicalSubstance.generated.h"
 
 struct FChemicalElement;
 UCLASS()
-class SAVIR_LABS_API AChemicalSubstance : public AActor
+class SAVIR_LABS_API AChemicalSubstance : public AInformationActor
 {
 	GENERATED_BODY()
 	

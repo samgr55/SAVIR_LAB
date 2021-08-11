@@ -6,6 +6,8 @@
 
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Actor.h"
+#include "General/InformationActor.h"
+
 #include "ChemicalContainer.generated.h"
 
 
@@ -14,7 +16,7 @@ class UUserWidget;
 class UStaticMeshComponent;
 
 UCLASS()
-class SAVIR_LABS_API AChemicalContainer : public AActor
+class SAVIR_LABS_API AChemicalContainer : public AInformationActor
 {
 	GENERATED_BODY()
 	

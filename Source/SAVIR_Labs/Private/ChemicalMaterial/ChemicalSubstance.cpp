@@ -22,8 +22,9 @@ AChemicalSubstance* AChemicalSubstance::React(AChemicalSubstance* OtherSubstance
 void AChemicalSubstance::BeginPlay()
 {
 	Super::BeginPlay();
-
 	ChemicalElement = ElementsArray->GetElementByAtomicNumber(SubstanceID);
+	Description = ChemicalElement->Description;
+	ImageDescription->SetBrushFromTexture(ChemicalElement->Image);
 }
 
 // Called every frame
