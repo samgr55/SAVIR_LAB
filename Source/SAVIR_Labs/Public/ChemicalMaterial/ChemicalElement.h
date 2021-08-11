@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 
 #include "Components/Image.h"
+#include "Engine/DataTable.h"
+
 #include "ChemicalElement.generated.h"
 
 /**
@@ -12,7 +14,7 @@
  */
 
 USTRUCT(BlueprintType)
-struct SAVIR_LABS_API FChemicalElement
+struct SAVIR_LABS_API FChemicalElement: public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -49,9 +51,12 @@ class AChemicalElements : public AActor
 {
 	GENERATED_BODY()
 public:
+
 	FChemicalElement* GetElementByAtomicNumber(int32 AtomicNumber);
 	FChemicalElement* GetElementBySymbol(FString Symbol);
 	FChemicalElement* GetElementByName(FString Name);
+
+	
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category=Data)
