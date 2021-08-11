@@ -9,7 +9,7 @@
 // Sets default values
 AChemicalContainer::AChemicalContainer()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
@@ -18,48 +18,46 @@ AChemicalContainer::AChemicalContainer()
 
 void AChemicalContainer::MoveTo(AChemicalContainer* NewContainer, bool bMoveAll, float MoveQuantity)
 {
-	if(!NewContainer) return;
+	if (!NewContainer) return;
 
-	
-	if(!NewContainer->Substance)
+	if (!NewContainer->Substance)
 	{
 		NewContainer->Substance = Substance;
 	}
 	else
 	{
-		if(!bMoveAll)
+		if (!bMoveAll)
 		{
-			
 			NewContainer->Substance->React(Substance);
-		}	
+		}
 	}
 
-	if(bMoveAll)
+	if (bMoveAll)
 	{
 		Substance = nullptr;
 	}
-	
 }
 
-void AChemicalContainer::ShowWidget()
-{
-	WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Visible);
-}
-
-void AChemicalContainer::HideWidget()
-{
-	WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Collapsed);
-}
 
 // Called when the game starts or when spawned
 void AChemicalContainer::BeginPlay()
 {
 	Super::BeginPlay();
-	StaticMeshComp = Cast<UStaticMeshComponent>(GetComponentByClass(UStaticMeshComponent::StaticClass()));
+
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
 
+	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
+
+	// for (auto Mesh : GetComponentsByClass(UStaticMeshComponent::StaticClass()))
+	// {
+	// 	auto M = Cast<UStaticMeshComponent>(Mesh);
+	//
+	// 	StaticMeshComp.Add(M);
+	// }
+	
 	WidgetComponent = Cast<UWidgetComponent>(GetComponentByClass(UWidgetComponent::StaticClass()));
+	
 	if(WidgetComponent)
 	{
 		auto Widget = Cast<UChemicalInfoWidgets> (WidgetComponent->GetWidget());
@@ -76,8 +74,7 @@ void AChemicalContainer::BeginPlay()
 			Widget->SetUpWidget(Substance->ChemicalElement);
 		}
 	}
-	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
-
+	
 	WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Collapsed);
 }
 
@@ -90,7 +87,6 @@ void AChemicalContainer::Tick(float DeltaTime)
 
 void AChemicalContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
-
 	if (!OriginalParent)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("HIT other"));

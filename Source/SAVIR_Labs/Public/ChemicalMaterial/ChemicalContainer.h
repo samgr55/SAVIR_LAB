@@ -20,42 +20,29 @@ class SAVIR_LABS_API AChemicalContainer : public AInformationActor
 {
 	GENERATED_BODY()
 	
-	public:	
+public:
 	// Sets default values for this actor's properties
 	AChemicalContainer();
-
-	UFUNCTION()
-	void MoveTo(AChemicalContainer* NewContainer, bool bMoveAll = true, float MoveQuantity = 0.0);
-
-	void ShowWidget();
-	void HideWidget();
-
-	protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-	public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY()
 	AActor* CurrentParent;
 
-	
-	private:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
+	void MoveTo(AChemicalContainer* NewContainer, bool bMoveAll = true, float MoveQuantity = 0.0);
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+private:
+	UFUNCTION()
 	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
-	
+
 	UPROPERTY(EditAnywhere, Category = Data)
 	AChemicalSubstance* Substance;
-
-	//UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess=true))
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh, meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* StaticMeshComp;
-
-	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess=true))
-	UWidgetComponent* WidgetComponent;
 
 	UPROPERTY()
 	AActor* OriginalParent;

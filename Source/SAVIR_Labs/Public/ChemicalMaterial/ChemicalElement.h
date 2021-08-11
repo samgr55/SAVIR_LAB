@@ -56,8 +56,6 @@ public:
 	FChemicalElement* GetElementBySymbol(FString Symbol);
 	FChemicalElement* GetElementByName(FString Name);
 
-	
-
 private:
 	UPROPERTY(EditDefaultsOnly, Category=Data)
 	TArray<FChemicalElement> ElementsArray;

@@ -3,24 +3,48 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "LabTool.h"
 #include "GameFramework/Actor.h"
+#include "General/InformationActor.h"
+
 #include "LabToolContiner.generated.h"
 
 UCLASS()
-class SAVIR_LABS_API ALabToolContiner : public AActor
+class SAVIR_LABS_API ALabToolContiner : public AInformationActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ALabToolContiner();
+
+	UPROPERTY()
+	AActor* CurrentParent;
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Data)
+	ALabTool* ElementsArray;
+	
+	UPROPERTY(EditAnywhere, Category=Data)
+	FLabTools* ToolElement;
 
+private:
+	UPROPERTY(EditAnywhere, Category= Data)
+	int32 ToolID = 1;
+
+	UPROPERTY()
+	AActor* OriginalParent;
+
+	FVector OriginalPosition;
+	FQuat OriginalRotation;
+
+	UFUNCTION()
+	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 };

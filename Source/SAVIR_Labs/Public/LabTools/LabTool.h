@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Engine/DataTable.h"
 #include "GameFramework/Actor.h"
 #include "LabTool.generated.h"
 
 
 USTRUCT(BlueprintType)
-struct SAVIR_LABS_API FLabTools
+struct SAVIR_LABS_API FLabTools:public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -30,6 +32,9 @@ struct SAVIR_LABS_API FLabTools
 
 	UPROPERTY(EditDefaultsOnly, Category=Data)
 	int32 ToolId;
+
+	UPROPERTY(EditDefaultsOnly, Category=Data)
+	UTexture2D* Image;
 };
 
 UCLASS()

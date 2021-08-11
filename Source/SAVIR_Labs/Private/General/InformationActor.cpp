@@ -3,6 +3,8 @@
 
 #include "General/InformationActor.h"
 
+#include "Components/WidgetComponent.h"
+
 
 // Sets default values
 AInformationActor::AInformationActor()
@@ -17,7 +19,6 @@ AInformationActor::AInformationActor()
 void AInformationActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -34,5 +35,15 @@ FString AInformationActor::GetDescription_Implementation()
 UImage* AInformationActor::GetImageDescription_Implementation()
 {
 	return ImageDescription;
+}
+
+void AInformationActor::ShowWidget()
+{
+	WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Visible);
+}
+
+void AInformationActor::HideWidget()
+{
+	WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Collapsed);
 }
 
