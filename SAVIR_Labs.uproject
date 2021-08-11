@@ -16,10 +16,6 @@
 	],
 	"Plugins": [
 		{
-			"Name": "ModelingToolsEditorMode",
-			"Enabled": true
-		},
-		{
 			"Name": "LeapMotion",
 			"Enabled": true
 		},
@@ -34,6 +30,10 @@
 		},
 		{
 			"Name": "XRVisualization",
+			"Enabled": true
+		},
+		{
+			"Name": "ModelingToolsEditorMode",
 			"Enabled": true
 		}
 	]
