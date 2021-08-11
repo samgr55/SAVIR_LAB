@@ -40,5 +40,4 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category=Data)
 	float Quantity;
-
 };

@@ -42,7 +42,7 @@ private:
 	AChemicalContainer* ShowWidgetData;
 
 	UPROPERTY(EditAnywhere)
-	float Reach = 80.0f;
+	float Reach = 100.0f;
 
 	void Grab();
 	void Release();

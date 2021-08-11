@@ -39,5 +39,4 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	UImage* ElementImage;
-	
 };

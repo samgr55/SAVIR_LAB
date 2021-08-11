@@ -5,7 +5,10 @@
 
 FChemicalElement* AChemicalElements::GetElementByAtomicNumber(int32 AtomicNumber)
 {
-	auto Result =  ElementsArray.FindByPredicate([AtomicNumber](FChemicalElement Element){return AtomicNumber == Element.AtomicNumber;});
+	auto Result = ElementsArray.FindByPredicate([AtomicNumber](FChemicalElement Element)
+	{
+		return AtomicNumber == Element.AtomicNumber;
+	});
 	return Result;
 }
 

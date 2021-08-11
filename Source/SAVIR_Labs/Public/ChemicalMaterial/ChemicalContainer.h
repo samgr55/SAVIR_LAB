@@ -48,7 +48,8 @@ class SAVIR_LABS_API AChemicalContainer : public AActor
 	UPROPERTY(EditAnywhere, Category = Data)
 	AChemicalSubstance* Substance;
 
-	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess=true))
+	//UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess=true))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* StaticMeshComp;
 
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess=true))

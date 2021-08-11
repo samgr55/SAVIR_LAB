@@ -117,7 +117,7 @@ FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 	//FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetOwner());
 	FCollisionQueryParams TraceParams;
 
-	bool s=GetWorld()->LineTraceSingleByChannel(OUT Hit,
+	bool s = GetWorld()->LineTraceSingleByChannel(OUT Hit,
 		GetPlayerWorldPos(),
 		GetPlayerReach(),
 		ECC_Visibility,
