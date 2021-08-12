@@ -46,36 +46,7 @@ void AChemicalContainer::BeginPlay()
 
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
-
 	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
-
-	// for (auto Mesh : GetComponentsByClass(UStaticMeshComponent::StaticClass()))
-	// {
-	// 	auto M = Cast<UStaticMeshComponent>(Mesh);
-	//
-	// 	StaticMeshComp.Add(M);
-	// }
-	WidgetComponent = Cast<UWidgetComponent>(GetComponentByClass(UWidgetComponent::StaticClass()));
-	
-	if(WidgetComponent)
-	{
-		auto Widget = Cast<UChemicalInfoWidgets> (WidgetComponent->GetWidget());
-		if(Widget)
-		{
-			if(!Substance)
-			{
-				UE_LOG(LogTemp, Error, TEXT("!Substance"));
-				return;
-			}
-			if(!Substance->ChemicalElement)
-			{
-				UE_LOG(LogTemp, Error, TEXT("!Substance->ChemicalElement"));
-				return;
-			}
-			Widget->SetUpWidget(Substance->ChemicalElement);
-			Widget->SetVisibility(ESlateVisibility::Collapsed);
-		}
-	}
 	
 }
 

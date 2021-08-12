@@ -4,7 +4,6 @@
 #include "LabTools/LabToolContainer.h"
 
 #include "Widgets/ToolInfoWidget.h"
-#include "Components/WidgetComponent.h"
 
 // Sets default values
 ALabToolContainer::ALabToolContainer()
@@ -25,25 +24,6 @@ void ALabToolContainer::BeginPlay()
 	OriginalRotation = GetActorRotation().Quaternion();
 
 	OnActorHit.AddDynamic(this, &ALabToolContainer::OnHit);
-
-	WidgetComponent = Cast<UWidgetComponent>(GetComponentByClass(UWidgetComponent::StaticClass()));
-	
-	if(WidgetComponent)
-	{
-		auto Widget = Cast<UToolInfoWidget> (WidgetComponent->GetWidget());
-		if(Widget)
-		{
-			ToolElement = DataTable->FindRow<FLabTools>(FName(FString::FromInt(ToolID)), "");
-			Description = ToolElement->Description;
-	
-			ImageDescription = NewObject<UImage>(GetWorld());
-			ImageDescription->SetBrushFromTexture(ToolElement->Image);
-
-			Widget->SetUpWidget(ToolElement);
-			Widget->SetVisibility(ESlateVisibility::Collapsed);
-		}
-	}
-
 	
 }
 
