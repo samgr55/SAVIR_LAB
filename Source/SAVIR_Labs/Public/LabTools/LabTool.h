@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 
 #include "Engine/DataTable.h"
-#include "GameFramework/Actor.h"
 #include "LabTool.generated.h"
 
 
