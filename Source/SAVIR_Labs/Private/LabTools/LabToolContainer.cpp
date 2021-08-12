@@ -40,10 +40,11 @@ void ALabToolContainer::BeginPlay()
 			ImageDescription->SetBrushFromTexture(ToolElement->Image);
 
 			Widget->SetUpWidget(ToolElement);
+			Widget->SetVisibility(ESlateVisibility::Collapsed);
 		}
 	}
 
-	WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Collapsed);
+	
 }
 
 // Called every frame
