@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "GeneralInfoWidget.generated.h"
 
 /**
@@ -16,7 +17,7 @@ class SAVIR_LABS_API UGeneralInfoWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void SetUpWidget(FString Description, UImage* Image);
+	void SetUpWidget(FString InDescription, UImage* InImage);
 	
 	
 protected:
@@ -24,7 +25,12 @@ protected:
 
 private:
 	FString Description;
-	UPROPERTY()
-	UImage* Image;
+	UPROPERTY(meta = (BindWidget))
+	UImage* InfoImage;
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* DescriptionText;
+
+	
+	
 	
 };

@@ -6,11 +6,10 @@
 
 #include "IInformative.h"
 #include "GameFramework/Actor.h"
-#include "Widgets/GeneralInfoWidgetComponent.h"
 #include "InformationActor.generated.h"
 
-class UWidgetComponent;
-UCLASS()
+class UGeneralInfoWidgetComponent;
+UCLASS(Blueprintable)
 class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative
 {
 	GENERATED_BODY()
@@ -19,6 +18,10 @@ public:
 	// Sets default values for this actor's properties
 	AInformationActor();
 
+	UPROPERTY()
+	UGeneralInfoWidgetComponent* WidgetComponent;
+	
+	
 protected:
 	//Variables
 	FString Description;
@@ -26,10 +29,7 @@ protected:
 	UPROPERTY()
 	UImage* ImageDescription;
 
-	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess=true))
-	UGeneralInfoWidgetComponent* WidgetComponent;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMeshComp;
 
 	//Functions

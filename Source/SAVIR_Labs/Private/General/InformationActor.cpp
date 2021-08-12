@@ -4,6 +4,7 @@
 #include "General/InformationActor.h"
 
 #include "Components/WidgetComponent.h"
+#include "Widgets/GeneralInfoWidgetComponent.h"
 
 
 // Sets default values
@@ -13,9 +14,10 @@ AInformationActor::AInformationActor()
 	PrimaryActorTick.bCanEverTick = true;
 	Description = "";
 	ImageDescription = nullptr;
-
-	WidgetComponent = NewObject<UGeneralInfoWidgetComponent>(this);
-	WidgetComponent->RegisterComponent();
+	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComponent");
+	RootComponent = StaticMeshComp;
+	
+	
 	
 }
 
@@ -23,6 +25,12 @@ AInformationActor::AInformationActor()
 void AInformationActor::BeginPlay()
 {
 	Super::BeginPlay();
+	WidgetComponent = Cast<UGeneralInfoWidgetComponent>(GetComponentByClass(UGeneralInfoWidgetComponent::StaticClass()));
+	if(!WidgetComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Empty WidgetComponent in AInformationActor::BeginPlay"));
+		return;
+	}
 }
 
 // Called every frame

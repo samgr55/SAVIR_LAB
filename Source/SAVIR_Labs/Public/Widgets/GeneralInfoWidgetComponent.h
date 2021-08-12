@@ -3,20 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GeneralInfoWidget.h"
 #include "Components/WidgetComponent.h"
-#include "General/InformationActor.h"
 #include "GeneralInfoWidgetComponent.generated.h"
 
+class AInformationActor;
+class UGeneralInfoWidget;
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable, ClassGroup=(Rendering, Common), hidecategories=(Object,Activation,"Components|Activation"), ShowCategories=(Mobility), editinlinenew, meta=(BlueprintSpawnableComponent))
 class SAVIR_LABS_API UGeneralInfoWidgetComponent : public UWidgetComponent
 {
 	GENERATED_BODY()
 public:
 
+	UGeneralInfoWidgetComponent();
+	
 	void ShowWidget();
 
 	void HideWidget();

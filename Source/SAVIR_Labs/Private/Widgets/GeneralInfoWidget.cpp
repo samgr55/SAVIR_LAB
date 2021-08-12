@@ -3,19 +3,29 @@
 
 #include "Widgets/GeneralInfoWidget.h"
 
-void UGeneralInfoWidget::SetUpWidget(FString Description, UImage* Image)
+void UGeneralInfoWidget::SetUpWidget(FString InDescription, UImage* InImage)
 {
-	if(!Image)
+	if(!InImage)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Image is nullptr in UGeneralInfoWidget::SetUpWidget"));
+		UE_LOG(LogTemp, Warning, TEXT("InfoImage is nullptr in UGeneralInfoWidget::SetUpWidget"));
 		return;
 	}
-	this->Image = Image;
-	this->Description = Description;
+	if(!InfoImage || !DescriptionText)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InfoImage and DescriptionText must set in designer in UGeneralInfoWidget::SetUpWidget"));
+		return;
+	}
+	this->InfoImage = InImage;
+	this->Description = InDescription;
 }
 
 void UGeneralInfoWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
+	if(!InfoImage || !DescriptionText)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("InfoImage and DescriptionText must set in designer in UGeneralInfoWidget::NativeOnInitialized"));
+		return;
+	}
 	
 }

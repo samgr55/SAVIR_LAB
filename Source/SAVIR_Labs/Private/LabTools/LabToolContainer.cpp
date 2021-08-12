@@ -3,8 +3,6 @@
 
 #include "LabTools/LabToolContainer.h"
 
-#include "Widgets/ToolInfoWidget.h"
-
 // Sets default values
 ALabToolContainer::ALabToolContainer()
 {

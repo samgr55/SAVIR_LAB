@@ -3,6 +3,13 @@
 
 #include "Widgets/GeneralInfoWidgetComponent.h"
 
+#include "General/InformationActor.h"
+#include "Widgets/GeneralInfoWidget.h"
+
+UGeneralInfoWidgetComponent::UGeneralInfoWidgetComponent()
+{
+}
+
 void UGeneralInfoWidgetComponent::ShowWidget()
 {
 	InfoWidget->AddToViewport();
