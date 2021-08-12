@@ -18,6 +18,9 @@ struct SAVIR_LABS_API FChemicalElement: public FTableRowBase
 {
 	GENERATED_BODY()
 
+
+public:
+
 	friend bool operator==(const FChemicalElement& Lhs, const FChemicalElement& RHS)
 	{
 		return Lhs.AtomicNumber == RHS.AtomicNumber;
@@ -43,20 +46,5 @@ struct SAVIR_LABS_API FChemicalElement: public FTableRowBase
 	UPROPERTY(EditDefaultsOnly, Category=Data)
 	FString Family;
 	UPROPERTY(EditDefaultsOnly, Category=Data)
-	UTexture2D* Image;
-};
-
-UCLASS(Blueprintable)
-class AChemicalElements : public AActor
-{
-	GENERATED_BODY()
-public:
-
-	FChemicalElement* GetElementByAtomicNumber(int32 AtomicNumber);
-	FChemicalElement* GetElementBySymbol(FString Symbol);
-	FChemicalElement* GetElementByName(FString Name);
-
-private:
-	UPROPERTY(EditDefaultsOnly, Category=Data)
-	TArray<FChemicalElement> ElementsArray;
+	UImage* Image;
 };
