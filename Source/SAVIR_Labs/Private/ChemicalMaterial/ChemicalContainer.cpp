@@ -2,8 +2,10 @@
 
 
 #include "ChemicalMaterial/ChemicalContainer.h"
+
+#include "ChemicalMaterial/ChemicalElement.h"
 #include "Components/WidgetComponent.h"
-#include "ChemicalMaterial/ChemicalSubstance.h"
+#include "Engine/DataTable.h"
 
 // Sets default values
 AChemicalContainer::AChemicalContainer()
@@ -15,28 +17,6 @@ AChemicalContainer::AChemicalContainer()
 	RootComponent = StaticMeshComp;
 }
 
-void AChemicalContainer::MoveTo(AChemicalContainer* NewContainer, bool bMoveAll, float MoveQuantity)
-{
-	if (!NewContainer) return;
-
-	if (!NewContainer->Substance)
-	{
-		NewContainer->Substance = Substance;
-	}
-	else
-	{
-		if (!bMoveAll)
-		{
-			NewContainer->Substance->React(Substance);
-		}
-	}
-
-	if (bMoveAll)
-	{
-		Substance = nullptr;
-	}
-}
-
 
 // Called when the game starts or when spawned
 void AChemicalContainer::BeginPlay()
@@ -46,6 +26,12 @@ void AChemicalContainer::BeginPlay()
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
 	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
+
+	ChemicalElement = DataTable->FindRow<FChemicalElement>(FName(FString::FromInt(SubstanceID)), "");
+	Description = ChemicalElement->Description;
+	ImageDescription = NewObject<UImage>(GetWorld());
+	//ImageDescription->SetBrushFromTexture(ChemicalElement->Image);
+	ImageDescription = ChemicalElement->Image;
 	
 }
 
