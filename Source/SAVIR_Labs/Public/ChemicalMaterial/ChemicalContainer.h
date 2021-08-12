@@ -8,7 +8,9 @@
 #include "ChemicalContainer.generated.h"
 
 
-class AChemicalSubstance;
+struct FChemicalElement;
+class UDataTable;
+class UChemicalSubstance;
 class UUserWidget;
 class UStaticMeshComponent;
 class UWidgetComponent;
@@ -28,9 +30,16 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION()
-	void MoveTo(AChemicalContainer* NewContainer, bool bMoveAll = true, float MoveQuantity = 0.0);
+	UPROPERTY(EditAnywhere, Category=Data)
+	UDataTable* DataTable;
+	
+	FChemicalElement* ChemicalElement;
+	
+	private:
 
+	UPROPERTY(EditAnywhere, Category= Data)
+	int32 SubstanceID = 1;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,12 +48,10 @@ private:
 	UFUNCTION()
 	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
-	UPROPERTY(EditAnywhere, Category = Data)
-	AChemicalSubstance* Substance;
-
 	UPROPERTY()
 	AActor* OriginalParent;
 
 	FVector OriginalPosition;
 	FQuat OriginalRotation;
+	
 };
