@@ -33,7 +33,7 @@ void ALabToolContainer::BeginPlay()
 		auto Widget = Cast<UToolInfoWidget> (WidgetComponent->GetWidget());
 		if(Widget)
 		{
-			ToolElement = ElementsArray->GetToolById(ToolID);
+			ToolElement = DataTable->FindRow<FLabTools>(FName(FString::FromInt(ToolID)), "");
 			Description = ToolElement->Description;
 	
 			ImageDescription = NewObject<UImage>(GetWorld());

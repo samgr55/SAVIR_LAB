@@ -29,7 +29,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Data)
-	ALabTool* ElementsArray;
+	UDataTable* DataTable;
 	
 
 	FLabTools* ToolElement;

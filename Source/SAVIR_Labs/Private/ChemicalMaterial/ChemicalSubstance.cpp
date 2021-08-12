@@ -22,7 +22,7 @@ AChemicalSubstance* AChemicalSubstance::React(AChemicalSubstance* OtherSubstance
 void AChemicalSubstance::BeginPlay()
 {
 	Super::BeginPlay();
-	ChemicalElement = DataTable->FindRow<FChemicalElement>(FName("A"), "");
+	ChemicalElement = DataTable->FindRow<FChemicalElement>(FName(FString::FromInt(SubstanceID)), "");
 	Description = ChemicalElement->Description;
 	ImageDescription = NewObject<UImage>(GetWorld());
 	//ImageDescription->SetBrushFromTexture(ChemicalElement->Image);
