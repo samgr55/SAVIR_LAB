@@ -2,7 +2,7 @@
 
 
 #include "ChemicalMaterial/ChemicalContainer.h"
-
+#include "Components/WidgetComponent.h"
 #include "Widgets/ChemicalInfoWidgets.h"
 #include "ChemicalMaterial/ChemicalSubstance.h"
 
@@ -55,7 +55,6 @@ void AChemicalContainer::BeginPlay()
 	//
 	// 	StaticMeshComp.Add(M);
 	// }
-	
 	WidgetComponent = Cast<UWidgetComponent>(GetComponentByClass(UWidgetComponent::StaticClass()));
 	
 	if(WidgetComponent)
@@ -66,16 +65,18 @@ void AChemicalContainer::BeginPlay()
 			if(!Substance)
 			{
 				UE_LOG(LogTemp, Error, TEXT("!Substance"));
+				return;
 			}
 			if(!Substance->ChemicalElement)
 			{
 				UE_LOG(LogTemp, Error, TEXT("!Substance->ChemicalElement"));
+				return;
 			}
 			Widget->SetUpWidget(Substance->ChemicalElement);
+			Widget->SetVisibility(ESlateVisibility::Collapsed);
 		}
 	}
 	
-	WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 // Called every frame

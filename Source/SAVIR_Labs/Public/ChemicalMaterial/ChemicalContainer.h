@@ -4,16 +4,14 @@
 
 #include "CoreMinimal.h"
 
-#include "Components/WidgetComponent.h"
-#include "GameFramework/Actor.h"
 #include "General/InformationActor.h"
-
 #include "ChemicalContainer.generated.h"
 
 
 class AChemicalSubstance;
 class UUserWidget;
 class UStaticMeshComponent;
+class UWidgetComponent;
 
 UCLASS()
 class SAVIR_LABS_API AChemicalContainer : public AInformationActor
