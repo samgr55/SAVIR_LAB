@@ -1,2 +1,2 @@
-Symbol,Name,AtomicNumber,Weight,State,Description,Family,Image
-H,Hydrogen,1,1.008f,Gas,The most basic material,Gases,"Texture2D'""/Game/L0_Safety_Lab/Posters/1.1""'"
+RowName,Symbol,Name,AtomicNumber,Weight,State,Description,Family,Image
+1,H,Hydrogen,1,1.008f,Gas,The most basic material,Gases,"Texture2D'""/Game/L0_Safety_Lab/Posters/1.1""'"
