@@ -29,10 +29,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Data)
-	AChemicalElements* ElementsArray;
-
+	
+	UPROPERTY(EditAnywhere, Category=Data)
+	UDataTable* DataTable;
+	
 	FChemicalElement* ChemicalElement;
 	
 private:

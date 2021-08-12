@@ -22,10 +22,11 @@ AChemicalSubstance* AChemicalSubstance::React(AChemicalSubstance* OtherSubstance
 void AChemicalSubstance::BeginPlay()
 {
 	Super::BeginPlay();
-	ChemicalElement = ElementsArray->GetElementByAtomicNumber(SubstanceID);
+	ChemicalElement = DataTable->FindRow<FChemicalElement>(FName("A"), "");
 	Description = ChemicalElement->Description;
 	ImageDescription = NewObject<UImage>(GetWorld());
-	ImageDescription->SetBrushFromTexture(ChemicalElement->Image);
+	//ImageDescription->SetBrushFromTexture(ChemicalElement->Image);
+	ImageDescription = ChemicalElement->Image;
 }
 
 // Called every frame
