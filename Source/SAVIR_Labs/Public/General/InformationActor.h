@@ -6,6 +6,7 @@
 
 #include "IInformative.h"
 #include "GameFramework/Actor.h"
+#include "Widgets/GeneralInfoWidgetComponent.h"
 #include "InformationActor.generated.h"
 
 class UWidgetComponent;
@@ -26,7 +27,7 @@ protected:
 	UImage* ImageDescription;
 
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess=true))
-	UWidgetComponent* WidgetComponent;
+	UGeneralInfoWidgetComponent* WidgetComponent;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Mesh, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* StaticMeshComp;

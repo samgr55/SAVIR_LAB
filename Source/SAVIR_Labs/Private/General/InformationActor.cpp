@@ -13,6 +13,10 @@ AInformationActor::AInformationActor()
 	PrimaryActorTick.bCanEverTick = true;
 	Description = "";
 	ImageDescription = nullptr;
+
+	WidgetComponent = NewObject<UGeneralInfoWidgetComponent>(this);
+	WidgetComponent->RegisterComponent();
+	
 }
 
 // Called when the game starts or when spawned
@@ -39,11 +43,11 @@ UImage* AInformationActor::GetImageDescription_Implementation()
 
 void AInformationActor::ShowWidget()
 {
-	WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Visible);
+	WidgetComponent->ShowWidget();
 }
 
 void AInformationActor::HideWidget()
 {
-	WidgetComponent->GetWidget()->SetVisibility(ESlateVisibility::Collapsed);
+	WidgetComponent->HideWidget();
 }
 
