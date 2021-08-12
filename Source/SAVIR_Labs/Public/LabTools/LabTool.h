@@ -37,15 +37,3 @@ struct SAVIR_LABS_API FLabTools:public FTableRowBase
 	UTexture2D* Image;
 };
 
-UCLASS()
-class SAVIR_LABS_API ALabTool : public AActor
-{
-	GENERATED_BODY()
-
-public:
-	FLabTools* GetToolById(int32 ToolId);
-
-private:
-	UPROPERTY(EditDefaultsOnly, Category=Data)
-	TArray<FLabTools> ToolsArray;
-};
