@@ -14,5 +14,6 @@ void UChemicalInfoWidgets::SetUpWidget(FChemicalElement* Element)
 	Name->SetText(FText::FromString(Element->Name));
 	AtomicNumber->SetText(FText::FromString(FString::FromInt(Element->AtomicNumber)));
 	Weight->SetText(FText::FromString(FString::FromInt(Element->Weight)));
-	ElementImage->SetBrushFromTexture(Element->Image);
+	//ElementImage->SetBrushFromTexture(Element->Image);
+	ElementImage = Element->Image;
 }
