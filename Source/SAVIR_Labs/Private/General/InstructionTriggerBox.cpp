@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Components/InstructionTriggerBox.h"
+#include "General/InstructionTriggerBox.h"
 
 #include "Components/LookAt.h"
 #include "Widgets/InstructionsHUD.h"

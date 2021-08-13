@@ -4,7 +4,7 @@
 #include "Engine/World.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/PlayerController.h"
-#include "SAVIR_Labs/Public/ChemicalMaterial/ChemicalContainer.h"
+#include "Containers/ChemicalContainer.h"
 
 #define OUT
 
@@ -124,7 +124,7 @@ FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 		TraceParams);
 	 
 
-	UE_LOG(LogTemp,Warning,TEXT("Hit %d"),s);
+	UE_LOG(LogTemp,Error,TEXT("Hit %d"),s);
 	
 	return Hit;
 }
