@@ -8,6 +8,35 @@
 
 UGeneralInfoWidgetComponent::UGeneralInfoWidgetComponent()
 {
+	
+}
+
+void UGeneralInfoWidgetComponent::SetUpWidgetComponent()
+{
+	if(!WidgetClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Empty WidgetClass in UGeneralInfoWidgetComponent::SetUpWidgetComponent"));
+		return;
+	}
+	InfoWidget = Cast<UGeneralInfoWidget>(GetWidget());
+
+	if(!InfoWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Wrong widget type widget must be UGeneralInfoWidget in UGeneralInfoWidgetComponent::SetUpWidgetComponent"));
+		return;
+	}
+
+	//InfoWidget->RemoveFromViewport();
+
+	InformationActor = Cast<AInformationActor>(GetOwner());
+
+	if(!InformationActor)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Wrong Actor type widget must be AInformationActor in UGeneralInfoWidgetComponent::SetUpWidgetComponent"));
+		return;
+	}
+	InfoWidget->SetUpWidget(InformationActor->GetDescription_Implementation(), InformationActor->GetImageDescription_Implementation());
+	
 }
 
 void UGeneralInfoWidgetComponent::ShowWidget()
@@ -23,29 +52,5 @@ void UGeneralInfoWidgetComponent::HideWidget()
 void UGeneralInfoWidgetComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	if(!WidgetClass)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Empty WidgetClass in UGeneralInfoWidgetComponent::BeginPlay"));
-		return;
-	}
-	InfoWidget = Cast<UGeneralInfoWidget>(GetWidget());
-
-	if(!InfoWidget)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Wrong widget type widget must be UGeneralInfoWidget in UGeneralInfoWidgetComponent::BeginPlay"));
-		return;
-	}
-
-	InfoWidget->RemoveFromViewport();
-
-	InformationActor = Cast<AInformationActor>(GetOwner());
-
-	if(!InformationActor)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Wrong Actor type widget must be AInformationActor in UGeneralInfoWidgetComponent::BeginPlay"));
-		return;
-	}
-
-	InfoWidget->SetUpWidget(InformationActor->GetDescription(), InformationActor->GetImageDescription());
 	
 }

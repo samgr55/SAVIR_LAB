@@ -18,6 +18,8 @@ class SAVIR_LABS_API UGeneralInfoWidgetComponent : public UWidgetComponent
 public:
 
 	UGeneralInfoWidgetComponent();
+
+	void SetUpWidgetComponent();
 	
 	void ShowWidget();
 
@@ -25,6 +27,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
+	
 
 private:
 	UPROPERTY()

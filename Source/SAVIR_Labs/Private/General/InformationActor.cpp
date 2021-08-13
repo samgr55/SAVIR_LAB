@@ -3,7 +3,10 @@
 
 #include "General/InformationActor.h"
 
+#include "GeneralInfoDT.h"
+#include "Components/Image.h"
 #include "Components/WidgetComponent.h"
+#include "Engine/DataTable.h"
 #include "Widgets/GeneralInfoWidgetComponent.h"
 
 
@@ -14,7 +17,7 @@ AInformationActor::AInformationActor()
 	PrimaryActorTick.bCanEverTick = true;
 	Description = "";
 	ImageDescription = nullptr;
-	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComponent");
+	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
 	RootComponent = StaticMeshComp;
 	
 	
@@ -25,12 +28,31 @@ AInformationActor::AInformationActor()
 void AInformationActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetUpInfo();
+	
 	WidgetComponent = Cast<UGeneralInfoWidgetComponent>(GetComponentByClass(UGeneralInfoWidgetComponent::StaticClass()));
 	if(!WidgetComponent)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Empty WidgetComponent in AInformationActor::BeginPlay"));
 		return;
 	}
+	WidgetComponent->SetUpWidgetComponent();
+}
+
+void AInformationActor::SetUpInfo()
+{
+	DataRow = DataTable->FindRow<FGeneralInfoDT>(FName(FString::FromInt(RowID)), "");
+	
+	if(!DataRow)
+	{
+		UE_LOG(LogTemp, Error, TEXT("!DataRow in AInformationActor::BeginPlay"));
+		return;
+	}
+	Description = DataRow->Description;
+	ImageDescription = NewObject<UImage>(this);
+	ImageDescription->SetBrushFromTexture(DataRow->Image);
+	//ImageDescription = DataRow->Image;
 }
 
 // Called every frame

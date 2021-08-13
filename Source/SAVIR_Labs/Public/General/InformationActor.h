@@ -8,6 +8,8 @@
 #include "GameFramework/Actor.h"
 #include "InformationActor.generated.h"
 
+struct FGeneralInfoDT;
+class UDataTable;
 class UGeneralInfoWidgetComponent;
 UCLASS(Blueprintable)
 class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative
@@ -17,18 +19,27 @@ class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative
 public:
 	// Sets default values for this actor's properties
 	AInformationActor();
+	
+protected:
+	//Variables
 
 	UPROPERTY()
 	UGeneralInfoWidgetComponent* WidgetComponent;
 	
-	
-protected:
-	//Variables
+	UPROPERTY()
 	FString Description;
 	
 	UPROPERTY()
 	UImage* ImageDescription;
+	
+	UPROPERTY(EditAnywhere, Category=Data)
+	UDataTable* DataTable;
 
+	FGeneralInfoDT* DataRow;
+
+	UPROPERTY(EditAnywhere, Category=Data)
+	int32 RowID;
+	
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* StaticMeshComp;
 
@@ -36,12 +47,18 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void SetUpInfo();
+
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	virtual FString GetDescription_Implementation() override;
 	virtual UImage* GetImageDescription_Implementation() override;
 
-	void ShowWidget();
-	void HideWidget();
+	virtual void ShowWidget();
+	virtual void HideWidget();
+
+private:
+	
 };
