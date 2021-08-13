@@ -3,7 +3,6 @@
 
 #include "ChemicalMaterial/ChemicalContainer.h"
 
-#include "ChemicalMaterial/ChemicalElement.h"
 #include "Components/WidgetComponent.h"
 #include "Engine/DataTable.h"
 
@@ -12,26 +11,21 @@ AChemicalContainer::AChemicalContainer()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
-	RootComponent = StaticMeshComp;
+	RowID = 1;
 }
 
 
 // Called when the game starts or when spawned
 void AChemicalContainer::BeginPlay()
 {
+	UE_LOG(LogTemp, Error, TEXT("AChemicalContainer::BeginPlay"));
 	Super::BeginPlay();
-
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
 	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
 
-	ChemicalElement = DataTable->FindRow<FChemicalElement>(FName(FString::FromInt(SubstanceID)), "");
-	Description = ChemicalElement->Description;
-	ImageDescription = NewObject<UImage>(GetWorld());
-	//ImageDescription->SetBrushFromTexture(ChemicalElement->Image);
-	ImageDescription = ChemicalElement->Image;
+
+	
 	
 }
 
@@ -46,13 +40,13 @@ void AChemicalContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector No
 {
 	if (!OriginalParent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HIT other"));
+		UE_LOG(LogTemp, Error, TEXT("HIT other"));
 		OriginalParent = OtherActor;
 	}
 	//if the other actor isn't self or owner and exists then applay damage.
 	if (!CurrentParent && OtherActor != OriginalParent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("other"));
+		UE_LOG(LogTemp, Error, TEXT("other"));
 		//SetActorLocation(OriginalPosition,false,nullptr,ETeleportType::TeleportPhysics);
 		SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::TeleportPhysics);
 	}

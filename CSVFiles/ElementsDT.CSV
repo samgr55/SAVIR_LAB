@@ -1,2 +1,85 @@
-RowName,Symbol,Name,AtomicNumber,Weight,State,Description,Family,Image
-1,H,Hydrogen,1,1.008f,Gas,The most basic material,Gases,"Texture2D'""/Game/L0_Safety_Lab/Posters/1.1""'"
+RowName,Name,Description,Image
+1,HCL,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+2,H2SO4,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+3,NAOH,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+4,KOH,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+5,Bromine,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+6,HCL,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+7,H2SO4,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+8,NAOH,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+9,KOH,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+10,Bromine,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+11,Lodine,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+12,Lodine,"If the chemical touches the skin, immediately put under running water and inform the teacher.
+If the chemical comes in the eyes, immediately perform eye wash an inform the teacher.       how to prevent
+-wear a lab coat.
+-wear gloves.
+-wear closed toe shoes.
+-wear goggles.
+-work carefully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'

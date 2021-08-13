@@ -8,7 +8,6 @@
 #include "ChemicalContainer.generated.h"
 
 
-struct FChemicalElement;
 class UDataTable;
 class UChemicalSubstance;
 class UUserWidget;
@@ -29,16 +28,6 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditAnywhere, Category=Data)
-	UDataTable* DataTable;
-	
-	FChemicalElement* ChemicalElement;
-	
-	private:
-
-	UPROPERTY(EditAnywhere, Category= Data)
-	int32 SubstanceID = 1;
 	
 protected:
 	// Called when the game starts or when spawned

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 
-#include "LabTool.h"
 #include "General/InformationActor.h"
 
 #include "LabToolContainer.generated.h"
@@ -27,17 +26,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Data)
-	UDataTable* DataTable;
 	
 
-	FLabTools* ToolElement;
-
 private:
-	UPROPERTY(EditAnywhere, Category= Data)
-	int32 ToolID = 1;
-
+	
 	UPROPERTY()
 	AActor* OriginalParent;
 

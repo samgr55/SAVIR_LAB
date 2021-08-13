@@ -8,9 +8,6 @@ ALabToolContainer::ALabToolContainer()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
-	RootComponent = StaticMeshComp;
 }
 
 // Called when the game starts or when spawned
@@ -35,13 +32,13 @@ void ALabToolContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Nor
 {
 	if (!OriginalParent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HIT other"));
+		UE_LOG(LogTemp, Error, TEXT("HIT other"));
 		OriginalParent = OtherActor;
 	}
 	//if the other actor isn't self or owner and exists then applay damage.
 	if (!CurrentParent && OtherActor != OriginalParent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("other"));
+		UE_LOG(LogTemp, Error, TEXT("other"));
 		//SetActorLocation(OriginalPosition,false,nullptr,ETeleportType::TeleportPhysics);
 		SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::TeleportPhysics);
 	}
