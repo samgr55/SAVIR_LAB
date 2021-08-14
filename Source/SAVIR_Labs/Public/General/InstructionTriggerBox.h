@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditInstanceOnly, Category=Data)
 	TArray<float> NarrativeTimeInMSecond;
 	
+
+private:
+	bool bIsUsed; 
 	
 	
 };
