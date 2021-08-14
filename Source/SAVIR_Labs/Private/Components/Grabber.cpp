@@ -33,11 +33,11 @@ void UGrabber::Grab()
 
 	if (ActorHit)
 	{
-		Continer = Cast<AChemicalContainer>(HitResult.GetActor());
-		if (Continer)
+		GrabbedContainer = Cast<AChemicalContainer>(HitResult.GetActor());
+		if (GrabbedContainer)
 		{
 			bIsGrabbed = true;
-			Continer->CurrentParent = GetOwner();
+			GrabbedContainer->CurrentParent = GetOwner();
 		}
 	}
 }
@@ -49,7 +49,7 @@ void UGrabber::Release()
 		return; 
 	}
 	bIsGrabbed = false;
-	Continer->CurrentParent = nullptr;
+	GrabbedContainer->CurrentParent = nullptr;
 }
 
 void UGrabber::SetupInputComponent()
@@ -74,18 +74,18 @@ void UGrabber::ShowData()
 
 	if (ActorHit)
 	{
-		ShowWidgetData = Cast<AChemicalContainer>(HitResult.GetActor());
-		if (ShowWidgetData)
+		InformationActor = Cast<AInformationActor>(HitResult.GetActor());
+		if (InformationActor)
 		{
 			if (!bIsShowingData)
 			{
 				bIsShowingData = true;
-				ShowWidgetData->ShowWidget();
+				InformationActor->ShowWidget();
 			}
 			else
 			{
 				bIsShowingData = false;
-				ShowWidgetData->HideWidget();
+				InformationActor->HideWidget();
 			}
 		}
 	}
@@ -107,9 +107,9 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		5.0f
 	);
 
-	if (Continer && bIsGrabbed)
+	if (GrabbedContainer && bIsGrabbed)
 	{
-		Continer->SetActorLocation(GetPlayerReach());
+		GrabbedContainer->SetActorLocation(GetPlayerReach());
 	}
 }
 

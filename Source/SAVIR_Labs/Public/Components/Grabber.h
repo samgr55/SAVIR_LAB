@@ -7,6 +7,7 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h" 
 #include "Grabber.generated.h"
 
+class AInformationActor;
 class USkeletalMeshSocket;
 class AChemicalContainer;
 
@@ -35,11 +36,17 @@ private:
 	bool bIsGrabbed = false;
 	bool bIsShowingData = false;
 
+	UPROPERTY()
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+
+	UPROPERTY()
 	UInputComponent* InputComponent = nullptr;
-	
-	AChemicalContainer* Continer;
-	AChemicalContainer* ShowWidgetData;
+
+	UPROPERTY()
+	AChemicalContainer* GrabbedContainer;
+
+	UPROPERTY()
+	AInformationActor* InformationActor;
  
 	UPROPERTY(EditAnywhere)
 	float Reach = 100.0f;
