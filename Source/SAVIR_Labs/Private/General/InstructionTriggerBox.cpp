@@ -10,12 +10,13 @@
 AInstructionTriggerBox::AInstructionTriggerBox()
 {
 	OnActorBeginOverlap.AddDynamic(this, &AInstructionTriggerBox::OnOverlap);
+	bIsUsed = false;
 }
 
 void AInstructionTriggerBox::OnOverlap(AActor* ThisActor, AActor* OtherActor)
 {
-	UE_LOG(LogTemp, Error, TEXT("OnOverlap !"))
-
+	if(bIsUsed) return;
+	
 	if(!GetWorld() || !GetWorld()->GetFirstPlayerController())
 	{
 		UE_LOG(LogTemp, Error, TEXT("Fetal Unresonable Error in AInstructionTriggerBox::OnOverlap !"))
@@ -46,5 +47,6 @@ void AInstructionTriggerBox::OnOverlap(AActor* ThisActor, AActor* OtherActor)
 		return;
 	}
 	LookAtComponent->StartLookAt(&LookAtActors, &LookAtTimeInSecond);
+	bIsUsed = true;
 }
 
