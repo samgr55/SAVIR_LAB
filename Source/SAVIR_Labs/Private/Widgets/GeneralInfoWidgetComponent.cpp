@@ -13,6 +13,7 @@ UGeneralInfoWidgetComponent::UGeneralInfoWidgetComponent()
 
 void UGeneralInfoWidgetComponent::SetUpWidgetComponent()
 {
+	
 	if(!WidgetClass)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Empty WidgetClass in UGeneralInfoWidgetComponent::SetUpWidgetComponent"));
@@ -26,8 +27,9 @@ void UGeneralInfoWidgetComponent::SetUpWidgetComponent()
 		return;
 	}
 
-	//InfoWidget->RemoveFromViewport();
 
+	HideWidget();
+	
 	InformationActor = Cast<AInformationActor>(GetOwner());
 
 	if(!InformationActor)
@@ -41,12 +43,12 @@ void UGeneralInfoWidgetComponent::SetUpWidgetComponent()
 
 void UGeneralInfoWidgetComponent::ShowWidget()
 {
-	InfoWidget->AddToViewport();
+	InfoWidget->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UGeneralInfoWidgetComponent::HideWidget()
 {
-	InfoWidget->RemoveFromViewport();
+	InfoWidget->SetVisibility(ESlateVisibility::Collapsed);
 }
 
 void UGeneralInfoWidgetComponent::BeginPlay()

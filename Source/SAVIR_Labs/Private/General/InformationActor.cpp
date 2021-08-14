@@ -54,7 +54,7 @@ void AInformationActor::SetUpInfo()
 	}
 	Description = DataRow->Description;
 	ImageDescription = NewObject<UImage>(this);
-	ImageDescription->SetBrushFromTexture(DataRow->Image);
+	ImageDescription->SetBrushFromMaterial(DataRow->Image);
 	//ImageDescription = DataRow->Image;
 }
 

@@ -19,5 +19,5 @@ struct SAVIR_LABS_API FGeneralInfoDT : public FTableRowBase
 	UPROPERTY(EditDefaultsOnly, Category=Data)
 	FString Description;
 	UPROPERTY(EditDefaultsOnly, Category=Data)
-	UTexture2D* Image;
+	UMaterial* Image;
 };
