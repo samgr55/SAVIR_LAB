@@ -45,6 +45,9 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
+if(!bIsGrabbed){
+return;
+}
 	bIsGrabbed = false;
 	Continer->CurrentParent = nullptr;
 }

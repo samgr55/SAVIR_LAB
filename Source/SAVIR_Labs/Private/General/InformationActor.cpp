@@ -17,7 +17,7 @@ AInformationActor::AInformationActor()
 	PrimaryActorTick.bCanEverTick = true;
 	Description = "";
 	ImageDescription = nullptr;
-	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshComp");
+	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshZizo");
 	RootComponent = StaticMeshComp;
 	
 	

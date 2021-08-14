@@ -19,19 +19,19 @@ class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative
 public:
 	// Sets default values for this actor's properties
 	AInformationActor();
-	
+
 protected:
 	//Variables
 
 	UPROPERTY()
 	UGeneralInfoWidgetComponent* WidgetComponent;
-	
+
 	UPROPERTY()
 	FString Description;
-	
+
 	UPROPERTY()
 	UImage* ImageDescription;
-	
+
 	UPROPERTY(EditAnywhere, Category=Data)
 	UDataTable* DataTable;
 
@@ -40,7 +40,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category=Data)
 	int32 RowID;
 	
-	UPROPERTY(EditAnywhere)
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* StaticMeshComp;
 
 	//Functions
@@ -60,5 +61,4 @@ public:
 	virtual void HideWidget();
 
 private:
-	
 };
