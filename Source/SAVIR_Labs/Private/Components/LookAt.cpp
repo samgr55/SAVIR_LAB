@@ -3,6 +3,7 @@
 
 #include "Components/LookAt.h"
 
+#include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -13,6 +14,7 @@ ULookAt::ULookAt()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
+	
 	// ...
 }
 
@@ -27,6 +29,11 @@ void ULookAt::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("Cant Get Owner in ULookAt::BeginPlay"));
 		return;
 	}
+
+	OwnerCharacter = Cast<ACharacter>(GetOwner());
+	UE_LOG(LogTemp, Error, TEXT("Charactre: %s"), *OwnerCharacter->GetName());
+
+	
 	MovementComponent = Cast<UCharacterMovementComponent>(GetOwner()->GetComponentByClass(UCharacterMovementComponent::StaticClass()));
 	if(!MovementComponent)
 	{
@@ -34,11 +41,11 @@ void ULookAt::BeginPlay()
 		return;
 	}
 
-	CameraBoom = Cast<USpringArmComponent>(GetOwner()->GetComponentByClass(USpringArmComponent::StaticClass()));
+	Camera = Cast<UCameraComponent>(GetOwner()->GetComponentByClass(UCameraComponent::StaticClass()));
 
-	if(!CameraBoom)
+	if(!Camera)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cant Get CameraBoom in ULookAt::BeginPlay"));
+		UE_LOG(LogTemp, Error, TEXT("Cant Get Camera in ULookAt::BeginPlay"));
 		return;
 	}
 }
@@ -61,29 +68,34 @@ void ULookAt::StartLookAt(TArray<AActor*>* InLookAtActors, TArray<float>* InLook
 		UE_LOG(LogTemp, Error, TEXT("MovementComponent is nullptr! in ULookAt::StartLookAt"));
 		return;
 	}
-	MovementComponent->SetActive(false);
-	//MovementComponent->MaxWalkSpeed = 0.f;
 
+	OwnerCharacter->DisableInput(GetWorld()->GetFirstPlayerController());
+	
 	Index = 0;
 	LookAtActor();
 }
 
+void ULookAt::StartLookAt_BP()
+{
+}
+
 void ULookAt::LookAtActor()
 {
-	if(!CameraBoom || !MovementComponent)
+	if(!Camera || !MovementComponent)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Cant GetCameraBoom Or MovementComponent in ULookAt::LookAtActor"));
 		return;
 	}
 	if(Index >= LookAtActors->Num())
 	{
-		MovementComponent->SetActive(true);
+		OwnerCharacter->EnableInput(GetWorld()->GetFirstPlayerController());
 		return;
 	}
+
+	auto Rot = UKismetMathLibrary::FindLookAtRotation(OwnerCharacter->GetActorLocation(), LookAtActors->GetData()[Index]->GetActorLocation());
 	
-	CameraBoom->SetWorldRotation(UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(),
-		LookAtActors->GetData()[Index]->GetActorLocation()));
-	
+	OwnerCharacter->Controller->SetControlRotation(Rot);
+
 	GetOwner()->GetWorldTimerManager().SetTimer(LookAtActorTimerHandle, this,
 		&ULookAt::LookAtActor, LookAtTimeInSecond->GetData()[Index]);
 	Index++;

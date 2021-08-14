@@ -4,6 +4,7 @@
 
 
 #include "CoreMinimal.h"
+#include "Camera/CameraComponent.h"
 #include "Components/ActorComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "LookAt.generated.h"
@@ -21,6 +22,9 @@ public:
 
 	void StartLookAt(TArray<AActor*>* InLookAtActors, TArray<float>* InLookAtTimeInSecond);
 
+	UFUNCTION(BlueprintCallable)
+	void StartLookAt_BP();
+	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -40,11 +44,17 @@ private:
 
 	FTimerHandle LookAtActorTimerHandle;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ACharacter> ThirdPersonCharacterClass;
+
+	UPROPERTY()
+	ACharacter* OwnerCharacter;
+	
 	UPROPERTY()
 	UCharacterMovementComponent* MovementComponent;
 
 	UPROPERTY()
-	USpringArmComponent* CameraBoom;
+	UCameraComponent* Camera;
 
 		
 };
