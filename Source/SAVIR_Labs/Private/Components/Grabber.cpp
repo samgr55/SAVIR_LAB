@@ -20,13 +20,12 @@ UGrabber::UGrabber()
 void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	SetupInputComponent();
 }
 
 void UGrabber::Grab()
 {
-	
 	FHitResult HitResult = GetFirstPhysicsBodyInReach();
 	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
 
@@ -34,8 +33,8 @@ void UGrabber::Grab()
 
 	if (ActorHit)
 	{
-	    Continer =  Cast<AChemicalContainer>(HitResult.GetActor());
-		if(Continer)
+		Continer = Cast<AChemicalContainer>(HitResult.GetActor());
+		if (Continer)
 		{
 			bIsGrabbed = true;
 			Continer->CurrentParent = GetOwner();
@@ -45,9 +44,10 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-if(!bIsGrabbed){
-return;
-}
+	if (!bIsGrabbed)
+	{
+		return; 
+	}
 	bIsGrabbed = false;
 	Continer->CurrentParent = nullptr;
 }
@@ -61,7 +61,7 @@ void UGrabber::SetupInputComponent()
 		UE_LOG(LogTemp, Warning, TEXT("Input Component found on %s"), *GetOwner()->GetName());
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 		InputComponent->BindAction("Release", IE_Pressed, this, &UGrabber::Release);
-		InputComponent->BindAction("ShowData",IE_Pressed,this,&UGrabber::ShowData);
+		InputComponent->BindAction("ShowData", IE_Pressed, this, &UGrabber::ShowData);
 	}
 }
 
@@ -74,10 +74,10 @@ void UGrabber::ShowData()
 
 	if (ActorHit)
 	{
-		ShowWidgetData =  Cast<AChemicalContainer>(HitResult.GetActor());
-		if(ShowWidgetData)
+		ShowWidgetData = Cast<AChemicalContainer>(HitResult.GetActor());
+		if (ShowWidgetData)
 		{
-			if(!bIsShowingData)
+			if (!bIsShowingData)
 			{
 				bIsShowingData = true;
 				ShowWidgetData->ShowWidget();
@@ -107,7 +107,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		5.0f
 	);
 
-	if(Continer && bIsGrabbed)
+	if (Continer && bIsGrabbed)
 	{
 		Continer->SetActorLocation(GetPlayerReach());
 	}
@@ -121,14 +121,14 @@ FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 	FCollisionQueryParams TraceParams;
 
 	bool s = GetWorld()->LineTraceSingleByChannel(OUT Hit,
-		GetPlayerWorldPos(),
-		GetPlayerReach(),
-		ECC_Visibility,
-		TraceParams);
-	 
+	                                              GetPlayerWorldPos(),
+	                                              GetPlayerReach(),
+	                                              ECC_Visibility,
+	                                              TraceParams);
 
-	UE_LOG(LogTemp,Error,TEXT("Hit %d"),s);
-	
+
+	UE_LOG(LogTemp, Error, TEXT("Hit %d"), s);
+
 	return Hit;
 }
 

@@ -1,35 +1,42 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Containers/LabToolContainer.h"
+#include "Containers/ChemicalContainer.h"
+
+#include "Components/WidgetComponent.h"
+#include "Engine/DataTable.h"
 
 // Sets default values
-ALabToolContainer::ALabToolContainer()
+AChemicalContainer::AChemicalContainer()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	RowID = 1;
 }
 
-// Called when the game starts or when spawned
-void ALabToolContainer::BeginPlay()
-{
-	Super::BeginPlay();
 
+// Called when the game starts or when spawned
+void AChemicalContainer::BeginPlay()
+{
+	UE_LOG(LogTemp, Error, TEXT("AChemicalContainer::BeginPlay"));
+	Super::BeginPlay();
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
+	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
 
-	OnActorHit.AddDynamic(this, &ALabToolContainer::OnHit);
+
+	
 	
 }
 
 // Called every frame
-void ALabToolContainer::Tick(float DeltaTime)
+void AChemicalContainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void ALabToolContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
+
+void AChemicalContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (!OriginalParent)
 	{

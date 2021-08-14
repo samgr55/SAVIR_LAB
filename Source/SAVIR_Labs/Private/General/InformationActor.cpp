@@ -18,6 +18,7 @@ AInformationActor::AInformationActor()
 	Description = "";
 	ImageDescription = nullptr;
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshZizo");
+	//StaticMeshComp->SetupAttachment(RootComponent);
 	RootComponent = StaticMeshComp;
 	
 	
@@ -38,6 +39,8 @@ void AInformationActor::BeginPlay()
 		return;
 	}
 	WidgetComponent->SetUpWidgetComponent();
+
+	//HideWidget();
 }
 
 void AInformationActor::SetUpInfo()

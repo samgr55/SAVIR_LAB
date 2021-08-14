@@ -1,9 +1,10 @@
 RowName,Name,Description,Image
-1,HCL,"Warning to breathe posion gas
--open the room window.                                                         
--if started couching leave room.
--inform the teacher.
--Wear a face mask.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
+1,HCL,"Be careful spilling elements
+-Wear a lab coat.
+-Wear gloves.
+-Wear closed tie shoe.
+-Wear Goggles.
+-Work Carfully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
 2,HCL,"Be careful spilling elements
 -Wear a lab coat.
 -Wear gloves.
@@ -54,5 +55,3 @@ RowName,Name,Description,Image
 -Wear closed tie shoe.
 -Wear Goggles.
 -Work Carfully to avoid spills.",Texture2D'/Game/L0_Safety_Lab/Textures/BUMP.BUMP'
-,,,
-,,,
