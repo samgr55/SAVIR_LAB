@@ -63,7 +63,7 @@ void UGrabber::SetupInputComponent()
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 		InputComponent->BindAction("Release", IE_Pressed, this, &UGrabber::Release);
 		InputComponent->BindAction("ShowData", IE_Pressed, this, &UGrabber::ShowData);
-		InputComponent->BindAction("Action", IE_Pressed, this, )
+		InputComponent->BindAction("Action", IE_Pressed, this, &UGrabber::Action);
 	}
 }
 

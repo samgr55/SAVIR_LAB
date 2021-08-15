@@ -5,6 +5,8 @@
 
 #include "Components/WidgetComponent.h"
 #include "Engine/DataTable.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
 AChemicalContainer::AChemicalContainer()
@@ -22,19 +24,28 @@ void AChemicalContainer::BeginPlay()
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
 	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
-	
+	SmokeParticle = Cast<UParticleSystemComponent>(GetComponentByClass(UParticleSystemComponent::StaticClass()));
+	if (!SmokeParticle)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Particle Not found"));
+		return;
+	}
+	SmokeParticle->Deactivate();
+	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
+
 }
 
 void AChemicalContainer::StartAction_Implementation()
 {
 	IAction::StartAction_Implementation();
-	
+	SmokeParticle->Activate();
 }
+	
 
 void AChemicalContainer::StopAction_Implementation()
 {
 	IAction::StopAction_Implementation();
-	
+	SmokeParticle->Deactivate();
 }
 
 // Called every frame
@@ -42,7 +53,6 @@ void AChemicalContainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-
 
 void AChemicalContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
@@ -58,4 +68,10 @@ void AChemicalContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector No
 		//SetActorLocation(OriginalPosition,false,nullptr,ETeleportType::TeleportPhysics);
 		SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::TeleportPhysics);
 	}
+}
+
+
+void AChemicalContainer::SpawnParticleSmoke()
+{
+	SmokeParticle->Activate(true);
 }
