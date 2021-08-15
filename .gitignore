@@ -10,7 +10,7 @@ Plugins/
 # Temp 
 Content/StarterBundle
 Content/ScienceLab/Textures
-Content/L0_Safety_Lab/Meshes
+# Content/L0_Safety_Lab/Meshes
 
 # Compiled Object files
 *.slo
