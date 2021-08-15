@@ -24,7 +24,9 @@ void AChemicalContainer::BeginPlay()
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
 	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
+
 	SmokeParticle = Cast<UParticleSystemComponent>(GetComponentByClass(UParticleSystemComponent::StaticClass()));
+	
 	if (!SmokeParticle)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Particle Not found"));
