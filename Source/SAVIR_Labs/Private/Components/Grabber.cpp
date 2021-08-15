@@ -14,6 +14,7 @@ UGrabber::UGrabber()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+	bIsAction = false;
 }
 
 // Called when the game starts
@@ -62,6 +63,7 @@ void UGrabber::SetupInputComponent()
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 		InputComponent->BindAction("Release", IE_Pressed, this, &UGrabber::Release);
 		InputComponent->BindAction("ShowData", IE_Pressed, this, &UGrabber::ShowData);
+		InputComponent->BindAction("Action", IE_Pressed, this, )
 	}
 }
 
@@ -91,6 +93,29 @@ void UGrabber::ShowData()
 	}
 }
 
+void UGrabber::Action()
+{
+	if(bIsAction)
+	{
+		StopAction();		
+	}
+	else if(bIsGrabbed)
+	{
+		StartAction();
+	}
+}
+
+void UGrabber::StartAction()
+{
+	GrabbedContainer->StartAction();
+}
+
+void UGrabber::StopAction()
+{
+	GrabbedContainer->StopAction();
+}
+
+
 // Called every frame
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -112,6 +137,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
 	}
 }
+
 
 FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 {
