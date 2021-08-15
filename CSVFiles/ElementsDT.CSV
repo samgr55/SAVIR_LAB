@@ -61,3 +61,5 @@ RowName,Name,Description,Image
 20,Googles,Used to save Eyes from chemicals,Material'/Game/Movies/Goggles/Googles_Mat.Googles_Mat'
 21,Helmet,Used to protect head,Material'/Game/Movies/Helmet/Helmet_Mat.Helmet_Mat'
 22,Lab Coat,Wear it in lab,Material'/Game/Movies/Lab_Coat/Lab_Coat_Mat.Lab_Coat_Mat'
+23,Bag,Used to Hold Things,Material'/Game/Movies/Video_Mat.Video_Mat'
+24,Mask,Protect Face from Gases,Material'/Game/Movies/Video_Mat.Video_Mat'
