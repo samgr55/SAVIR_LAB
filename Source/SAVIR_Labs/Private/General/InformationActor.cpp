@@ -17,12 +17,8 @@ AInformationActor::AInformationActor()
 	PrimaryActorTick.bCanEverTick = true;
 	Description = "";
 	ImageDescription = nullptr;
-	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshZizo");
-	//StaticMeshComp->SetupAttachment(RootComponent);
-	RootComponent = StaticMeshComp;
-	
-	
-	
+	//StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshZizo");
+	//RootComponent = StaticMeshComp;
 }
 
 // Called when the game starts or when spawned
@@ -39,8 +35,6 @@ void AInformationActor::BeginPlay()
 		return;
 	}
 	WidgetComponent->SetUpWidgetComponent();
-
-	//HideWidget();
 }
 
 void AInformationActor::SetUpInfo()
