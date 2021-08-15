@@ -31,8 +31,6 @@ void ULookAt::BeginPlay()
 	}
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
-	UE_LOG(LogTemp, Error, TEXT("Charactre: %s"), *OwnerCharacter->GetName());
-
 	
 	MovementComponent = Cast<UCharacterMovementComponent>(GetOwner()->GetComponentByClass(UCharacterMovementComponent::StaticClass()));
 	if(!MovementComponent)

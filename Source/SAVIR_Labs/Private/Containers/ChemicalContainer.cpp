@@ -18,14 +18,10 @@ AChemicalContainer::AChemicalContainer()
 // Called when the game starts or when spawned
 void AChemicalContainer::BeginPlay()
 {
-	UE_LOG(LogTemp, Error, TEXT("AChemicalContainer::BeginPlay"));
 	Super::BeginPlay();
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
 	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
-
-
-	
 	
 }
 

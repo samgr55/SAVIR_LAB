@@ -17,7 +17,6 @@ void UGeneralInfoWidget::SetUpWidget(FString InDescription, UImage* InImage)
 	}
 	this->InfoImage->SetBrush(InImage->Brush);
 	this->Description = InDescription;
-	UE_LOG(LogTemp, Error, TEXT("Description %s"), *InDescription);
 	DescriptionText->SetText(FText::FromString(InDescription));
 }
 
