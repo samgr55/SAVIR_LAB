@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "General/Action.h"
 
 #include "General/InformationActor.h"
 #include "ChemicalContainer.generated.h"
@@ -15,7 +16,7 @@ class UStaticMeshComponent;
 class UWidgetComponent;
 
 UCLASS()
-class SAVIR_LABS_API AChemicalContainer : public AInformationActor
+class SAVIR_LABS_API AChemicalContainer : public AInformationActor, public IAction 
 {
 	GENERATED_BODY()
 	
@@ -26,6 +27,9 @@ public:
 	UPROPERTY()
 	AActor* CurrentParent;
 
+	virtual void StartAction_Implementation() override;
+	virtual void StopAction_Implementation() override;
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	

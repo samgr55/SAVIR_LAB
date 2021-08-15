@@ -25,6 +25,18 @@ void AChemicalContainer::BeginPlay()
 	
 }
 
+void AChemicalContainer::StartAction_Implementation()
+{
+	IAction::StartAction_Implementation();
+	
+}
+
+void AChemicalContainer::StopAction_Implementation()
+{
+	IAction::StopAction_Implementation();
+	
+}
+
 // Called every frame
 void AChemicalContainer::Tick(float DeltaTime)
 {
