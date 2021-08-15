@@ -28,12 +28,18 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void SpawnParticleSmoke();
 	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY()
+	UParticleSystemComponent* SmokeParticle;
+
 private:
+	
+	
 	UFUNCTION()
 	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
