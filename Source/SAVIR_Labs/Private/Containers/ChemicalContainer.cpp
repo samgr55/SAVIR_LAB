@@ -20,26 +20,32 @@ AChemicalContainer::AChemicalContainer()
 // Called when the game starts or when spawned
 void AChemicalContainer::BeginPlay()
 {
-	UE_LOG(LogTemp, Error, TEXT("AChemicalContainer::BeginPlay"));
 	Super::BeginPlay();
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();
-
-	
+	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
 	SmokeParticle = Cast<UParticleSystemComponent>(GetComponentByClass(UParticleSystemComponent::StaticClass()));
-
 	if (!SmokeParticle)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Particle Not found"));
 		return;
 	}
-
-	
 	SmokeParticle->Deactivate();
-	
 	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
 
+}
+
+void AChemicalContainer::StartAction_Implementation()
+{
+	IAction::StartAction_Implementation();
+	SmokeParticle->Activate();
+}
 	
+
+void AChemicalContainer::StopAction_Implementation()
+{
+	IAction::StopAction_Implementation();
+	SmokeParticle->Deactivate();
 }
 
 // Called every frame

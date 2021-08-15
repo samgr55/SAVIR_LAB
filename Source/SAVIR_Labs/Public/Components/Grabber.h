@@ -36,6 +36,8 @@ private:
 	bool bIsGrabbed = false;
 	bool bIsShowingData = false;
 
+	bool bIsAction;
+	
 	UPROPERTY()
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;
 
@@ -55,6 +57,15 @@ private:
 	void Release();
 	void SetupInputComponent();
 	void ShowData();
+
+	UFUNCTION()
+	void Action();
+
+	UFUNCTION()
+	void StartAction();
+
+	UFUNCTION()
+	void StopAction();
 
 	//Return The first actor within reach with physics body
 	FHitResult GetFirstPhysicsBodyInReach() const;
