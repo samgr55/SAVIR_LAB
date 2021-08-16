@@ -17,7 +17,8 @@ void UGeneralInfoWidget::SetUpWidget(FString InDescription, UImage* InImage)
 	}
 	this->InfoImage->SetBrush(InImage->Brush);
 	this->Description = InDescription;
-	DescriptionText->SetText(FText::FromString(InDescription));
+	Description.ParseIntoArray(DescriptionArray, TEXT("*"));
+	ShowText();
 }
 
 void UGeneralInfoWidget::NativeOnInitialized()
@@ -28,5 +29,16 @@ void UGeneralInfoWidget::NativeOnInitialized()
 		UE_LOG(LogTemp, Error, TEXT("InfoImage and DescriptionText must set in designer in UGeneralInfoWidget::NativeOnInitialized"));
 		return;
 	}
-	
+	CurrentTextIndex = 0;
+}
+
+void UGeneralInfoWidget::ShowText()
+{
+	if(CurrentTextIndex >= DescriptionArray.Num())
+	{
+		CurrentTextIndex = 0;
+	}
+	GetOwningPlayer()->GetWorldTimerManager().SetTimer(TextTimerHandle, this, &UGeneralInfoWidget::ShowText, 2);
+	DescriptionText->SetText(FText::FromString(DescriptionArray[CurrentTextIndex]));
+	CurrentTextIndex++;
 }

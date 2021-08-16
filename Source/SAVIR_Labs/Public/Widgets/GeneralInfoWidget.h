@@ -25,12 +25,20 @@ protected:
 
 private:
 	FString Description;
+
+	TArray<FString> DescriptionArray;
+	
 	UPROPERTY(meta = (BindWidget))
 	UImage* InfoImage;
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* DescriptionText;
 
+	UFUNCTION()
+	void ShowText();
+
+	int32 CurrentTextIndex;
 	
+	FTimerHandle TextTimerHandle;
 	
 	
 };
