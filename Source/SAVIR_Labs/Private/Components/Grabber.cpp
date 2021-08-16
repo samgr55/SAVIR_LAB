@@ -5,6 +5,7 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/PlayerController.h"
 #include "Containers/ChemicalContainer.h"
+#include "GameFramework/Character.h"
 
 #define OUT
 
@@ -43,6 +44,8 @@ void UGrabber::BeginPlay()
 		return;
 	}
 
+	OwnerCharacter = Cast<ACharacter>(GetOwner());
+	
 	SetupInputComponent();
 }
 
@@ -60,7 +63,12 @@ void UGrabber::Grab()
 		{
 			bIsGrabbed = true;
 			GrabbedContainer->CurrentParent = GetOwner();
-			GrabbedContainer->AttachToActor(GetOwner(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+			if(!GetOwner()->GetRootComponent())
+			{
+				UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
+				return;
+			}
+			/*GrabbedContainer->AttachToActor(OwnerCharacter, FAttachmentTransformRules::KeepRelativeTransform);*/
 		}
 	}
 }
@@ -76,7 +84,7 @@ void UGrabber::Release()
 		StopAction();
 	}
 	bIsGrabbed = false;
-	GrabbedContainer->AttachToActor(GrabbedContainer, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	/*GrabbedContainer->AttachToActor(GrabbedContainer, FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandSocket->GetFName());*/
 	GrabbedContainer->CurrentParent = nullptr;
 }
 
@@ -162,10 +170,10 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	);
 	
 	
-	/*if (GrabbedContainer && bIsGrabbed)
+	if (GrabbedContainer && bIsGrabbed)
 	{
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
-	}*/
+	}
 }
 
 

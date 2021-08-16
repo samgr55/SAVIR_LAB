@@ -35,8 +35,10 @@ protected:
 private:
 	bool bIsGrabbed = false;
 	bool bIsShowingData = false;
-
 	bool bIsAction;
+
+	UPROPERTY()
+	ACharacter* OwnerCharacter;
 	
 	UPROPERTY()
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;

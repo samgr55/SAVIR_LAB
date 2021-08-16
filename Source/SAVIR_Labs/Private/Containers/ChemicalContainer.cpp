@@ -48,6 +48,7 @@ void AChemicalContainer::BeginPlay()
 void AChemicalContainer::StartAction_Implementation()
 {
 	IAction::StartAction_Implementation();
+	/*
 	if(!CapMesh)
 	{
 		UE_LOG(LogTemp, Error, TEXT("CapMesh Not found in AChemicalContainer::StartAction_Implementation"));
@@ -59,8 +60,13 @@ void AChemicalContainer::StartAction_Implementation()
 		return;
 	}
 
-	AttachToActor(CurrentParent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
-	CapMesh->AttachToComponent(Cast<USkeletalMeshComponent>(CurrentParent->GetComponentByClass(USkeletalMeshComponent::StaticClass())), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "LeftHandSocket");
+	StaticMeshComp->AttachToComponent(Cast<USkeletalMeshComponent>(
+		CurrentParent->GetComponentByClass(USkeletalMeshComponent::StaticClass())),
+		FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+	CapMesh->AttachToComponent(Cast<USkeletalMeshComponent>(
+		CurrentParent->GetComponentByClass(USkeletalMeshComponent::StaticClass())),
+		FAttachmentTransformRules::SnapToTargetNotIncludingScale, "LeftHandSocket");
+		*/
 	
 	SmokeParticle->SetVisibility(true, true);
 }
@@ -70,8 +76,11 @@ void AChemicalContainer::StopAction_Implementation()
 {
 	IAction::StopAction_Implementation();
 	SmokeParticle->SetVisibility(false, true);
-	AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	/*
+	StaticMeshComp->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	CapMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	*/
+	
 }
 
 // Called every frame
