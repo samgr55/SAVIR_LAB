@@ -29,25 +29,49 @@ void AChemicalContainer::BeginPlay()
 	
 	if (!SmokeParticle)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Particle Not found"));
+		UE_LOG(LogTemp, Error, TEXT("Particle Not found in AChemicalContainer::BeginPlay"));
 		return;
 	}
-	SmokeParticle->Deactivate();
+	SmokeParticle->SetVisibility(false, true);
 	OnActorHit.AddDynamic(this, &AChemicalContainer::OnHit);
 
+	CapMesh = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(FName("Cap")));
+
+	if(!CapMesh)
+	{
+		UE_LOG(LogTemp, Error, TEXT("CapMesh Not found in AChemicalContainer::BeginPlay"));
+		return;
+	}
+	
 }
 
 void AChemicalContainer::StartAction_Implementation()
 {
 	IAction::StartAction_Implementation();
-	SmokeParticle->Activate();
+	if(!CapMesh)
+	{
+		UE_LOG(LogTemp, Error, TEXT("CapMesh Not found in AChemicalContainer::StartAction_Implementation"));
+		return;
+	}
+	if(!CurrentParent)
+	{
+		UE_LOG(LogTemp, Error, TEXT("CurrentParent Not found in AChemicalContainer::StartAction_Implementation"));
+		return;
+	}
+
+	AttachToActor(CurrentParent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+	CapMesh->AttachToComponent(Cast<USkeletalMeshComponent>(CurrentParent->GetComponentByClass(USkeletalMeshComponent::StaticClass())), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "LeftHandSocket");
+	
+	SmokeParticle->SetVisibility(true, true);
 }
 	
 
 void AChemicalContainer::StopAction_Implementation()
 {
 	IAction::StopAction_Implementation();
-	SmokeParticle->Deactivate();
+	SmokeParticle->SetVisibility(false, true);
+	AttachToActor(this, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	CapMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 }
 
 // Called every frame
@@ -68,7 +92,7 @@ void AChemicalContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector No
 	{
 		UE_LOG(LogTemp, Error, TEXT("other"));
 		//SetActorLocation(OriginalPosition,false,nullptr,ETeleportType::TeleportPhysics);
-		SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::TeleportPhysics);
+		SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::ResetPhysics);
 	}
 }
 

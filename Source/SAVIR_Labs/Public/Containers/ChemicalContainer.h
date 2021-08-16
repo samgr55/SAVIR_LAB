@@ -52,5 +52,8 @@ private:
 
 	FVector OriginalPosition;
 	FQuat OriginalRotation;
+
+	UPROPERTY()
+	UStaticMeshComponent* CapMesh;
 	
 };

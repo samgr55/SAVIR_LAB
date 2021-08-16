@@ -21,6 +21,27 @@ UGrabber::UGrabber()
 void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	auto MeshComp = Cast<USkeletalMeshComponent>(GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+	if(!MeshComp)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Faild to get MeshComponent in UGrabber::BeginPlay"));
+		return;
+	}
+
+	LeftHandSocket = MeshComp->SkeletalMesh->FindSocket(FName("LeftHandSocket"));
+	if(!LeftHandSocket)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Faild to get LeftHandSocket in UGrabber::BeginPlay"));
+		return;
+	}
+	
+	RightHandSocket = MeshComp->SkeletalMesh->FindSocket(FName("RightHandSocket"));
+	if(!RightHandSocket)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Faild to get RightHandSocket in UGrabber::BeginPlay"));
+		return;
+	}
 
 	SetupInputComponent();
 }
@@ -39,6 +60,7 @@ void UGrabber::Grab()
 		{
 			bIsGrabbed = true;
 			GrabbedContainer->CurrentParent = GetOwner();
+			GrabbedContainer->AttachToActor(GetOwner(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
 		}
 	}
 }
@@ -49,7 +71,12 @@ void UGrabber::Release()
 	{
 		return; 
 	}
+	if(bIsAction)
+	{
+		StopAction();
+	}
 	bIsGrabbed = false;
+	GrabbedContainer->AttachToActor(GrabbedContainer, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	GrabbedContainer->CurrentParent = nullptr;
 }
 
@@ -59,7 +86,7 @@ void UGrabber::SetupInputComponent()
 
 	if (InputComponent)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Input Component found on %s"), *GetOwner()->GetName());
+		UE_LOG(LogTemp, Error, TEXT("Input Component found on %s"), *GetOwner()->GetName());
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 		InputComponent->BindAction("Release", IE_Pressed, this, &UGrabber::Release);
 		InputComponent->BindAction("ShowData", IE_Pressed, this, &UGrabber::ShowData);
@@ -97,22 +124,24 @@ void UGrabber::Action()
 {
 	if(bIsAction)
 	{
-		StopAction();		
+		StopAction();
+		bIsAction = false;
 	}
 	else if(bIsGrabbed)
 	{
 		StartAction();
+		bIsAction = true;
 	}
 }
 
 void UGrabber::StartAction()
 {
-	GrabbedContainer->StartAction();
+	GrabbedContainer->StartAction_Implementation();
 }
 
 void UGrabber::StopAction()
 {
-	GrabbedContainer->StopAction();
+	GrabbedContainer->StopAction_Implementation();
 }
 
 
@@ -131,11 +160,12 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		0,
 		5.0f
 	);
-
-	if (GrabbedContainer && bIsGrabbed)
+	
+	
+	/*if (GrabbedContainer && bIsGrabbed)
 	{
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
-	}
+	}*/
 }
 
 
