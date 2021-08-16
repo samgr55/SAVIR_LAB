@@ -58,7 +58,7 @@ void UGrabber::Grab()
 
 	if (ActorHit)
 	{
-		GrabbedContainer = Cast<AChemicalContainer>(HitResult.GetActor());
+		GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor());
 		if (GrabbedContainer)
 		{
 			bIsGrabbed = true;

@@ -7,6 +7,7 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h" 
 #include "Grabber.generated.h"
 
+class UInputComponent;
 class AInformationActor;
 class USkeletalMeshSocket;
 class AChemicalContainer;
@@ -47,7 +48,7 @@ private:
 	UInputComponent* InputComponent = nullptr;
 
 	UPROPERTY()
-	AChemicalContainer* GrabbedContainer;
+	AInformationActor* GrabbedContainer;
 
 	UPROPERTY()
 	AInformationActor* InformationActor;

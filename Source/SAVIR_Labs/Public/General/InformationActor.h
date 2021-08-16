@@ -11,6 +11,7 @@
 struct FGeneralInfoDT;
 class UDataTable;
 class UGeneralInfoWidgetComponent;
+
 UCLASS(Blueprintable)
 class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative
 {
@@ -56,6 +57,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual FString GetDescription_Implementation() override;
 	virtual UImage* GetImageDescription_Implementation() override;
+
 
 	virtual void ShowWidget();
 	virtual void HideWidget();
