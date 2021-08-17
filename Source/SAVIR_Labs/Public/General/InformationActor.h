@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "Action.h"
 #include "IInformative.h"
 #include "GameFramework/Actor.h"
 #include "InformationActor.generated.h"
@@ -12,19 +12,27 @@ struct FGeneralInfoDT;
 class UDataTable;
 class UGeneralInfoWidgetComponent;
 
-UCLASS(Blueprintable)
-class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative
+UCLASS()
+class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative, public IAction 
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
+
 	AInformationActor();
+
+	virtual void StartAction_Implementation() override;
+	virtual void StopAction_Implementation() override;
+	
 
 protected:
 	//Variables
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* InformationActorRootComponent;
+
+	UPROPERTY(VisibleAnywhere)
 	UGeneralInfoWidgetComponent* WidgetComponent;
 
 	UPROPERTY()
@@ -42,14 +50,14 @@ protected:
 	int32 RowID;
 	
 public:
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* StaticMeshComp;
-
 	//Functions
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	virtual void SetUpInfo();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bCanBeGrabbed;
 
 
 public:
@@ -58,9 +66,17 @@ public:
 	virtual FString GetDescription_Implementation() override;
 	virtual UImage* GetImageDescription_Implementation() override;
 
+	UPROPERTY()
+	AActor* CurrentParent;
+
 
 	virtual void ShowWidget();
 	virtual void HideWidget();
 
 private:
+
+public:
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* StaticMeshComponent;
+	UStaticMeshComponent* GetStaticMeshComponent() const;
 };

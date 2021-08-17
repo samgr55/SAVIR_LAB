@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Containers/LabToolContainer.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h" 
 #include "Grabber.generated.h"
 
@@ -49,10 +48,7 @@ private:
 	UInputComponent* InputComponent = nullptr;
 
 	UPROPERTY()
-	AChemicalContainer* GrabbedContainer;
-	
-	UPROPERTY()
-	ALabToolContainer* GrabbedContainer2;
+	AInformationActor* GrabbedContainer;
 
 	UPROPERTY()
 	AInformationActor* InformationActor;

@@ -17,12 +17,6 @@ public:
 	// Sets default values for this actor's properties
 	ALabToolContainer();
 
-	UPROPERTY()
-	AActor* CurrentParent;
-
-	UPROPERTY(EditAnywhere, Category=Data)
-	bool CanHold = false;
-
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
