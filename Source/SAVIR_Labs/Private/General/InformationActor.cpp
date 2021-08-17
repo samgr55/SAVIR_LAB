@@ -13,13 +13,16 @@
 // Sets default values
 AInformationActor::AInformationActor()
 {
+
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+
 	PrimaryActorTick.bCanEverTick = true;
 	Description = "";
 	ImageDescription = nullptr;
-	//StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("StaticMeshZizo");
+	bCanBeGrabbed = false;
 	//RootComponent = StaticMeshComp;
 }
+
 
 // Called when the game starts or when spawned
 void AInformationActor::BeginPlay()
@@ -39,11 +42,16 @@ void AInformationActor::BeginPlay()
 
 void AInformationActor::SetUpInfo()
 {
+	if(!DataTable)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Cant Get DataTable in AInformationActor::SetUpInfo"));
+		return;
+	}
 	DataRow = DataTable->FindRow<FGeneralInfoDT>(FName(FString::FromInt(RowID)), "");
 	
 	if(!DataRow)
 	{
-		UE_LOG(LogTemp, Error, TEXT("!DataRow in AInformationActor::BeginPlay"));
+		UE_LOG(LogTemp, Error, TEXT("!DataRow in AInformationActor::SetUpInfo"));
 		return;
 	}
 	Description = DataRow->Description;
@@ -78,3 +86,21 @@ void AInformationActor::HideWidget()
 	WidgetComponent->HideWidget();
 }
 
+UStaticMeshComponent* AInformationActor::GetStaticMeshComponent() const
+{
+	return StaticMeshComponent;
+}
+
+
+void AInformationActor::StartAction_Implementation()
+{
+	IAction::StartAction_Implementation();
+	
+}
+	
+
+void AInformationActor::StopAction_Implementation()
+{
+	IAction::StopAction_Implementation();
+	
+}

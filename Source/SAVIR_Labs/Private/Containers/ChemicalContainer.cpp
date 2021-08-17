@@ -14,6 +14,44 @@ AChemicalContainer::AChemicalContainer()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	RowID = 1;
+	bCanBeGrabbed = true;
+}
+
+void AChemicalContainer::StartAction_Implementation()
+{
+	Super::StartAction_Implementation();
+	/*
+	if(!CapMesh)
+	{
+	UE_LOG(LogTemp, Error, TEXT("CapMesh Not found in AChemicalContainer::StartAction_Implementation"));
+	return;
+	}
+	if(!CurrentParent)
+	{
+	UE_LOG(LogTemp, Error, TEXT("CurrentParent Not found in AChemicalContainer::StartAction_Implementation"));
+	return;
+	}
+
+	StaticMeshComponent->AttachToComponent(Cast<USkeletalMeshComponent>(
+	CurrentParent->GetComponentByClass(USkeletalMeshComponent::StaticClass())),
+	FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+	CapMesh->AttachToComponent(Cast<USkeletalMeshComponent>(
+	CurrentParent->GetComponentByClass(USkeletalMeshComponent::StaticClass())),
+	FAttachmentTransformRules::SnapToTargetNotIncludingScale, "LeftHandSocket");
+	*/
+	
+	SmokeParticle->SetVisibility(true, true);
+}
+
+void AChemicalContainer::StopAction_Implementation()
+{
+	Super::StopAction_Implementation();
+	SmokeParticle->SetVisibility(false, true);
+	/*
+	StaticMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	CapMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	*/
+	
 }
 
 
@@ -45,44 +83,6 @@ void AChemicalContainer::BeginPlay()
 	
 }
 
-void AChemicalContainer::StartAction_Implementation()
-{
-	IAction::StartAction_Implementation();
-	/*
-	if(!CapMesh)
-	{
-		UE_LOG(LogTemp, Error, TEXT("CapMesh Not found in AChemicalContainer::StartAction_Implementation"));
-		return;
-	}
-	if(!CurrentParent)
-	{
-		UE_LOG(LogTemp, Error, TEXT("CurrentParent Not found in AChemicalContainer::StartAction_Implementation"));
-		return;
-	}
-
-	StaticMeshComp->AttachToComponent(Cast<USkeletalMeshComponent>(
-		CurrentParent->GetComponentByClass(USkeletalMeshComponent::StaticClass())),
-		FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
-	CapMesh->AttachToComponent(Cast<USkeletalMeshComponent>(
-		CurrentParent->GetComponentByClass(USkeletalMeshComponent::StaticClass())),
-		FAttachmentTransformRules::SnapToTargetNotIncludingScale, "LeftHandSocket");
-		*/
-	
-	SmokeParticle->SetVisibility(true, true);
-}
-	
-
-void AChemicalContainer::StopAction_Implementation()
-{
-	IAction::StopAction_Implementation();
-	SmokeParticle->SetVisibility(false, true);
-	/*
-	StaticMeshComp->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	CapMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	*/
-	
-}
-
 // Called every frame
 void AChemicalContainer::Tick(float DeltaTime)
 {
@@ -93,13 +93,11 @@ void AChemicalContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector No
 {
 	if (!OriginalParent)
 	{
-		UE_LOG(LogTemp, Error, TEXT("HIT other"));
 		OriginalParent = OtherActor;
 	}
 	//if the other actor isn't self or owner and exists then applay damage.
 	if (!CurrentParent && OtherActor != OriginalParent)
 	{
-		UE_LOG(LogTemp, Error, TEXT("other"));
 		//SetActorLocation(OriginalPosition,false,nullptr,ETeleportType::TeleportPhysics);
 		SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::ResetPhysics);
 	}

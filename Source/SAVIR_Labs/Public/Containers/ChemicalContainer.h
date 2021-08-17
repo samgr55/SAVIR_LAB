@@ -16,7 +16,7 @@ class UStaticMeshComponent;
 class UWidgetComponent;
 
 UCLASS()
-class SAVIR_LABS_API AChemicalContainer : public AInformationActor, public IAction 
+class SAVIR_LABS_API AChemicalContainer : public AInformationActor
 {
 	GENERATED_BODY()
 	
@@ -24,10 +24,8 @@ public:
 	// Sets default values for this actor's properties
 	AChemicalContainer();
 
-	UPROPERTY()
-	AActor* CurrentParent;
-
 	virtual void StartAction_Implementation() override;
+
 	virtual void StopAction_Implementation() override;
 	
 	// Called every frame

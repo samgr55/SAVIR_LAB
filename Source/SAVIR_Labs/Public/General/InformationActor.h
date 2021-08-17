@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "Action.h"
 #include "IInformative.h"
 #include "GameFramework/Actor.h"
 #include "InformationActor.generated.h"
@@ -13,18 +13,23 @@ class UDataTable;
 class UGeneralInfoWidgetComponent;
 
 UCLASS(Blueprintable)
-class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative
+class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative, public IAction 
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
+
 	AInformationActor();
+
+	virtual void StartAction_Implementation() override;
+	virtual void StopAction_Implementation() override;
+	
 
 protected:
 	//Variables
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	UGeneralInfoWidgetComponent* WidgetComponent;
 
 	UPROPERTY()
@@ -51,6 +56,9 @@ public:
 
 	virtual void SetUpInfo();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bCanBeGrabbed;
+
 
 public:
 	// Called every frame
@@ -58,9 +66,13 @@ public:
 	virtual FString GetDescription_Implementation() override;
 	virtual UImage* GetImageDescription_Implementation() override;
 
+	UPROPERTY()
+	AActor* CurrentParent;
+
 
 	virtual void ShowWidget();
 	virtual void HideWidget();
 
 private:
+	UStaticMeshComponent* GetStaticMeshComponent() const;
 };
