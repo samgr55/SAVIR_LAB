@@ -13,7 +13,7 @@ RowName,Name,Description,Image
 12,Fire Blanket,used to save from fires,Material'/Game/Movies/Video_Mat.Video_Mat'
 13,First Aid Kit,used to heal from injuries,Material'/Game/Movies/Video_Mat.Video_Mat'
 14,Emergency Door,door used in emergencies,Material'/Game/Movies/Video_Mat.Video_Mat'
-15,Broken Glass,Never touch the broken glass and inform teacher Immediatley,Material'/Game/Movies/Broken_Glass/Broken_Glass_mat.Broken_Glass_mat'
+15,Broken Glass,Never touch the broken glass*inform teacher Immediatley,Material'/Game/Movies/Broken_Glass/Broken_Glass_mat.Broken_Glass_mat'
 16,Tongs,used to pick hot objects,Material'/Game/Movies/Video_Mat.Video_Mat'
 17,Fume Hood,user for saftey from reaction gases.,Material'/Game/Movies/Video_Mat.Video_Mat'
 18,Locker,Used to hold Books,Material'/Game/Movies/Cloth/Clothe_Mat.Clothe_Mat'
