@@ -1,59 +1,19 @@
 RowName,Name,Description,Image
-1,HCL,"Warning to breathe posion gas (Corrosive-Irritant)
--Open the room window.                                                         
--If started couching leave room.
--Inform the teacher.
--Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
-2,HCL,"Be careful spilling elements (Corrosive-Irritant)
--Wear a lab coat.
--Wear gloves.
--Wear closed tie shoe.
--Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
-3,Bromine,"Warning to breathe posion gas (Corrosive-Irritant)
--Open the room window.                                                         
--If started couching leave room.
--Inform the teacher.
--Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
-4,Bromine,"Be careful spilling elements (Corrosive-Irritant)
--Wear a lab coat.
--Wear gloves.
--Wear closed tie shoe.
--Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
-5,H2SO4,"Warning to breathe posion gas (Corrosive-Irritant)
--Open the room window.                                                         
--If started couching leave room.
--Inform the teacher.
--Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
-6,H2SO4,"Be careful spilling elements (Corrosive-Irritant)
--Wear a lab coat.
--Wear gloves.
--Wear closed tie shoe.
--Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
-7,NAOH,"Warning to breathe posion gas (Corrosive-Irritant)
--Open the room window.                                                         
--If started couching leave room.
--Inform the teacher.
--Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
-8,NAOH,"Be careful spilling elements (Corrosive-Irritant)
--Wear a lab coat.
--Wear gloves.
--Wear closed tie shoe.
--Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
-9,Lodine,"Warning to breathe posion gas (Corrosive-Irritant)
--Open the room window.                                                         
--If started couching leave room.
--Inform the teacher.
--Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
-10,Lodine,"Be careful spilling elements (Corrosive-Irritant)
--Wear a lab coat.
--Wear gloves.
--Wear closed tie shoe.
--Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
+1,HCL,"Warning to breathe posion gas (Corrosive-Irritant)*-Open the room window.*-If started couching leave room.*-Inform the teacher.*-Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
+2,HCL,"Be careful spilling elements (Corrosive-Irritant)*-Wear a lab coat.*-Wear gloves.*-Wear closed tie shoe.*-Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
+3,Bromine,"Warning to breathe posion gas (Corrosive-Irritant)*-Open the room window.*-If started couching leave room.*-Inform the teacher.*-Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
+4,Bromine,"Be careful spilling elements (Corrosive-Irritant)*-Wear a lab coat.*-Wear gloves.*-Wear closed tie shoe.*-Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
+5,H2SO4,"Warning to breathe posion gas (Corrosive-Irritant)*-Open the room window.*-If started couching leave room.*-Inform the teacher.*-Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
+6,H2SO4,"Be careful spilling elements (Corrosive-Irritant)*-Wear a lab coat.*-Wear gloves.*-Wear closed tie shoe.*-Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
+7,NAOH,"Warning to breathe posion gas (Corrosive-Irritant)*-Open the room window.*-If started couching leave room.*-Inform the teacher.*-Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
+8,NAOH,"Be careful spilling elements (Corrosive-Irritant)*-Wear a lab coat.*-Wear gloves.*-Wear closed tie shoe.*-Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
+9,Lodine,"Warning to breathe posion gas (Corrosive-Irritant)*-Open the room window.*-If started couching leave room.*-Inform the teacher.*-Wear a face mask.",Material'/Game/Movies/Video_Mat.Video_Mat'
+10,Lodine,"Be careful spilling elements (Corrosive-Irritant)*-Wear a lab coat.*-Wear gloves.*-Wear closed tie shoe.*-Wear Goggles.",Material'/Game/Movies/Video_Mat.Video_Mat'
 11,Fire extinguisher ,used to save from fires,Material'/Game/Movies/Video_Mat.Video_Mat'
 12,Fire Blanket,used to save from fires,Material'/Game/Movies/Video_Mat.Video_Mat'
 13,First Aid Kit,used to heal from injuries,Material'/Game/Movies/Video_Mat.Video_Mat'
 14,Emergency Door,door used in emergencies,Material'/Game/Movies/Video_Mat.Video_Mat'
-15,Broken Glass,Never touch the broken glass and inform teacher Immediatley,Material'/Game/Movies/Broken_Glass/Broken_Glass_mat.Broken_Glass_mat'
+15,Broken Glass,Never touch the broken glass*inform teacher Immediatley,Material'/Game/Movies/Broken_Glass/Broken_Glass_mat.Broken_Glass_mat'
 16,Tongs,used to pick hot objects,Material'/Game/Movies/Video_Mat.Video_Mat'
 17,Fume Hood,user for saftey from reaction gases.,Material'/Game/Movies/Video_Mat.Video_Mat'
 18,Locker,Used to hold Books,Material'/Game/Movies/Cloth/Clothe_Mat.Clothe_Mat'
