@@ -12,7 +12,7 @@ struct FGeneralInfoDT;
 class UDataTable;
 class UGeneralInfoWidgetComponent;
 
-UCLASS(Blueprintable)
+UCLASS()
 class SAVIR_LABS_API AInformationActor : public AActor, public IIInformative, public IAction 
 {
 	GENERATED_BODY()
@@ -28,6 +28,9 @@ public:
 
 protected:
 	//Variables
+
+	UPROPERTY(VisibleAnywhere)
+	USceneComponent* InformationActorRootComponent;
 
 	UPROPERTY(VisibleAnywhere)
 	UGeneralInfoWidgetComponent* WidgetComponent;
@@ -47,9 +50,6 @@ protected:
 	int32 RowID;
 	
 public:
-	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* StaticMeshComp;
-
 	//Functions
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -74,5 +74,9 @@ public:
 	virtual void HideWidget();
 
 private:
+
+public:
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* StaticMeshComponent;
 	UStaticMeshComponent* GetStaticMeshComponent() const;
 };

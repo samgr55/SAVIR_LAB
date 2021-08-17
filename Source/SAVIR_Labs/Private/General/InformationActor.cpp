@@ -20,7 +20,14 @@ AInformationActor::AInformationActor()
 	Description = "";
 	ImageDescription = nullptr;
 	bCanBeGrabbed = false;
-	//RootComponent = StaticMeshComp;
+	
+	InformationActorRootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("IARootComponent"));
+	InformationActorRootComponent->SetVisibility(true, true);
+	RootComponent = InformationActorRootComponent;
+	
+	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MainStaticMeshComponent"));
+	StaticMeshComponent->SetupAttachment(RootComponent);
+
 }
 
 
