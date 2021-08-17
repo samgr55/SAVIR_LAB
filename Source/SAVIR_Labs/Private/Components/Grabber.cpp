@@ -22,30 +22,31 @@ UGrabber::UGrabber()
 void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	auto MeshComp = Cast<USkeletalMeshComponent>(GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
-	if(!MeshComp)
+
+	auto MeshComp = Cast<
+		USkeletalMeshComponent>(GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+	if (!MeshComp)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Faild to get MeshComponent in UGrabber::BeginPlay"));
 		return;
 	}
 
 	LeftHandSocket = MeshComp->SkeletalMesh->FindSocket(FName("LeftHandSocket"));
-	if(!LeftHandSocket)
+	if (!LeftHandSocket)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Faild to get LeftHandSocket in UGrabber::BeginPlay"));
 		return;
 	}
-	
+
 	RightHandSocket = MeshComp->SkeletalMesh->FindSocket(FName("RightHandSocket"));
-	if(!RightHandSocket)
+	if (!RightHandSocket)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Faild to get RightHandSocket in UGrabber::BeginPlay"));
 		return;
 	}
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
-	
+
 	SetupInputComponent();
 }
 
@@ -58,17 +59,31 @@ void UGrabber::Grab()
 
 	if (ActorHit)
 	{
-		GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor());
+		GrabbedContainer = Cast<AChemicalContainer>(HitResult.GetActor());
 		if (GrabbedContainer)
 		{
 			bIsGrabbed = true;
 			GrabbedContainer->CurrentParent = GetOwner();
-			if(!GetOwner()->GetRootComponent())
+			if (!GetOwner()->GetRootComponent())
 			{
 				UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
 				return;
 			}
 			/*GrabbedContainer->AttachToActor(OwnerCharacter, FAttachmentTransformRules::KeepRelativeTransform);*/
+		}
+
+		GrabbedContainer2 = Cast<ALabToolContainer>(HitResult.GetActor());
+		if (GrabbedContainer2)
+		{
+			{
+				bIsGrabbed = true;
+				GrabbedContainer2->CurrentParent = GetOwner();
+				if (!GetOwner()->GetRootComponent())
+				{
+					UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
+					return;
+				}
+			}
 		}
 	}
 }
@@ -77,15 +92,23 @@ void UGrabber::Release()
 {
 	if (!bIsGrabbed)
 	{
-		return; 
+		return;
 	}
-	if(bIsAction)
+	if (bIsAction)
 	{
 		StopAction();
 	}
 	bIsGrabbed = false;
+
+	if (GrabbedContainer)
+	{
+		GrabbedContainer->CurrentParent = nullptr;
+	}
+	else
+	{
+		GrabbedContainer2->CurrentParent = nullptr;
+	}
 	/*GrabbedContainer->AttachToActor(GrabbedContainer, FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandSocket->GetFName());*/
-	GrabbedContainer->CurrentParent = nullptr;
 }
 
 void UGrabber::SetupInputComponent()
@@ -130,12 +153,12 @@ void UGrabber::ShowData()
 
 void UGrabber::Action()
 {
-	if(bIsAction)
+	if (bIsAction)
 	{
 		StopAction();
 		bIsAction = false;
 	}
-	else if(bIsGrabbed)
+	else if (bIsGrabbed)
 	{
 		StartAction();
 		bIsAction = true;
@@ -168,11 +191,16 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		0,
 		5.0f
 	);
-	
-	
+
+
 	if (GrabbedContainer && bIsGrabbed)
 	{
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
+	}
+
+	if (GrabbedContainer2 && GrabbedContainer2->CanHold && bIsGrabbed)
+	{
+		GrabbedContainer2->SetActorLocation(GetPlayerReach());
 	}
 }
 
