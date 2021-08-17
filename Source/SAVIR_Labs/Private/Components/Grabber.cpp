@@ -46,6 +46,11 @@ void UGrabber::BeginPlay()
 	}
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
+	if(!OwnerCharacter)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Faild to get OwnerCharactr in UGrabber::BeginPlay"));
+		return;
+	}
 
 	SetupInputComponent();
 }
@@ -96,20 +101,7 @@ void UGrabber::Grab()
 				}	
 			}
 		}
-
-		GrabbedContainer2 = Cast<ALabToolContainer>(HitResult.GetActor());
-		if (GrabbedContainer2)
-		{
-			{
-				bIsGrabbed = true;
-				GrabbedContainer2->CurrentParent = GetOwner();
-				if (!GetOwner()->GetRootComponent())
-				{
-					UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
-					return;
-				}
-			}
-		}
+		
 	}
 }
 
