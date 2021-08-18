@@ -125,7 +125,7 @@ void UGrabber::Release()
 	if(GrabbedContainer->bCanBeGrabbed)
 	{
 		GrabbedContainer->SetRootComponent(GrabbedRoot);
-		GrabbedContainer->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		GrabbedContainer->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 		GrabbedContainer->ResetToOriginalPosition();
 		GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("BlockAll"));
 		GrabbedContainer->StaticMeshComponent->SetSimulatePhysics(true);
