@@ -45,6 +45,8 @@ void AInformationActor::BeginPlay()
 		return;
 	}
 	WidgetComponent->SetUpWidgetComponent();
+	OriginalPosition = GetActorLocation();
+	OriginalRotation = GetActorRotation().Quaternion();
 }
 
 void AInformationActor::SetUpInfo()
@@ -65,6 +67,11 @@ void AInformationActor::SetUpInfo()
 	ImageDescription = NewObject<UImage>(this);
 	ImageDescription->SetBrushFromMaterial(DataRow->Image);
 	//ImageDescription = DataRow->Image;
+}
+
+void AInformationActor::ResetToOriginalPosition()
+{
+	SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::ResetPhysics);
 }
 
 // Called every frame

@@ -30,6 +30,7 @@ public:
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
 	void SpawnParticleSmoke();
 	
 protected:
@@ -41,17 +42,9 @@ protected:
 
 private:
 	
-	
-	UFUNCTION()
-	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
-
-	UPROPERTY()
-	AActor* OriginalParent;
-
-	FVector OriginalPosition;
-	FQuat OriginalRotation;
-
 	UPROPERTY()
 	UStaticMeshComponent* CapMesh;
+
+	FVector CapMeshOffset;
 	
 };

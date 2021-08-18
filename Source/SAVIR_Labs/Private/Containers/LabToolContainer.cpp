@@ -16,32 +16,10 @@ ALabToolContainer::ALabToolContainer()
 void ALabToolContainer::BeginPlay()
 {
 	Super::BeginPlay();
-
-	OriginalPosition = GetActorLocation();
-	OriginalRotation = GetActorRotation().Quaternion();
-
-	OnActorHit.AddDynamic(this, &ALabToolContainer::OnHit);
-	
 }
 
 // Called every frame
 void ALabToolContainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-}
-
-void ALabToolContainer::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
-{
-	if (!OriginalParent)
-	{
-		UE_LOG(LogTemp, Error, TEXT("HIT other"));
-		OriginalParent = OtherActor;
-	}
-	//if the other actor isn't self or owner and exists then applay damage.
-	if (!CurrentParent && OtherActor != OriginalParent)
-	{
-		UE_LOG(LogTemp, Error, TEXT("other"));
-		//SetActorLocation(OriginalPosition,false,nullptr,ETeleportType::TeleportPhysics);
-		SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::TeleportPhysics);
-	}
 }

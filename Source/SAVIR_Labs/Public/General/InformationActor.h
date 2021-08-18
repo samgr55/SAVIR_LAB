@@ -48,6 +48,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category=Data)
 	int32 RowID;
+
+	UPROPERTY()
+	AActor* OriginalParent;
+
+	FVector OriginalPosition;
+	FQuat OriginalRotation;
 	
 public:
 	//Functions
@@ -58,6 +64,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bCanBeGrabbed;
+
+	void ResetToOriginalPosition();
 
 
 public:
@@ -74,6 +82,8 @@ public:
 	virtual void HideWidget();
 
 private:
+
+
 
 public:
 	UPROPERTY(VisibleAnywhere)

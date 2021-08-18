@@ -29,12 +29,4 @@ protected:
 
 private:
 	
-	UPROPERTY()
-	AActor* OriginalParent;
-
-	FVector OriginalPosition;
-	FQuat OriginalRotation;
-
-	UFUNCTION()
-	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 };
