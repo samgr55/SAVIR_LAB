@@ -73,9 +73,6 @@ void ULookAt::StartLookAt(TArray<AActor*>* InLookAtActors, TArray<float>* InLook
 	LookAtActor();
 }
 
-void ULookAt::StartLookAt_BP()
-{
-}
 
 void ULookAt::LookAtActor()
 {

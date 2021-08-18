@@ -22,8 +22,7 @@ public:
 
 	void StartLookAt(TArray<AActor*>* InLookAtActors, TArray<float>* InLookAtTimeInSecond);
 
-	UFUNCTION(BlueprintCallable)
-	void StartLookAt_BP();
+	
 	
 protected:
 	// Called when the game starts
