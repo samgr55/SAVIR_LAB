@@ -49,6 +49,8 @@ private:
 
 	UPROPERTY()
 	AInformationActor* GrabbedContainer;
+	UPROPERTY()
+	USceneComponent* GrabbedRoot;
 
 	UPROPERTY()
 	AInformationActor* InformationActor;

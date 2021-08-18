@@ -78,23 +78,29 @@ void UGrabber::Grab()
 					UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
 					return;
 				}
-			
-				GrabbedContainer->AttachToActor(OwnerCharacter, FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandSocket->GetFName());
 
-				auto Root = GrabbedContainer->GetStaticMeshComponent();
-				if(!Root)
+				GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
+				
+				GrabbedContainer->AttachToActor(OwnerCharacter, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+
+				GrabbedRoot = GrabbedContainer->GetRootComponent();
+				if(!GrabbedRoot)
 				{
 					UE_LOG(LogTemp, Error, TEXT("Faild to get GrabbedContainer StaticMeshComponent in UGrabber::Grab"));
 					return;
 				}
-			
-				auto SkeletalMesh =Cast<USkeletalMeshComponent>(OwnerCharacter->GetComponentByClass(USkeletalMeshComponent::StaticClass())) ;
+				
+				auto SkeletalMesh =Cast<USkeletalMeshComponent>(GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass())) ;
 				if(!SkeletalMesh)
 				{
 					UE_LOG(LogTemp, Error, TEXT("Faild to get SkeletalMesh in UGrabber::Grab"));
 					return;
 				}
-				if(Root->AttachToComponent(SkeletalMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandSocket->GetFName()))
+
+				//Root->SetCollisionProfileName(TEXT("OverlapAll"));
+				
+				
+				if(!GrabbedRoot->AttachToComponent(SkeletalMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket")))
 				{
 					UE_LOG(LogTemp, Error, TEXT("Faild to AttachToComponent in UGrabber::Grab"));
 					return;
@@ -118,9 +124,13 @@ void UGrabber::Release()
 	bIsGrabbed = false;
 	if(GrabbedContainer->bCanBeGrabbed)
 	{
-		Cast<UStaticMeshComponent>(GrabbedContainer->GetRootComponent())->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+		GrabbedContainer->SetRootComponent(GrabbedRoot);
 		GrabbedContainer->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		GrabbedContainer->CurrentParent = nullptr;	
+		GrabbedContainer->ResetToOriginalPosition();
+		GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("BlockAll"));
+		GrabbedContainer->StaticMeshComponent->SetSimulatePhysics(true);
+		GrabbedContainer->CurrentParent = nullptr;
+		GrabbedRoot = nullptr;
 	}
 }
 
@@ -179,11 +189,19 @@ void UGrabber::Action()
 
 void UGrabber::StartAction()
 {
+	if(!GrabbedContainer)
+	{
+		return;
+	}
 	GrabbedContainer->StartAction_Implementation();
 }
 
 void UGrabber::StopAction()
 {
+	if(!GrabbedContainer)
+	{
+		return;
+	}
 	GrabbedContainer->StopAction_Implementation();
 }
 
