@@ -67,45 +67,47 @@ void UGrabber::Grab()
 		GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor());
 		if (GrabbedContainer)
 		{
-			bIsGrabbed = true;
+			if(!GrabbedContainer->bCanBeGrabbed)
+			{
+				return;
+			}
+			bIsGrabbing = true;
 
 			GrabbedContainer->CurrentParent = GetOwner();
 
-			if(GrabbedContainer->bCanBeGrabbed)
+			if(!GetOwner()->GetRootComponent())
 			{
-				if(!GetOwner()->GetRootComponent())
-				{
-					UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
-					return;
-				}
-
-				GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
-				
-				GrabbedContainer->AttachToActor(OwnerCharacter, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
-
-				GrabbedRoot = GrabbedContainer->GetRootComponent();
-				if(!GrabbedRoot)
-				{
-					UE_LOG(LogTemp, Error, TEXT("Faild to get GrabbedContainer StaticMeshComponent in UGrabber::Grab"));
-					return;
-				}
-				
-				auto SkeletalMesh =Cast<USkeletalMeshComponent>(GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass())) ;
-				if(!SkeletalMesh)
-				{
-					UE_LOG(LogTemp, Error, TEXT("Faild to get SkeletalMesh in UGrabber::Grab"));
-					return;
-				}
-
-				//Root->SetCollisionProfileName(TEXT("OverlapAll"));
-				
-				
-				if(!GrabbedRoot->AttachToComponent(SkeletalMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket")))
-				{
-					UE_LOG(LogTemp, Error, TEXT("Faild to AttachToComponent in UGrabber::Grab"));
-					return;
-				}	
+				UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
+				return;
 			}
+
+			GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
+			
+			GrabbedContainer->AttachToActor(OwnerCharacter, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
+
+			GrabbedRoot = GrabbedContainer->GetRootComponent();
+			if(!GrabbedRoot)
+			{
+				UE_LOG(LogTemp, Error, TEXT("Faild to get GrabbedContainer StaticMeshComponent in UGrabber::Grab"));
+				return;
+			}
+			
+			auto SkeletalMesh =Cast<USkeletalMeshComponent>(GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass())) ;
+			if(!SkeletalMesh)
+			{
+				UE_LOG(LogTemp, Error, TEXT("Faild to get SkeletalMesh in UGrabber::Grab"));
+				return;
+			}
+
+			//Root->SetCollisionProfileName(TEXT("OverlapAll"));
+			
+			
+			if(!GrabbedRoot->AttachToComponent(SkeletalMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket")))
+			{
+				UE_LOG(LogTemp, Error, TEXT("Faild to AttachToComponent in UGrabber::Grab"));
+				return;
+			}	
+		
 		}
 		
 	}
@@ -113,7 +115,7 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-	if (!bIsGrabbed)
+	if (!bIsGrabbing)
 	{
 		return;
 	}
@@ -121,14 +123,13 @@ void UGrabber::Release()
 	{
 		StopAction();
 	}
-	bIsGrabbed = false;
+	bIsGrabbing = false;
 	if(GrabbedContainer->bCanBeGrabbed)
 	{
 		GrabbedContainer->SetRootComponent(GrabbedRoot);
 		GrabbedContainer->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 		GrabbedContainer->ResetToOriginalPosition();
 		GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("BlockAll"));
-		GrabbedContainer->StaticMeshComponent->SetSimulatePhysics(true);
 		GrabbedContainer->CurrentParent = nullptr;
 		GrabbedRoot = nullptr;
 	}
@@ -180,7 +181,7 @@ void UGrabber::Action()
 		StopAction();
 		bIsAction = false;
 	}
-	else if (bIsGrabbed)
+	else if (bIsGrabbing)
 	{
 		StartAction();
 		bIsAction = true;
@@ -223,7 +224,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	);
 	
 	
-	/*if (GrabbedContainer && bIsGrabbed)
+	/*if (GrabbedContainer && bIsGrabbing)
 	{
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
 	}*/

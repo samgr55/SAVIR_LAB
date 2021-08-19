@@ -74,7 +74,7 @@ public:
 	virtual FString GetDescription_Implementation() override;
 	virtual UImage* GetImageDescription_Implementation() override;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	AActor* CurrentParent;
 
 

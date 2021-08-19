@@ -34,7 +34,7 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	bool bIsGrabbed = false;
+	bool bIsGrabbing = false;
 	bool bIsShowingData = false;
 	bool bIsAction;
 
