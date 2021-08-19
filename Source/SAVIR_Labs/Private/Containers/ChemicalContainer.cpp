@@ -7,6 +7,7 @@
 #include "Engine/DataTable.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Widgets/InstructionsHUD.h"
 
 // Sets default values
 AChemicalContainer::AChemicalContainer()
@@ -40,6 +41,20 @@ void AChemicalContainer::StartAction_Implementation()
 		return;
 	}
 	SmokeParticle->SetVisibility(true, true);
+
+
+	auto HUD = GetWorld()->GetFirstPlayerController()->GetHUD<AInstructionsHUD>();
+
+	if(!HUD)
+	{
+		return;
+	}
+
+	HUD->ShowActionWidget(ActionMessage);
+
+	
+	
+	
 }
 
 void AChemicalContainer::StopAction_Implementation()
@@ -50,6 +65,14 @@ void AChemicalContainer::StopAction_Implementation()
 	CapMesh->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
 	CapMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	CapMesh->SetRelativeLocation(CapMeshOffset);
+
+	auto HUD = GetWorld()->GetFirstPlayerController()->GetHUD<AInstructionsHUD>();
+	if(!HUD)
+	{
+		return;
+	}
+
+	HUD->HideActionWidget();
 
 }
 

@@ -39,12 +39,15 @@ protected:
 
 	UPROPERTY()
 	UParticleSystemComponent* SmokeParticle;
-
-private:
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess))
 	UStaticMeshComponent* CapMesh;
 
+	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess))
 	FVector CapMeshOffset;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
+	FString ActionMessage;
+	
 	
 };
