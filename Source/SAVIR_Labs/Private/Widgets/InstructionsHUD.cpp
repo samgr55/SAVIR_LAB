@@ -6,6 +6,25 @@
 
 AInstructionsHUD::AInstructionsHUD()
 {
+	
+}
+
+void AInstructionsHUD::ShowActionWidget(const FString& Message)
+{
+	if(InstructionsWidget->IsInViewport())
+	{
+		InstructionsWidget->RemoveFromViewport();
+	}
+	
+	ActionWidget->SetWarningMessage(Message);
+	if(!ActionWidget->IsInViewport())
+		ActionWidget->AddToViewport();
+}
+
+void AInstructionsHUD::HideActionWidget()
+{
+	if(ActionWidget->IsInViewport())
+		ActionWidget->RemoveFromViewport();
 }
 
 void AInstructionsHUD::BeginPlay()
@@ -24,4 +43,17 @@ void AInstructionsHUD::BeginPlay()
 		return;
 	}
 	InstructionsWidget->AddToViewport();
+
+	if(!ActionWidgetBPClass)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ActionWidgetBPClass is NULL in AInstructionsHUD::BeginPlay"));
+		return;
+	}
+	ActionWidget = CreateWidget<UActionWidget>(GetWorld(), ActionWidgetBPClass);
+	if(!ActionWidget)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Cant Create ActionWidget in AInstructionsHUD::BeginPlay"));
+		return;
+	}
+
 }

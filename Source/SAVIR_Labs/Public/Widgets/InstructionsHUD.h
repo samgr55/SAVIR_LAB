@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActionWidget.h"
 #include "InstructionsWidget.h"
 #include "GameFramework/HUD.h"
 #include "InstructionsHUD.generated.h"
@@ -22,6 +23,11 @@ public:
 	{
 		return InstructionsWidget;
 	}
+
+	UFUNCTION(BlueprintCallable)
+	void ShowActionWidget(const FString& Message);
+	UFUNCTION(BlueprintCallable)
+	void HideActionWidget();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -34,5 +40,11 @@ private:
 	
 	UPROPERTY()
 	UInstructionsWidget* InstructionsWidget;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UActionWidget> ActionWidgetBPClass;
+	
+	UPROPERTY()
+	UActionWidget* ActionWidget;
 	
 };
