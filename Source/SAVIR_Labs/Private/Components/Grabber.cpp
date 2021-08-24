@@ -46,7 +46,7 @@ void UGrabber::BeginPlay()
 	}
 
 	OwnerCharacter = Cast<ACharacter>(GetOwner());
-	if(!OwnerCharacter)
+	if (!OwnerCharacter)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Faild to get OwnerCharactr in UGrabber::BeginPlay"));
 		return;
@@ -64,52 +64,63 @@ void UGrabber::Grab()
 
 	if (ActorHit)
 	{
-		GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor());
-		if (GrabbedContainer)
+		if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr)
 		{
-			if(!GrabbedContainer->bCanBeGrabbed)
+			//GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor());
+			if (GrabbedContainer)
 			{
-				return;
+				if (!GrabbedContainer->bCanBeGrabbed)
+				{
+					return;
+				}
+				bIsGrabbing = true;
+
+				GrabbedContainer->CurrentParent = GetOwner();
+
+				if (!GetOwner()->GetRootComponent())
+				{
+					UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
+					return;
+				}
+
+				GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
+
+				GrabbedContainer->AttachToActor(OwnerCharacter,
+				                                FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+				                                FName("RightHandSocket"));
+
+				GrabbedRoot = GrabbedContainer->GetRootComponent();
+				if (!GrabbedRoot)
+				{
+					UE_LOG(LogTemp, Error, TEXT("Faild to get GrabbedContainer StaticMeshComponent in UGrabber::Grab"));
+					return;
+				}
+
+				auto SkeletalMesh = Cast<USkeletalMeshComponent>(
+					GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+				if (!SkeletalMesh)
+				{
+					UE_LOG(LogTemp, Error, TEXT("Faild to get SkeletalMesh in UGrabber::Grab"));
+					return;
+				}
+
+				//Root->SetCollisionProfileName(TEXT("OverlapAll"));
+
+
+				if (!GrabbedRoot->AttachToComponent(SkeletalMesh,
+				                                    FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+				                                    FName("RightHandSocket")))
+				{
+					UE_LOG(LogTemp, Error, TEXT("Faild to AttachToComponent in UGrabber::Grab"));
+					return;
+				}
 			}
-			bIsGrabbing = true;
-
-			GrabbedContainer->CurrentParent = GetOwner();
-
-			if(!GetOwner()->GetRootComponent())
-			{
-				UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
-				return;
-			}
-
-			GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
-			
-			GrabbedContainer->AttachToActor(OwnerCharacter, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket"));
-
-			GrabbedRoot = GrabbedContainer->GetRootComponent();
-			if(!GrabbedRoot)
-			{
-				UE_LOG(LogTemp, Error, TEXT("Faild to get GrabbedContainer StaticMeshComponent in UGrabber::Grab"));
-				return;
-			}
-			
-			auto SkeletalMesh =Cast<USkeletalMeshComponent>(GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass())) ;
-			if(!SkeletalMesh)
-			{
-				UE_LOG(LogTemp, Error, TEXT("Faild to get SkeletalMesh in UGrabber::Grab"));
-				return;
-			}
-
-			//Root->SetCollisionProfileName(TEXT("OverlapAll"));
-			
-			
-			if(!GrabbedRoot->AttachToComponent(SkeletalMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("RightHandSocket")))
-			{
-				UE_LOG(LogTemp, Error, TEXT("Faild to AttachToComponent in UGrabber::Grab"));
-				return;
-			}	
-		
 		}
-		
+		else if ((ThermometerContiner = Cast<AThermometer>(HitResult.GetActor())) != nullptr)
+		{
+			bIsGrabbing = true;
+			ThermometerContiner->CurrentParent = GetOwner();
+		}
 	}
 }
 
@@ -124,7 +135,8 @@ void UGrabber::Release()
 		StopAction();
 	}
 	bIsGrabbing = false;
-	if(GrabbedContainer->bCanBeGrabbed)
+
+	/*if (GrabbedContainer->bCanBeGrabbed)
 	{
 		GrabbedContainer->SetRootComponent(GrabbedRoot);
 		GrabbedContainer->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
@@ -132,7 +144,10 @@ void UGrabber::Release()
 		GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("BlockAll"));
 		GrabbedContainer->CurrentParent = nullptr;
 		GrabbedRoot = nullptr;
-	}
+	}*/
+
+	bIsGrabbing = false;
+	ThermometerContiner->CurrentParent = nullptr;
 }
 
 void UGrabber::SetupInputComponent()
@@ -190,7 +205,7 @@ void UGrabber::Action()
 
 void UGrabber::StartAction()
 {
-	if(!GrabbedContainer)
+	if (!GrabbedContainer)
 	{
 		return;
 	}
@@ -199,7 +214,7 @@ void UGrabber::StartAction()
 
 void UGrabber::StopAction()
 {
-	if(!GrabbedContainer)
+	if (!GrabbedContainer)
 	{
 		return;
 	}
@@ -222,12 +237,17 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		0,
 		5.0f
 	);
-	
-	
+
+
 	/*if (GrabbedContainer && bIsGrabbing)
 	{
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
 	}*/
+
+	if (ThermometerContiner && bIsGrabbing)
+	{
+		ThermometerContiner->SetActorLocation(GetPlayerReach());
+	}
 }
 
 
@@ -243,7 +263,6 @@ FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 	                                              GetPlayerReach(),
 	                                              ECC_Visibility,
 	                                              TraceParams);
-
 
 	UE_LOG(LogTemp, Warning, TEXT("Hit %d"), s);
 

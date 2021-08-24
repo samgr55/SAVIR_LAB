@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+//#include "Containers/LiquidContiner.h"
+#include "Containers/Thermometer.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h" 
 #include "Grabber.generated.h"
 
@@ -49,6 +51,10 @@ private:
 
 	UPROPERTY()
 	AInformationActor* GrabbedContainer;
+
+	UPROPERTY()
+	AThermometer* ThermometerContiner;
+	
 	UPROPERTY()
 	USceneComponent* GrabbedRoot;
 
