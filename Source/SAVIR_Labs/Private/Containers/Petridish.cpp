@@ -6,7 +6,6 @@
 #include "Components/ScaleLerp.h"
 #include "Components/SphereComponent.h"
 #include "Containers/Thermometer.h"
-#include "Containers/WaterContainer.h"
 
 // Sets default values
 APetridish::APetridish()
@@ -61,7 +60,7 @@ void APetridish::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 				return;
 			}
 
-			Liquid->InitiateScale();
+			Liquid->InitiateTimeline();
 		}
 	}
 }

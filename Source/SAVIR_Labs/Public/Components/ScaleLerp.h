@@ -21,55 +21,53 @@ public:
 	// Sets default values for this component's properties
 	UScaleLerp();
 
+	//Functions
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
-	void MaxmizeScale(float DeltaTime);
+	void MaximizeScale(float DeltaTime);
 
 	void MinimizeScale(float DeltaTime);
 
 	void InitiateScale();
-	
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	UTimelineComponent* DoorTimelineComp;
-	
-	UPROPERTY(EditAnywhere)
-	UCurveVector* DoorTimelineFloatCurve;
+	void InitiateTimeline();
 
-	
+	UFUNCTION()
+	void TimelineProgress(float Value);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	FTimeline CurveTimeline;
+
+	UPROPERTY(EditAnywhere, Category="Timeline")
+	UCurveFloat* CurveFloat;
+
 private:
 	//Variables
 	UPROPERTY()
-	UStaticMeshComponent* Circle;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	FVector EndScale = FVector(1, 1, 1);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float LerpDuration = 1.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	float WaitTime = 1.0f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	int32 index = 0;
+	UStaticMeshComponent* MeshToScale;
 
 	float TimeElapsed = 0;
 
-	FVector CurrentScale;
-	FVector BeginScale;
+	bool TimeLineLerp = false;
 
 	bool BeginScaleLerp = false;
 
-	//Float Track Signature to handle our update track event
-	FOnTimelineVector UpdateFunctionFloat;
+	FVector BeginScale;
 
-	UFUNCTION()
-	void UpdateTimelineComp(FVector endScal);
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Data", meta = (AllowPrivateAccess = "true"))
+	FVector EndScale;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Data", meta = (AllowPrivateAccess = "true"))
+	float LerpDuration = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Data", meta = (AllowPrivateAccess = "true"))
+	float WaitTime = 1.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Data", meta = (AllowPrivateAccess = "true"))
+	int32 MeshIndex = 0;
 };
