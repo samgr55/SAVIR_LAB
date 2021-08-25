@@ -53,7 +53,7 @@ private:
 
 	float TimeElapsed = 0;
 
-	bool TimeLineLerp = false;
+	bool bIsTimeline = false;
 
 	bool BeginScaleLerp = false;
 

@@ -57,7 +57,7 @@ void UScaleLerp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 		MaximizeScale(DeltaTime);
 	}
 
-	if (TimeLineLerp)
+	if (bIsTimeline)
 	{
 		CurveTimeline.TickTimeline(DeltaTime);
 	}
@@ -103,7 +103,7 @@ void UScaleLerp::InitiateScale()
 void UScaleLerp::InitiateTimeline()
 {
 	UE_LOG(LogTemp, Error, TEXT("Timeline"));
-	TimeLineLerp = true;
+	bIsTimeline = true;
 	CurveTimeline.PlayFromStart();
 }
 
