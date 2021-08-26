@@ -3,8 +3,11 @@
 
 #include "Containers/Thermometer.h"
 
+#include <string>
+
 #include "Components/ScaleLerp.h"
 #include "Components/SphereComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "Containers/WaterContainer.h"
 
 // Sets default values
@@ -25,6 +28,15 @@ void AThermometer::BeginPlay()
 	Super::BeginPlay();
 
 	MyCollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AThermometer::OnOverlapBegin);
+
+	Text = Cast<UTextRenderComponent>(GetComponentByClass(UTextRenderComponent::StaticClass()));
+	if (!Text)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Text Renderer not found"));
+		return;
+	}
+
+	//Text->SetText(FText::FromString(TEXT("20")));
 }
 
 // Called every frame
@@ -56,15 +68,15 @@ void AThermometer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 
 			if (Temperature == 5.0)
 			{
-				
+				Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
 			}
 			else if (Temperature == 25)
 			{
-				
+				Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
 			}
 			else if (Temperature == 50)
 			{
-				
+				Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
 			}
 		}
 	}

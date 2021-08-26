@@ -8,7 +8,7 @@
 #include "Thermometer.generated.h"
 
 class USphereComponent;
-
+class UTextRenderComponent;
 UCLASS()
 class SAVIR_LABS_API AThermometer : public AOverlappingActors
 {
@@ -23,6 +23,9 @@ public:
 
 	float GetTemperature();
 	void SetTemperature(float temperature);
+
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UTextRenderComponent* Text;
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
