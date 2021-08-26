@@ -27,7 +27,6 @@ AInformationActor::AInformationActor()
 	
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MainStaticMeshComponent"));
 	StaticMeshComponent->SetupAttachment(RootComponent);
-
 }
 
 

@@ -7,6 +7,7 @@
 //#include "Containers/LiquidContiner.h"
 #include "Containers/Pipette.h"
 #include "Containers/Thermometer.h"
+#include "Containers/WaterContainer.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h" 
 #include "Grabber.generated.h"
 
@@ -58,6 +59,9 @@ private:
 	
 	UPROPERTY()
 	APipette* PipetteContainer;
+
+	UPROPERTY()
+	AOverlappingActors* OverlappingActor;
 	
 	UPROPERTY()
 	USceneComponent* GrabbedRoot;

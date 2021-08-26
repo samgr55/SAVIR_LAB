@@ -13,12 +13,6 @@ AThermometer::AThermometer()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
-	RootComponent = BaseMesh;
-
-	LiquidMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Liquid Mesh"));
-	LiquidMesh->SetupAttachment(BaseMesh);
-
 	MyCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("My Sphere Component"));
 	MyCollisionSphere->InitSphereRadius(SphereRaidus);
 	MyCollisionSphere->SetCollisionProfileName("Trigger");
@@ -47,8 +41,8 @@ void AThermometer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 	{
 		if ((OtherActor = Cast<AWaterContainer>(OtherActor)) != nullptr)
 		{
-			auto WaterContiner = Cast<AWaterContainer>(OtherActor);
-			
+			auto WaterContainer = Cast<AWaterContainer>(OtherActor);
+
 			auto Liquid = Cast<UScaleLerp>(GetComponentByClass(UScaleLerp::StaticClass()));
 
 			if (!Liquid)
@@ -57,12 +51,21 @@ void AThermometer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 				return;
 			}
 
-			
-			Temperature = WaterContiner->GetTemperature();
 
-			UE_LOG(LogTemp, Error, TEXT("Tempe %f"), Temperature);
+			Temperature = WaterContainer->GetTemperature();
 
-			Liquid->InitiateScale();
+			if (Temperature == 5.0)
+			{
+				
+			}
+			else if (Temperature == 25)
+			{
+				
+			}
+			else if (Temperature == 50)
+			{
+				
+			}
 		}
 	}
 }

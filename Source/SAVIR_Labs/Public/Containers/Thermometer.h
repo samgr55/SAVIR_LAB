@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "General/OverlappingActors.h"
+
 #include "Thermometer.generated.h"
 
 class USphereComponent;
 
 UCLASS()
-class SAVIR_LABS_API AThermometer : public AActor
+class SAVIR_LABS_API AThermometer : public AOverlappingActors
 {
 	GENERATED_BODY()
 
@@ -20,33 +21,23 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere)
-	USphereComponent* MyCollisionSphere;
-
-	UPROPERTY()
-	AActor* CurrentParent;
-
-	float SphereRaidus = 5.0f;
+	float GetTemperature();
+	void SetTemperature(float temperature);
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 						UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 						const FHitResult& SweepResult);
-
-	float GetTemperature();
-	void SetTemperature(float temperature);
-	
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* BaseMesh;
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* LiquidMesh;
+	//Variables
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* MyCollisionSphere;
 
-	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Data", meta = (AllowPrivateAccess = "true"))
+	float SphereRaidus = 5.0f;
+	
 	float Temperature = 0.0f;
 };

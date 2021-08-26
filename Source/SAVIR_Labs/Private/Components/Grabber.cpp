@@ -73,6 +73,7 @@ void UGrabber::Grab()
 				{
 					return;
 				}
+				
 				bIsGrabbing = true;
 
 				GrabbedContainer->CurrentParent = GetOwner();
@@ -116,15 +117,10 @@ void UGrabber::Grab()
 				}
 			}
 		}
-		else if ((ThermometerContainer = Cast<AThermometer>(HitResult.GetActor())) != nullptr)
+		else if ((OverlappingActor = Cast<AOverlappingActors>(HitResult.GetActor())) != nullptr)
 		{
 			bIsGrabbing = true;
-			ThermometerContainer->CurrentParent = GetOwner();
-		}
-		else if ((PipetteContainer = Cast<APipette>(HitResult.GetActor())) != nullptr)
-		{
-			bIsGrabbing = true;
-			PipetteContainer->CurrentParent = GetOwner();
+			OverlappingActor->CurrentParent = GetOwner();
 		}
 	}
 }
@@ -135,6 +131,7 @@ void UGrabber::Release()
 	{
 		return;
 	}
+	
 	if (bIsAction)
 	{
 		StopAction();
@@ -151,16 +148,10 @@ void UGrabber::Release()
 		GrabbedContainer->CurrentParent = nullptr;
 		GrabbedRoot = nullptr;
 	}*/
-	if (ThermometerContainer)
+	if (OverlappingActor)
 	{
 		bIsGrabbing = false;
-		ThermometerContainer->CurrentParent = nullptr;
-	}
-
-	if (PipetteContainer)
-	{
-		bIsGrabbing = false;
-		PipetteContainer->CurrentParent = nullptr;
+		OverlappingActor->CurrentParent = nullptr;
 	}
 }
 
@@ -258,13 +249,9 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
 	}*/
 
-	if (ThermometerContainer && bIsGrabbing)
+	if (OverlappingActor && OverlappingActor->bCanBeGrabbed && bIsGrabbing)
 	{
-		ThermometerContainer->SetActorLocation(GetPlayerReach());
-	}
-	else if (PipetteContainer && bIsGrabbing)
-	{
-		PipetteContainer->SetActorLocation(GetPlayerReach());
+		OverlappingActor->SetActorLocation(GetPlayerReach());
 	}
 }
 

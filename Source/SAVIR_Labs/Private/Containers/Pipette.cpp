@@ -6,6 +6,7 @@
 #include "Components/ScaleLerp.h"
 #include "Components/SphereComponent.h"
 #include "Containers/FoodContainer.h"
+#include "Containers/Petridish.h"
 
 // Sets default values
 APipette::APipette()
@@ -13,14 +14,8 @@ APipette::APipette()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
-	RootComponent = BaseMesh;
-
 	CapMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cap Mesh"));
 	CapMesh->SetupAttachment(BaseMesh);
-
-	LiquidMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Liquid Mesh"));
-	LiquidMesh->SetupAttachment(BaseMesh);
 
 	MyCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("My Sphere Component"));
 	MyCollisionSphere->InitSphereRadius(SphereRaidus);
@@ -42,13 +37,14 @@ void APipette::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+
 void APipette::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
                               UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
                               const FHitResult& SweepResult)
 {
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
-		if ((OtherActor = Cast<AFoodContainer>(OtherActor)) != nullptr)
+		if (Cast<AFoodContainer>(OtherActor))
 		{
 			UScaleLerp* Liquid = Cast<UScaleLerp>(GetComponentByClass(UScaleLerp::StaticClass()));
 
@@ -58,7 +54,21 @@ void APipette::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Other
 				return;
 			}
 
-			Liquid->InitiateScale();
+			if (!IsFilledWithLiquid)
+			{
+				Liquid->InitiateMaxScale();
+				IsFilledWithLiquid = true;
+			}
 		}
 	}
+}
+
+bool APipette::GetIsFilledWithLiquid()
+{
+	return IsFilledWithLiquid;
+}
+
+void APipette::SetIsFilledWithLiquid(bool Value)
+{
+	IsFilledWithLiquid = Value;
 }

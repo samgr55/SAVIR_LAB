@@ -27,24 +27,31 @@ public:
 	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 	void MaximizeScale(float DeltaTime);
-
 	void MinimizeScale(float DeltaTime);
 
-	void InitiateScale();
+	void InitiateMaxScale();
+	void InitiateMinScale();
+
+	void InitiateMaxScaleThermometer(FVector Value);
 
 	void InitiateTimeline();
+
+	void SetTimeInSeconds(UCurveFloat* Value);
+	void SetEndScale(FVector Value);
+
 
 	UFUNCTION()
 	void TimelineProgress(float Value);
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
+	//Variables
 	FTimeline CurveTimeline;
 
-	UPROPERTY(EditAnywhere, Category="Timeline")
 	UCurveFloat* CurveFloat;
+
+	//Functions
+	// Called when the game starts
+	virtual void BeginPlay() override;
 
 private:
 	//Variables
@@ -55,7 +62,9 @@ private:
 
 	bool bIsTimeline = false;
 
-	bool BeginScaleLerp = false;
+	bool bMaximizeScale = false;
+
+	bool bMaximizeThermometer = false;
 
 	FVector BeginScale;
 

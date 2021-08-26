@@ -31,17 +31,16 @@ void UScaleLerp::BeginPlay()
 		return;
 	}
 
-	if (CurveFloat)
-	{
-		FOnTimelineFloat TimelineProgress;
-		TimelineProgress.BindUFunction(this, FName("TimelineProgress"));
-		CurveTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
-		CurveTimeline.SetLooping(false);
-	}
+	// if (CurveFloat)
+	// {
+	// 	FOnTimelineFloat TimelineProgress;
+	// 	TimelineProgress.BindUFunction(this, FName("TimelineProgress"));
+	// 	CurveTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
+	// 	CurveTimeline.SetLooping(false);
+	// }
 
 
 	BeginScale = MeshToScale->GetRelativeScale3D();;
-	//EndScale += CurrentScale;
 }
 
 
@@ -52,9 +51,13 @@ void UScaleLerp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 
 	// ...
 
-	if (BeginScaleLerp)
+	if (bMaximizeScale)
 	{
 		MaximizeScale(DeltaTime);
+	}
+	else
+	{
+		MinimizeScale(DeltaTime);
 	}
 
 	if (bIsTimeline)
@@ -65,12 +68,6 @@ void UScaleLerp::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 
 void UScaleLerp::MaximizeScale(float DeltaTime)
 {
-	// if (WaitTime > 0)
-	// {
-	// 	WaitTime -= DeltaTime;
-	// 	return;
-	// }
-
 	if (TimeElapsed < LerpDuration)
 	{
 		FVector CurrentScale = FMath::Lerp(BeginScale, EndScale, (TimeElapsed / LerpDuration));
@@ -78,8 +75,6 @@ void UScaleLerp::MaximizeScale(float DeltaTime)
 		MeshToScale->SetRelativeScale3D(CurrentScale);
 
 		TimeElapsed += DeltaTime;
-
-		UE_LOG(LogTemp, Error, TEXT("scale sucess %f"), MeshToScale->GetComponentScale().X);
 	}
 }
 
@@ -95,21 +90,54 @@ void UScaleLerp::MinimizeScale(float DeltaTime)
 	}
 }
 
-void UScaleLerp::InitiateScale()
+void UScaleLerp::InitiateMaxScale()
 {
-	BeginScaleLerp = true;
+	bMaximizeScale = true;
+	TimeElapsed = 0.0f;
 }
+
+void UScaleLerp::InitiateMinScale()
+{
+	bMaximizeScale = false;
+	TimeElapsed = 0.0f;
+}
+
+void UScaleLerp::InitiateMaxScaleThermometer(FVector Value)
+{
+	bMaximizeThermometer = true;
+	MeshToScale->SetRelativeScale3D(BeginScale);
+	EndScale = Value;
+}
+
 
 void UScaleLerp::InitiateTimeline()
 {
-	UE_LOG(LogTemp, Error, TEXT("Timeline"));
 	bIsTimeline = true;
 	CurveTimeline.PlayFromStart();
 }
+
+void UScaleLerp::SetTimeInSeconds(UCurveFloat* Value)
+{
+	CurveFloat = Value;
+
+	if (CurveFloat)
+	{
+		FOnTimelineFloat TimelineProgress;
+		TimelineProgress.BindUFunction(this, FName("TimelineProgress"));
+		CurveTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
+		CurveTimeline.SetLooping(false);
+	}
+}
+
 
 void UScaleLerp::TimelineProgress(float Value)
 {
 	FVector CurrentScale = FMath::Lerp(BeginScale, EndScale, Value);
 
 	MeshToScale->SetRelativeScale3D(CurrentScale);
+}
+
+void UScaleLerp::SetEndScale(FVector Value)
+{
+	EndScale = Value;
 }

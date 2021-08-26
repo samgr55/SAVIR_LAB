@@ -5,19 +5,14 @@
 
 #include "Components/ScaleLerp.h"
 #include "Components/SphereComponent.h"
-#include "Containers/Thermometer.h"
+#include "Containers/Pipette.h"
+#include "Containers/WaterContainer.h"
 
 // Sets default values
 APetridish::APetridish()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
-	RootComponent = BaseMesh;
-
-	LiquidMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Liquid Mesh"));
-	LiquidMesh->SetupAttachment(BaseMesh);
 
 	SpotMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Spot Mesh"));
 	SpotMesh->SetupAttachment(BaseMesh);
@@ -49,18 +44,51 @@ void APetridish::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 {
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
-		if ((OtherActor = Cast<AThermometer>(OtherActor)) != nullptr)
-		{	
+		if (Cast<APipette>(OtherActor))
+		{
 			auto Liquid = Cast<UScaleLerp>(GetComponentByClass(UScaleLerp::StaticClass()));
 
-			LiquidMesh->SetVisibility(true);
 			if (!Liquid)
 			{
 				UE_LOG(LogTemp, Error, TEXT("Scale Lerp Not Found."));
 				return;
 			}
 
-			Liquid->InitiateTimeline();
+			if (isFilledWithLiquid && Cast<APipette>(OtherActor)->GetIsFilledWithLiquid() && !bUsedPetridish)
+			{
+				bUsedPetridish = true;
+				Cast<APipette>(OtherActor)->SetIsFilledWithLiquid(false);
+
+				Cast<UScaleLerp>(OtherActor->GetComponentByClass(UScaleLerp::StaticClass()))->InitiateMinScale();
+
+				if (Temperature == 50)
+				{
+					Liquid->SetTimeInSeconds(CurveFloat_3);
+					Liquid->SetEndScale(FVector(0.058, 0.058, 0.002));
+					Liquid->InitiateTimeline();
+				}
+				else if (Temperature == 25)
+				{
+					Liquid->SetTimeInSeconds(CurveFloat_2);
+					Liquid->SetEndScale(FVector(0.034, 0.034, 0.002));
+					Liquid->InitiateTimeline();
+				}
+				else if (Temperature == 5)
+				{
+					Liquid->SetTimeInSeconds(CurveFloat_1);
+					Liquid->SetEndScale(FVector(0.02, 0.02, 0.002));
+					Liquid->InitiateTimeline();
+				}
+			}
+		}
+		else if (Cast<AWaterContainer>(OtherActor))
+		{
+			if(!isFilledWithLiquid)
+			{
+				LiquidMesh->SetVisibility(true);
+				isFilledWithLiquid = true;
+				Temperature = Cast<AWaterContainer>(OtherActor)->GetTemperature();
+			}
 		}
 	}
 }

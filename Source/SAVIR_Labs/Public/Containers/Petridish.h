@@ -3,16 +3,26 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "General/OverlappingActors.h"
+
 #include "Petridish.generated.h"
 
 class USphereComponent;
 UCLASS()
-class SAVIR_LABS_API APetridish : public AActor
+class SAVIR_LABS_API APetridish : public AOverlappingActors
 {
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(EditAnywhere, Category="Timeline")
+	UCurveFloat* CurveFloat_1;
+
+	UPROPERTY(EditAnywhere, Category="Timeline")
+	UCurveFloat* CurveFloat_2;
+
+	UPROPERTY(EditAnywhere, Category="Timeline")
+	UCurveFloat* CurveFloat_3;
+	
 	// Sets default values for this actor's properties
 	APetridish();
 
@@ -30,12 +40,7 @@ protected:
 
 
 private:
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* BaseMesh;
-
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* LiquidMesh;
-
+	
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* SpotMesh;
 	
@@ -43,4 +48,10 @@ private:
 	USphereComponent* MyCollisionSphere;
 
 	float SphereRaidus = 5.0f;
+
+	float Temperature;
+
+	bool isFilledWithLiquid = false;
+
+	bool bUsedPetridish = false;
 };

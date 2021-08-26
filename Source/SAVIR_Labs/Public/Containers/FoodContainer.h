@@ -3,37 +3,33 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "General/OverlappingActors.h"
+
 #include "FoodContainer.generated.h"
 
 
 class USphereComponent;
 class UStaticMeshComponent;
+
 UCLASS()
-class SAVIR_LABS_API AFoodContainer : public AActor
+class SAVIR_LABS_API AFoodContainer : public AOverlappingActors
 {
 	GENERATED_BODY()
 
 public:
+	//Variables
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* CapMesh;
+
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* MyCollisionSphere;
+
+	//Functions
 	// Sets default values for this actor's properties
 	AFoodContainer();
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(VisibleAnywhere)
-	USphereComponent* MyCollisionSphere;
-
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* BaseMesh;
-
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* CapMesh;
-
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* LiquidMesh;
-
-	float SphereRaidus = 5.0f;
 
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

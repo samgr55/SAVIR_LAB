@@ -3,15 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "General/OverlappingActors.h"
+
 #include "WaterContainer.generated.h"
 
 UCLASS()
-class SAVIR_LABS_API AWaterContainer : public AActor
+class SAVIR_LABS_API AWaterContainer : public AOverlappingActors
 {
 	GENERATED_BODY()
 
 public:
+
 	// Sets default values for this actor's properties
 	AWaterContainer();
 
@@ -26,11 +28,6 @@ protected:
 
 private:
 
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* BaseMesh;
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* LiquidMesh;
-	
 	UPROPERTY(EditAnywhere, Category = "Data", meta = (AllowPrivateAccess = "true"))
 	float Temperature = 0.0f;
 };

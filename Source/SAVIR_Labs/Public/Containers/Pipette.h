@@ -3,13 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "General/OverlappingActors.h"
+
 #include "Pipette.generated.h"
 
 class USphereComponent;
 
 UCLASS()
-class SAVIR_LABS_API APipette : public AActor
+class SAVIR_LABS_API APipette : public AOverlappingActors
 {
 	GENERATED_BODY()
 
@@ -25,26 +26,26 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+
+	//Variables
+	float SphereRaidus = 5.0f;
+
+	//Functions
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY()
-	AActor* CurrentParent;
+	bool GetIsFilledWithLiquid();
+	void SetIsFilledWithLiquid(bool Value);
 	
-	float SphereRaidus = 5.0f;
-
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 						UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 						const FHitResult& SweepResult);
 
 private:
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* BaseMesh;
-
+	
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* CapMesh;
 	
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* LiquidMesh;
+	bool IsFilledWithLiquid = false;
 };
