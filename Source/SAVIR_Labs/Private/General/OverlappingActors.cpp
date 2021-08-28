@@ -9,9 +9,6 @@ AOverlappingActors::AOverlappingActors()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base Mesh"));
-	RootComponent = BaseMesh;
-
 	LiquidMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Liquid Mesh"));
 	LiquidMesh->SetupAttachment(RootComponent);
 

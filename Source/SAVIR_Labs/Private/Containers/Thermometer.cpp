@@ -19,7 +19,7 @@ AThermometer::AThermometer()
 	MyCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("My Sphere Component"));
 	MyCollisionSphere->InitSphereRadius(SphereRaidus);
 	MyCollisionSphere->SetCollisionProfileName("Trigger");
-	MyCollisionSphere->SetupAttachment(BaseMesh);
+	MyCollisionSphere->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned

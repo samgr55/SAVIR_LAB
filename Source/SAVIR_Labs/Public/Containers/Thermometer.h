@@ -9,6 +9,7 @@
 
 class USphereComponent;
 class UTextRenderComponent;
+
 UCLASS()
 class SAVIR_LABS_API AThermometer : public AOverlappingActors
 {

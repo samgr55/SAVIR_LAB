@@ -43,6 +43,7 @@ void AInformationActor::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Empty WidgetComponent in AInformationActor::BeginPlay"));
 		return;
 	}
+	
 	WidgetComponent->SetUpWidgetComponent();
 	OriginalPosition = GetActorLocation();
 	OriginalRotation = GetActorRotation().Quaternion();

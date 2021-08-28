@@ -4,9 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-//#include "Containers/LiquidContiner.h"
-#include "Containers/Pipette.h"
-#include "Containers/Thermometer.h"
 #include "Containers/WaterContainer.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h" 
 #include "Grabber.generated.h"
@@ -53,12 +50,6 @@ private:
 
 	UPROPERTY()
 	AInformationActor* GrabbedContainer;
-
-	UPROPERTY()
-	AThermometer* ThermometerContainer;
-	
-	UPROPERTY()
-	APipette* PipetteContainer;
 
 	UPROPERTY()
 	AOverlappingActors* OverlappingActor;

@@ -64,16 +64,17 @@ void UGrabber::Grab()
 
 	if (ActorHit)
 	{
-		if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr)
+		if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr && !GrabbedContainer->
+			bCanBeGrabbed)
 		{
 			//GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor());
 			if (GrabbedContainer)
 			{
-				if (!GrabbedContainer->bCanBeGrabbed)
-				{
-					return;
-				}
-				
+				// if (!GrabbedContainer->bCanBeGrabbed)
+				// {
+				// 	return;
+				// }
+
 				bIsGrabbing = true;
 
 				GrabbedContainer->CurrentParent = GetOwner();
@@ -117,10 +118,11 @@ void UGrabber::Grab()
 				}
 			}
 		}
-		else if ((OverlappingActor = Cast<AOverlappingActors>(HitResult.GetActor())) != nullptr)
+		else if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr && GrabbedContainer->
+			bCanBeGrabbed)
 		{
 			bIsGrabbing = true;
-			OverlappingActor->CurrentParent = GetOwner();
+			GrabbedContainer->CurrentParent = GetOwner();
 		}
 	}
 }
@@ -131,7 +133,7 @@ void UGrabber::Release()
 	{
 		return;
 	}
-	
+
 	if (bIsAction)
 	{
 		StopAction();
@@ -148,10 +150,10 @@ void UGrabber::Release()
 		GrabbedContainer->CurrentParent = nullptr;
 		GrabbedRoot = nullptr;
 	}*/
-	if (OverlappingActor)
+	if(GrabbedContainer && GrabbedContainer->bCanBeGrabbed)
 	{
 		bIsGrabbing = false;
-		OverlappingActor->CurrentParent = nullptr;
+		GrabbedContainer->CurrentParent = nullptr;
 	}
 }
 
@@ -248,10 +250,10 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	{
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
 	}*/
-
-	if (OverlappingActor && OverlappingActor->bCanBeGrabbed && bIsGrabbing)
+	
+	if (GrabbedContainer && GrabbedContainer->bCanBeGrabbed && bIsGrabbing)
 	{
-		OverlappingActor->SetActorLocation(GetPlayerReach());
+		GrabbedContainer->SetActorLocation(GetPlayerReach());
 	}
 }
 

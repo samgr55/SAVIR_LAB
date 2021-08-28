@@ -15,12 +15,12 @@ APetridish::APetridish()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SpotMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Spot Mesh"));
-	SpotMesh->SetupAttachment(BaseMesh);
+	SpotMesh->SetupAttachment(RootComponent);
 
 	MyCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("My Sphere Component"));
 	MyCollisionSphere->InitSphereRadius(SphereRaidus);
 	MyCollisionSphere->SetCollisionProfileName("Trigger");
-	MyCollisionSphere->SetupAttachment(BaseMesh);
+	MyCollisionSphere->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -54,12 +54,20 @@ void APetridish::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 				return;
 			}
 
-			if (isFilledWithLiquid && Cast<APipette>(OtherActor)->GetIsFilledWithLiquid() && !bUsedPetridish)
+			auto Pipette = Cast<APipette>(OtherActor);
+
+			if(!Pipette)
+			{
+				UE_LOG(LogTemp, Error, TEXT("Pipette Not Found."));
+				return;
+			}
+
+			if (isFilledWithLiquid && Pipette->GetIsFilledWithLiquid() && !bUsedPetridish)
 			{
 				bUsedPetridish = true;
-				Cast<APipette>(OtherActor)->SetIsFilledWithLiquid(false);
+				Pipette->SetIsFilledWithLiquid(false);
 
-				Cast<UScaleLerp>(OtherActor->GetComponentByClass(UScaleLerp::StaticClass()))->InitiateMinScale();
+				Cast<UScaleLerp>(Pipette->GetComponentByClass(UScaleLerp::StaticClass()))->InitiateMinScale();
 
 				if (Temperature == 50)
 				{

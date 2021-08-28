@@ -13,7 +13,7 @@ AFoodContainer::AFoodContainer()
 	PrimaryActorTick.bCanEverTick = true;
 
 	CapMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cap Mesh"));
-	CapMesh->SetupAttachment(BaseMesh);
+	CapMesh->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -26,8 +26,6 @@ void AFoodContainer::BeginPlay()
 void AFoodContainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//DrawDebugSphere(GetWorld(), GetActorLocation(), SphereRaidus, 20, FColor::Purple, false, -1, 0, 1);
 }
 
 void AFoodContainer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

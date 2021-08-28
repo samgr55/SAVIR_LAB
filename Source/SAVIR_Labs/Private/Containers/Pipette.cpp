@@ -15,12 +15,12 @@ APipette::APipette()
 	PrimaryActorTick.bCanEverTick = true;
 
 	CapMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Cap Mesh"));
-	CapMesh->SetupAttachment(BaseMesh);
+	CapMesh->SetupAttachment(RootComponent);
 
 	MyCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("My Sphere Component"));
 	MyCollisionSphere->InitSphereRadius(SphereRaidus);
 	MyCollisionSphere->SetCollisionProfileName("Trigger");
-	MyCollisionSphere->SetupAttachment(BaseMesh);
+	MyCollisionSphere->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -44,6 +44,7 @@ void APipette::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Other
 {
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr))
 	{
+		
 		if (Cast<AFoodContainer>(OtherActor))
 		{
 			UScaleLerp* Liquid = Cast<UScaleLerp>(GetComponentByClass(UScaleLerp::StaticClass()));
