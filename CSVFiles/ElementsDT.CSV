@@ -73,3 +73,8 @@ RowName,Name,Description,Image
 22,Lab Coat,Wear it in lab,Material'/Game/Movies/Lab_Coat/Lab_Coat_Mat.Lab_Coat_Mat'
 23,Bag,Used to Hold Things,Material'/Game/Movies/Video_Mat.Video_Mat'
 24,Mask,Protect Face from Gases,Material'/Game/Movies/Video_Mat.Video_Mat'
+25,Petridish,Petridish,Material'/Game/Movies/Video_Mat.Video_Mat'
+26,Pipette,Pipette,Material'/Game/Movies/Video_Mat.Video_Mat'
+27,Thermometer,Thermometer,Material'/Game/Movies/Video_Mat.Video_Mat'
+28,Water Glass,Water Glass,Material'/Game/Movies/Video_Mat.Video_Mat'
+29,Food Dye,Food Dye,Material'/Game/Movies/Video_Mat.Video_Mat'

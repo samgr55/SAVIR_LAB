@@ -141,3 +141,9 @@ void UScaleLerp::SetEndScale(FVector Value)
 {
 	EndScale = Value;
 }
+
+void UScaleLerp::FastForwardScale(FVector endScale)
+{
+	CurveTimeline.Stop();
+	MeshToScale->SetRelativeScale3D(endScale);
+}

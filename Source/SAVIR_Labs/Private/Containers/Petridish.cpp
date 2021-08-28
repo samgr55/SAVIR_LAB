@@ -77,13 +77,13 @@ void APetridish::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 				}
 				else if (Temperature == 25)
 				{
-					Liquid->SetTimeInSeconds(CurveFloat_2);
+					Liquid->SetTimeInSeconds(CurveFloat_3);
 					Liquid->SetEndScale(FVector(0.034, 0.034, 0.002));
 					Liquid->InitiateTimeline();
 				}
 				else if (Temperature == 5)
 				{
-					Liquid->SetTimeInSeconds(CurveFloat_1);
+					Liquid->SetTimeInSeconds(CurveFloat_3);
 					Liquid->SetEndScale(FVector(0.02, 0.02, 0.002));
 					Liquid->InitiateTimeline();
 				}
