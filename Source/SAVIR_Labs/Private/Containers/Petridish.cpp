@@ -87,6 +87,9 @@ void APetridish::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 					Liquid->SetEndScale(FVector(0.02, 0.02, 0.002));
 					Liquid->InitiateTimeline();
 				}
+
+				SwitchCamera(this);
+				
 			}
 		}
 		else if (Cast<AWaterContainer>(OtherActor))
@@ -99,4 +102,13 @@ void APetridish::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 			}
 		}
 	}
+}
+
+void APetridish::SwitchCamera(AActor* Other)
+{
+	auto PC = GetWorld()->GetFirstPlayerController();
+	PC->PlayerCameraManager->SetViewTarget(Other);
+	auto OldTarget = PC->PlayerCameraManager->GetViewTarget();
+	
+
 }

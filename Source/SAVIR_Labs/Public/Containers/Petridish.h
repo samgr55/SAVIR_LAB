@@ -53,5 +53,7 @@ private:
 
 	bool isFilledWithLiquid = false;
 
+	void SwitchCamera(AActor* Other);
+
 	bool bUsedPetridish = false;
 };

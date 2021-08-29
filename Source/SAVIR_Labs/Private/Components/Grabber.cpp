@@ -64,16 +64,16 @@ void UGrabber::Grab()
 
 	if (ActorHit)
 	{
-		if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr && !GrabbedContainer->
+		if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr && GrabbedContainer->
 			bCanBeGrabbed)
 		{
-			//GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor());
 			if (GrabbedContainer)
 			{
-				// if (!GrabbedContainer->bCanBeGrabbed)
-				// {
-				// 	return;
-				// }
+				if (!GrabbedContainer->bCanBeGrabbed)
+				{
+					UE_LOG(LogTemp, Error, TEXT("Can Not Be Grabbed"));
+					return;
+				}
 
 				bIsGrabbing = true;
 
@@ -106,7 +106,7 @@ void UGrabber::Grab()
 					return;
 				}
 
-				//Root->SetCollisionProfileName(TEXT("OverlapAll"));
+				SkeletalMesh->SetCollisionProfileName(TEXT("OverlapAll"));
 
 
 				if (!GrabbedRoot->AttachToComponent(SkeletalMesh,
@@ -118,7 +118,7 @@ void UGrabber::Grab()
 				}
 			}
 		}
-		else if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr && GrabbedContainer->
+		else if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr && !GrabbedContainer->
 			bCanBeGrabbed)
 		{
 			bIsGrabbing = true;
@@ -139,9 +139,9 @@ void UGrabber::Release()
 		StopAction();
 	}
 
-	//bIsGrabbing = false;
+	bIsGrabbing = false;
 
-	/*if (GrabbedContainer->bCanBeGrabbed)
+	if (GrabbedContainer->bCanBeGrabbed)
 	{
 		GrabbedContainer->SetRootComponent(GrabbedRoot);
 		GrabbedContainer->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
@@ -149,8 +149,8 @@ void UGrabber::Release()
 		GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("BlockAll"));
 		GrabbedContainer->CurrentParent = nullptr;
 		GrabbedRoot = nullptr;
-	}*/
-	if(GrabbedContainer && GrabbedContainer->bCanBeGrabbed)
+	}
+	if(GrabbedContainer && !GrabbedContainer->bCanBeGrabbed)
 	{
 		bIsGrabbing = false;
 		GrabbedContainer->CurrentParent = nullptr;
@@ -251,7 +251,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
 	}*/
 	
-	if (GrabbedContainer && GrabbedContainer->bCanBeGrabbed && bIsGrabbing)
+	if (GrabbedContainer && !GrabbedContainer->bCanBeGrabbed && bIsGrabbing)
 	{
 		GrabbedContainer->SetActorLocation(GetPlayerReach());
 	}

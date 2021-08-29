@@ -42,7 +42,6 @@ void AInstructionsHUD::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("Cant Create InstructionsWidget in AInstructionsHUD::BeginPlay"));
 		return;
 	}
-	InstructionsWidget->AddToViewport();
 
 	if(!ActionWidgetBPClass)
 	{

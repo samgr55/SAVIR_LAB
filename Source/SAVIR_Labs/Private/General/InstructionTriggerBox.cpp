@@ -31,6 +31,7 @@ void AInstructionTriggerBox::OnOverlap(AActor* ThisActor, AActor* OtherActor)
 	}
 	
 	auto InstructionsWidget = HUD->GetInstructionsWidget();
+	InstructionsWidget->AddToViewport();
 	if(!InstructionsWidget)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Cant Get InstructionsWidget in AInstructionTriggerBox::OnOverlap !"))

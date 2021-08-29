@@ -60,9 +60,12 @@ void APipette::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Other
 				Liquid->InitiateMaxScale();
 				IsFilledWithLiquid = true;
 			}
+			
 		}
 	}
 }
+
+
 
 bool APipette::GetIsFilledWithLiquid()
 {

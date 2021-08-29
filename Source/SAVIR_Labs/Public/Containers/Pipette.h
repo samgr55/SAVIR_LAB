@@ -46,6 +46,7 @@ private:
 	
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* CapMesh;
+
 	
 	bool IsFilledWithLiquid = false;
 };
