@@ -39,6 +39,8 @@ public:
 	void SetTimeInSeconds(UCurveFloat* Value);
 	void SetEndScale(FVector Value);
 
+	void FastForwardScale(FVector endScale);
+
 
 	UFUNCTION()
 	void TimelineProgress(float Value);
