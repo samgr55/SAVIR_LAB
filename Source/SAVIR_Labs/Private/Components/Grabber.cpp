@@ -103,7 +103,7 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-	if (bIsHandGrabbing && HandGrabbedActor)
+	if (bIsHandGrabbing && HandGrabbedActor && !bIsLineGrabbing)
 	{
 		if(HandGrabbedActor->IsIsInAction())
 		{

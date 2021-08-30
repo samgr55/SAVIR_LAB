@@ -24,7 +24,7 @@ void AStopWatch::StopAction_Implementation()
 	{
 		return;
 	}
-
+	
 	WatchWidget->RemoveFromViewport();
 }
 

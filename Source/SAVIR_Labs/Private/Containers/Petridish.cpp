@@ -88,7 +88,7 @@ void APetridish::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 					Liquid->InitiateTimeline();
 				}
 
-				SwitchCamera(this);
+				//SwitchCamera(this);
 				
 			}
 		}
