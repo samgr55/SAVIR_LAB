@@ -22,6 +22,7 @@ AInformationActor::AInformationActor()
 	bCanBeGrabbed = false;
 	bIsGrabbedWithHand = true;
 	bIsShowingInfoWidget = false;
+	bIsInAction = false;
 	
 	InformationActorRootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("IARootComponent"));
 	InformationActorRootComponent->SetVisibility(true, true);

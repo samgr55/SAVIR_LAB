@@ -87,7 +87,7 @@ void UGrabber::Grab()
 				HandGrabbedActor = InfoActor;
 				GrabWithHand();
 			}
-			else if(!LineGrabbedActor)
+			else if(!InfoActor->bIsGrabbedWithHand && !LineGrabbedActor)
 			{
 				LineGrabbedActor = InfoActor;
 				GrabWithLine();
@@ -103,7 +103,7 @@ void UGrabber::Grab()
 
 void UGrabber::Release()
 {
-	if (bIsHandGrabbing)
+	if (bIsHandGrabbing && HandGrabbedActor)
 	{
 		if(HandGrabbedActor->IsIsInAction())
 		{
@@ -112,13 +112,14 @@ void UGrabber::Release()
 		HandGrabbedActor->SetRootComponent(HandGrabbedRoot);
 		HandGrabbedActor->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 		HandGrabbedActor->ResetToOriginalPosition();
-		HandGrabbedActor->StaticMeshComponent->SetCollisionProfileName(TEXT("BlockAll"));
+		HandGrabbedActor->StaticMeshComponent->SetCollisionProfileName(TEXT("BlockAllDynamic"));
 		HandGrabbedActor->CurrentParent = nullptr;
 		HandGrabbedRoot = nullptr;
 		HandGrabbedActor = nullptr;
+		bIsHandGrabbing = false;
 	}
 	
-	if(bIsLineGrabbing)
+	if(bIsLineGrabbing && LineGrabbedActor)
 	{
 		if(LineGrabbedActor->IsIsInAction())
 		{
@@ -132,7 +133,10 @@ void UGrabber::Release()
 
 	if(ActionGrabbed)
 	{
-		ActionGrabbed->StopAction_Implementation();
+		if(ActionGrabbed->IsIsInAction())
+		{
+			ActionGrabbed->StopAction_Implementation();
+		}
 		ActionGrabbed = nullptr;
 	}
 
@@ -292,7 +296,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	);
 	
 	
-	if (LineGrabbedActor && LineGrabbedActor->bIsGrabbedWithHand && bIsLineGrabbing)
+	if (LineGrabbedActor && !LineGrabbedActor->bIsGrabbedWithHand && bIsLineGrabbing)
 	{
 		LineGrabbedActor->SetActorLocation(GetPlayerReach());
 	}
