@@ -17,8 +17,6 @@ UGrabber::UGrabber()
 	PrimaryComponentTick.bCanEverTick = true;
 	bIsHandGrabbing = false;
 	bIsLineGrabbing = false;
-	bIsHandAction = false;
-	bIsLineAction = false;
 }
 
 // Called when the game starts
@@ -95,6 +93,11 @@ void UGrabber::Grab()
 				GrabWithLine();
 			}
 		}
+		else if(InfoActor)
+		{
+			ActionGrabbed = InfoActor;
+			ActionGrabbed->CurrentParent = GetOwner();
+		}
 	}
 }
 
@@ -102,7 +105,7 @@ void UGrabber::Release()
 {
 	if (bIsHandGrabbing)
 	{
-		if(bIsHandAction)
+		if(HandGrabbedActor->IsIsInAction())
 		{
 			StopHandAction();
 		}
@@ -114,10 +117,10 @@ void UGrabber::Release()
 		HandGrabbedRoot = nullptr;
 		HandGrabbedActor = nullptr;
 	}
-
+	
 	if(bIsLineGrabbing)
 	{
-		if(bIsLineAction)
+		if(LineGrabbedActor->IsIsInAction())
 		{
 			StopLineAction();
 		}
@@ -126,6 +129,13 @@ void UGrabber::Release()
 		LineGrabbedActor->CurrentParent = nullptr;
 		LineGrabbedActor = nullptr;
 	}
+
+	if(ActionGrabbed)
+	{
+		ActionGrabbed->StopAction_Implementation();
+		ActionGrabbed = nullptr;
+	}
+
 }
 
 
@@ -200,26 +210,31 @@ void UGrabber::GrabWithLine()
 
 void UGrabber::Action()
 {
-	if (bIsHandAction)
+	if (HandGrabbedActor && HandGrabbedActor->IsIsInAction())
 	{
 		StopHandAction();
-		bIsHandAction = false;
 	}
 	else if (bIsHandGrabbing)
 	{
 		StartHandAction();
-		bIsHandAction = true;
 	}
 	
-	if(bIsLineAction)
+	if(LineGrabbedActor && LineGrabbedActor->IsIsInAction())
 	{
 		StopLineAction();
-		bIsLineAction = false;
 	}
 	else if (bIsLineGrabbing)
 	{
 		StartLineAction();
-		bIsLineAction = true;
+	}
+
+	if(ActionGrabbed && ActionGrabbed->IsIsInAction())
+	{
+		ActionGrabbed->StopAction_Implementation();
+	}
+	else if(ActionGrabbed)
+	{
+		ActionGrabbed->StartAction_Implementation();
 	}
 }
 

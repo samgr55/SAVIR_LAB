@@ -40,12 +40,6 @@ private:
 
 	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
 	bool bIsLineGrabbing;
-
-	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
-	bool bIsHandAction;
-
-	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
-	bool bIsLineAction;
 	
 	UPROPERTY()
 	ACharacter* OwnerCharacter;
@@ -60,6 +54,9 @@ private:
 	
 	UPROPERTY()
 	USceneComponent* HandGrabbedRoot;
+
+	UPROPERTY()
+	AInformationActor* ActionGrabbed;
 	
  
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
