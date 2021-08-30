@@ -50,7 +50,12 @@ protected:
 
 	UPROPERTY(BlueprintReadWrite)
 	bool bIsShowingInfoWidget;
-	
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsInAction;
+public:
+	bool IsIsInAction() const;
+protected:
 	UPROPERTY(EditAnywhere, Category=Data)
 	UDataTable* DataTable;
 

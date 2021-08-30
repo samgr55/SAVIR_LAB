@@ -76,6 +76,11 @@ void AInformationActor::ResetToOriginalPosition()
 	SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::ResetPhysics);
 }
 
+bool AInformationActor::IsIsInAction() const
+{
+	return bIsInAction;
+}
+
 // Called every frame
 void AInformationActor::Tick(float DeltaTime)
 {
@@ -112,6 +117,7 @@ void AInformationActor::HideWidget()
 void AInformationActor::StartAction_Implementation()
 {
 	IAction::StartAction_Implementation();
+	bIsInAction = true;
 	
 }
 	
@@ -119,5 +125,5 @@ void AInformationActor::StartAction_Implementation()
 void AInformationActor::StopAction_Implementation()
 {
 	IAction::StopAction_Implementation();
-	
+	bIsInAction = false;
 }
