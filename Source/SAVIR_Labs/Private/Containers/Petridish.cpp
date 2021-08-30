@@ -104,11 +104,22 @@ void APetridish::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 	}
 }
 
+void APetridish::StartAction_Implementation()
+{
+	Super::StartAction_Implementation();
+	auto PC = GetWorld()->GetFirstPlayerController();
+	CameraActor = PC->PlayerCameraManager->GetViewTarget();
+	SwitchCamera(this);
+}
+
+void APetridish::StopAction_Implementation()
+{
+	Super::StopAction_Implementation();
+	SwitchCamera(CameraActor);
+}
+
 void APetridish::SwitchCamera(AActor* Other)
 {
 	auto PC = GetWorld()->GetFirstPlayerController();
 	PC->PlayerCameraManager->SetViewTarget(Other);
-	auto OldTarget = PC->PlayerCameraManager->GetViewTarget();
-	
-
 }

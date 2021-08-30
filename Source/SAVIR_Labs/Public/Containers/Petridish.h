@@ -34,6 +34,9 @@ public:
 	                    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	                    const FHitResult& SweepResult);
 
+	virtual void StartAction_Implementation() override;
+	virtual void StopAction_Implementation() override;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -56,4 +59,8 @@ private:
 	void SwitchCamera(AActor* Other);
 
 	bool bUsedPetridish = false;
+
+	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess))
+	AActor* CameraActor;
+	
 };
