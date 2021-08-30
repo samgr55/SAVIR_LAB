@@ -87,7 +87,7 @@ void UGrabber::Grab()
 				HandGrabbedActor = InfoActor;
 				GrabWithHand();
 			}
-			else if(!LineGrabbedActor)
+			else if(!LineGrabbedActor && !InfoActor->bIsGrabbedWithHand)
 			{
 				LineGrabbedActor = InfoActor;
 				GrabWithLine();
@@ -116,6 +116,7 @@ void UGrabber::Release()
 		HandGrabbedActor->CurrentParent = nullptr;
 		HandGrabbedRoot = nullptr;
 		HandGrabbedActor = nullptr;
+		bIsHandGrabbing = false;
 	}
 	
 	if(bIsLineGrabbing)
@@ -292,7 +293,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	);
 	
 	
-	if (LineGrabbedActor && LineGrabbedActor->bIsGrabbedWithHand && bIsLineGrabbing)
+	if (LineGrabbedActor && !LineGrabbedActor->bIsGrabbedWithHand && bIsLineGrabbing)
 	{
 		LineGrabbedActor->SetActorLocation(GetPlayerReach());
 	}
