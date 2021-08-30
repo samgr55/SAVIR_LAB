@@ -20,6 +20,8 @@ AInformationActor::AInformationActor()
 	Description = "";
 	ImageDescription = nullptr;
 	bCanBeGrabbed = false;
+	bIsGrabbedWithHand = true;
+	bIsShowingInfoWidget = false;
 	
 	InformationActorRootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("IARootComponent"));
 	InformationActorRootComponent->SetVisibility(true, true);
@@ -90,21 +92,22 @@ UImage* AInformationActor::GetImageDescription_Implementation()
 	return ImageDescription;
 }
 
+bool AInformationActor::IsShowingInfoWidget()
+{
+	return bIsShowingInfoWidget;
+}
+
 void AInformationActor::ShowWidget()
 {
+	bIsShowingInfoWidget = true;
 	WidgetComponent->ShowWidget();
 }
 
 void AInformationActor::HideWidget()
 {
+	bIsShowingInfoWidget = false;
 	WidgetComponent->HideWidget();
 }
-
-UStaticMeshComponent* AInformationActor::GetStaticMeshComponent() const
-{
-	return StaticMeshComponent;
-}
-
 
 void AInformationActor::StartAction_Implementation()
 {

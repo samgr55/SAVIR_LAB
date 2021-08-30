@@ -27,20 +27,30 @@ public:
 	
 
 protected:
-	//Variables
 
-	UPROPERTY(VisibleAnywhere)
+	virtual void BeginPlay() override;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	USceneComponent* InformationActorRootComponent;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UGeneralInfoWidgetComponent* WidgetComponent;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	FString Description;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	UImage* ImageDescription;
 
+	UPROPERTY(BlueprintReadWrite)
+	FVector OriginalPosition;
+	
+	UPROPERTY(BlueprintReadWrite)
+	FQuat OriginalRotation;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool bIsShowingInfoWidget;
+	
 	UPROPERTY(EditAnywhere, Category=Data)
 	UDataTable* DataTable;
 
@@ -48,45 +58,41 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category=Data)
 	int32 RowID;
-
-	UPROPERTY()
-	AActor* OriginalParent;
-
-	FVector OriginalPosition;
-	FQuat OriginalRotation;
 	
 public:
-	//Functions
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 
+	virtual void Tick(float DeltaTime) override;
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void SetUpInfo();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void ShowWidget();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void HideWidget();
+	
+	UFUNCTION(BlueprintCallable)
+	void ResetToOriginalPosition();
+
+	virtual FString GetDescription_Implementation() override;
+
+	virtual UImage* GetImageDescription_Implementation() override;
+
+	
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* StaticMeshComponent;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bCanBeGrabbed;
 
-	void ResetToOriginalPosition();
-
-
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-	virtual FString GetDescription_Implementation() override;
-	virtual UImage* GetImageDescription_Implementation() override;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bIsGrabbedWithHand;
+	
 	UPROPERTY(BlueprintReadWrite)
 	AActor* CurrentParent;
 
-
-	virtual void ShowWidget();
-	virtual void HideWidget();
-
-private:
-
-
-
-public:
-	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* StaticMeshComponent;
-	UStaticMeshComponent* GetStaticMeshComponent() const;
+	bool IsShowingInfoWidget();
+	
 };

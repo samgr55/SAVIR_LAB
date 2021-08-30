@@ -15,7 +15,10 @@ UGrabber::UGrabber()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	bIsAction = false;
+	bIsHandGrabbing = false;
+	bIsLineGrabbing = false;
+	bIsHandAction = false;
+	bIsLineAction = false;
 }
 
 // Called when the game starts
@@ -55,111 +58,9 @@ void UGrabber::BeginPlay()
 	SetupInputComponent();
 }
 
-void UGrabber::Grab()
-{
-	FHitResult HitResult = GetFirstPhysicsBodyInReach();
-	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
-
-	AActor* ActorHit = HitResult.GetActor();
-
-	if (ActorHit)
-	{
-		if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr && GrabbedContainer->
-			bCanBeGrabbed)
-		{
-			if (GrabbedContainer)
-			{
-				if (!GrabbedContainer->bCanBeGrabbed)
-				{
-					UE_LOG(LogTemp, Error, TEXT("Can Not Be Grabbed"));
-					return;
-				}
-
-				bIsGrabbing = true;
-
-				GrabbedContainer->CurrentParent = GetOwner();
-
-				if (!GetOwner()->GetRootComponent())
-				{
-					UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
-					return;
-				}
-
-				GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
-
-				GrabbedContainer->AttachToActor(OwnerCharacter,
-				                                FAttachmentTransformRules::SnapToTargetNotIncludingScale,
-				                                FName("RightHandSocket"));
-
-				GrabbedRoot = GrabbedContainer->GetRootComponent();
-				if (!GrabbedRoot)
-				{
-					UE_LOG(LogTemp, Error, TEXT("Faild to get GrabbedContainer StaticMeshComponent in UGrabber::Grab"));
-					return;
-				}
-
-				auto SkeletalMesh = Cast<USkeletalMeshComponent>(
-					GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
-				if (!SkeletalMesh)
-				{
-					UE_LOG(LogTemp, Error, TEXT("Faild to get SkeletalMesh in UGrabber::Grab"));
-					return;
-				}
-
-				SkeletalMesh->SetCollisionProfileName(TEXT("OverlapAll"));
-
-
-				if (!GrabbedRoot->AttachToComponent(SkeletalMesh,
-				                                    FAttachmentTransformRules::SnapToTargetNotIncludingScale,
-				                                    FName("RightHandSocket")))
-				{
-					UE_LOG(LogTemp, Error, TEXT("Faild to AttachToComponent in UGrabber::Grab"));
-					return;
-				}
-			}
-		}
-		else if ((GrabbedContainer = Cast<AInformationActor>(HitResult.GetActor())) != nullptr && !GrabbedContainer->
-			bCanBeGrabbed)
-		{
-			bIsGrabbing = true;
-			GrabbedContainer->CurrentParent = GetOwner();
-		}
-	}
-}
-
-void UGrabber::Release()
-{
-	if (!bIsGrabbing)
-	{
-		return;
-	}
-
-	if (bIsAction)
-	{
-		StopAction();
-	}
-
-	bIsGrabbing = false;
-
-	if (GrabbedContainer->bCanBeGrabbed)
-	{
-		GrabbedContainer->SetRootComponent(GrabbedRoot);
-		GrabbedContainer->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-		GrabbedContainer->ResetToOriginalPosition();
-		GrabbedContainer->StaticMeshComponent->SetCollisionProfileName(TEXT("BlockAll"));
-		GrabbedContainer->CurrentParent = nullptr;
-		GrabbedRoot = nullptr;
-	}
-	if(GrabbedContainer && !GrabbedContainer->bCanBeGrabbed)
-	{
-		bIsGrabbing = false;
-		GrabbedContainer->CurrentParent = nullptr;
-	}
-}
-
 void UGrabber::SetupInputComponent()
 {
-	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	auto InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 
 	if (InputComponent)
 	{
@@ -170,6 +71,64 @@ void UGrabber::SetupInputComponent()
 	}
 }
 
+
+void UGrabber::Grab()
+{
+	FHitResult HitResult = GetFirstPhysicsBodyInReach();
+	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
+
+	AActor* ActorHit = HitResult.GetActor();
+
+	if (ActorHit)
+	{
+		auto InfoActor = Cast<AInformationActor>(HitResult.GetActor()); 
+		if (InfoActor && InfoActor->bCanBeGrabbed)
+		{
+			if (InfoActor->bIsGrabbedWithHand && !HandGrabbedActor)
+			{
+				HandGrabbedActor = InfoActor;
+				GrabWithHand();
+			}
+			else if(!LineGrabbedActor)
+			{
+				LineGrabbedActor = InfoActor;
+				GrabWithLine();
+			}
+		}
+	}
+}
+
+void UGrabber::Release()
+{
+	if (bIsHandGrabbing)
+	{
+		if(bIsHandAction)
+		{
+			StopHandAction();
+		}
+		HandGrabbedActor->SetRootComponent(HandGrabbedRoot);
+		HandGrabbedActor->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+		HandGrabbedActor->ResetToOriginalPosition();
+		HandGrabbedActor->StaticMeshComponent->SetCollisionProfileName(TEXT("BlockAll"));
+		HandGrabbedActor->CurrentParent = nullptr;
+		HandGrabbedRoot = nullptr;
+		HandGrabbedActor = nullptr;
+	}
+
+	if(bIsLineGrabbing)
+	{
+		if(bIsLineAction)
+		{
+			StopLineAction();
+		}
+		LineGrabbedActor->ResetToOriginalPosition();
+		bIsLineGrabbing = false;
+		LineGrabbedActor->CurrentParent = nullptr;
+		LineGrabbedActor = nullptr;
+	}
+}
+
+
 void UGrabber::ShowData()
 {
 	FHitResult HitResult = GetFirstPhysicsBodyInReach();
@@ -179,53 +138,125 @@ void UGrabber::ShowData()
 
 	if (ActorHit)
 	{
-		InformationActor = Cast<AInformationActor>(HitResult.GetActor());
+		auto InformationActor = Cast<AInformationActor>(HitResult.GetActor());
 		if (InformationActor)
 		{
-			if (!bIsShowingData)
+			if (!InformationActor->IsShowingInfoWidget())
 			{
-				bIsShowingData = true;
 				InformationActor->ShowWidget();
 			}
 			else
 			{
-				bIsShowingData = false;
 				InformationActor->HideWidget();
 			}
 		}
 	}
 }
 
+void UGrabber::GrabWithHand()
+{
+	bIsHandGrabbing = true;
+	HandGrabbedActor->CurrentParent = GetOwner();
+	if (!GetOwner()->GetRootComponent())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Faild to get GetRootComponent in UGrabber::Grab"));
+		return;
+	}
+	HandGrabbedActor->StaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
+	HandGrabbedActor->AttachToActor(OwnerCharacter,
+									FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+									FName("RightHandSocket"));
+	HandGrabbedRoot = HandGrabbedActor->GetRootComponent();
+	if (!HandGrabbedRoot)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Faild to get GrabbedContainer StaticMeshComponent in UGrabber::Grab"));
+		return;
+	}
+	auto SkeletalMesh = Cast<USkeletalMeshComponent>(
+		GetOwner()->GetComponentByClass(USkeletalMeshComponent::StaticClass()));
+	if (!SkeletalMesh)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Faild to get SkeletalMesh in UGrabber::Grab"));
+		return;
+	}
+
+	SkeletalMesh->SetCollisionProfileName(TEXT("OverlapAll"));
+
+
+	if (!HandGrabbedRoot->AttachToComponent(SkeletalMesh,
+										FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+										FName("RightHandSocket")))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Faild to AttachToComponent in UGrabber::Grab"));
+		return;
+	}
+}
+
+void UGrabber::GrabWithLine()
+{
+	bIsLineGrabbing = true;
+	LineGrabbedActor->CurrentParent = GetOwner();
+}
+
 void UGrabber::Action()
 {
-	if (bIsAction)
+	if (bIsHandAction)
 	{
-		StopAction();
-		bIsAction = false;
+		StopHandAction();
+		bIsHandAction = false;
 	}
-	else if (bIsGrabbing)
+	else if (bIsHandGrabbing)
 	{
-		StartAction();
-		bIsAction = true;
+		StartHandAction();
+		bIsHandAction = true;
+	}
+	
+	if(bIsLineAction)
+	{
+		StopLineAction();
+		bIsLineAction = false;
+	}
+	else if (bIsLineGrabbing)
+	{
+		StartLineAction();
+		bIsLineAction = true;
 	}
 }
 
-void UGrabber::StartAction()
+void UGrabber::StartHandAction()
 {
-	if (!GrabbedContainer)
+	if (!HandGrabbedActor)
 	{
 		return;
 	}
-	GrabbedContainer->StartAction_Implementation();
+	HandGrabbedActor->StartAction_Implementation();
 }
 
-void UGrabber::StopAction()
+void UGrabber::StartLineAction()
 {
-	if (!GrabbedContainer)
+	if (!LineGrabbedActor)
 	{
 		return;
 	}
-	GrabbedContainer->StopAction_Implementation();
+	LineGrabbedActor->StartAction_Implementation();
+}
+
+void UGrabber::StopHandAction()
+{
+	if (!HandGrabbedActor)
+	{
+		return;
+	}
+	HandGrabbedActor->StopAction_Implementation();
+}
+
+void UGrabber::StopLineAction()
+{
+	if (!LineGrabbedActor)
+	{
+		return;
+	}
+	LineGrabbedActor->StopAction_Implementation();
 }
 
 
@@ -244,16 +275,11 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		0,
 		5.0f
 	);
-
-
-	/*if (GrabbedContainer && bIsGrabbing)
-	{
-		GrabbedContainer->SetActorLocation(GetPlayerReach());
-	}*/
 	
-	if (GrabbedContainer && !GrabbedContainer->bCanBeGrabbed && bIsGrabbing)
+	
+	if (LineGrabbedActor && LineGrabbedActor->bIsGrabbedWithHand && bIsLineGrabbing)
 	{
-		GrabbedContainer->SetActorLocation(GetPlayerReach());
+		LineGrabbedActor->SetActorLocation(GetPlayerReach());
 	}
 }
 

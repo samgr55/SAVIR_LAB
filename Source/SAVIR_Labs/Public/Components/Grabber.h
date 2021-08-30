@@ -35,47 +35,63 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	bool bIsGrabbing = false;
-	bool bIsShowingData = false;
-	bool bIsAction;
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
+	bool bIsHandGrabbing;
 
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
+	bool bIsLineGrabbing;
+
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
+	bool bIsHandAction;
+
+	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
+	bool bIsLineAction;
+	
 	UPROPERTY()
 	ACharacter* OwnerCharacter;
 	
-	UPROPERTY()
-	UPhysicsHandleComponent* PhysicsHandle = nullptr;
 
-	UPROPERTY()
-	UInputComponent* InputComponent = nullptr;
+	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess))
+	AInformationActor* HandGrabbedActor;
 
-	UPROPERTY()
-	AInformationActor* GrabbedContainer;
+	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess))
+	AInformationActor* LineGrabbedActor;
 
-	UPROPERTY()
-	AOverlappingActors* OverlappingActor;
 	
 	UPROPERTY()
-	USceneComponent* GrabbedRoot;
-
-	UPROPERTY()
-	AInformationActor* InformationActor;
+	USceneComponent* HandGrabbedRoot;
+	
  
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	float Reach = 100.0f;
 
+	UFUNCTION(BlueprintCallable)
 	void Grab();
+	UFUNCTION(BlueprintCallable)
 	void Release();
+	UFUNCTION(BlueprintCallable)
 	void SetupInputComponent();
+	UFUNCTION(BlueprintCallable)
 	void ShowData();
+	UFUNCTION(BlueprintCallable)
+	void GrabWithHand();
+	UFUNCTION(BlueprintCallable)
+	void GrabWithLine();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void Action();
-
+	
+	UFUNCTION(BlueprintCallable)
+	void StartHandAction();
+	
+	UFUNCTION(BlueprintCallable)
+	void StartLineAction();
+	
 	UFUNCTION()
-	void StartAction();
-
+	void StopHandAction();
+	
 	UFUNCTION()
-	void StopAction();
+	void StopLineAction();
 
 	//Return The first actor within reach with physics body
 	FHitResult GetFirstPhysicsBodyInReach() const;
