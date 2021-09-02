@@ -185,6 +185,11 @@ void UGrabber::HideData()
 				InformationActor->HideWidget();
 			}
 		}
+		else if (HideInfo)
+		{
+			HideInfo->HideWidget();
+			HideInfo = nullptr;
+		}
 	}
 	else if (HideInfo)
 	{
@@ -310,16 +315,16 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	DrawDebugLine(
-		GetWorld(),
-		GetPlayerWorldPos(),
-		GetPlayerReach(),
-		FColor(0.0f, 255, 0.0f),
-		false,
-		0.0f,
-		0,
-		5.0f
-	);
+	// DrawDebugLine(
+	// 	GetWorld(),
+	// 	GetPlayerWorldPos(),
+	// 	GetPlayerReach(),
+	// 	FColor(0.0f, 255, 0.0f),
+	// 	false,
+	// 	0.0f,
+	// 	0,
+	// 	5.0f
+	// );
 
 
 	if (LineGrabbedActor && !LineGrabbedActor->bIsGrabbedWithHand && bIsLineGrabbing)

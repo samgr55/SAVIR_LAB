@@ -13,7 +13,7 @@ ABensenBurner::ABensenBurner()
 	bCanBeGrabbed = false;
 	bIsHot = false;
 	bIsGrabbedByTong = false;
-	AutoReceiveInput = EAutoReceiveInput::Player0;
+	//AutoReceiveInput = EAutoReceiveInput::Player0;
 	
 }
 
