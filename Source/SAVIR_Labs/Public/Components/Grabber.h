@@ -71,6 +71,8 @@ private:
 	UFUNCTION(BlueprintCallable)
 	void ShowData();
 	UFUNCTION(BlueprintCallable)
+	void HideData();
+	UFUNCTION(BlueprintCallable)
 	void GrabWithHand();
 	UFUNCTION(BlueprintCallable)
 	void GrabWithLine();

@@ -65,6 +65,7 @@ void UGrabber::SetupInputComponent()
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
 		InputComponent->BindAction("Release", IE_Pressed, this, &UGrabber::Release);
 		InputComponent->BindAction("ShowData", IE_Pressed, this, &UGrabber::ShowData);
+		InputComponent->BindAction("ShowData", IE_Released, this, &UGrabber::HideData);
 		InputComponent->BindAction("Action", IE_Pressed, this, &UGrabber::Action);
 	}
 }
@@ -159,7 +160,27 @@ void UGrabber::ShowData()
 			{
 				InformationActor->ShowWidget();
 			}
-			else
+			// else
+			// {
+			// 	InformationActor->HideWidget();
+			// }
+		}
+	}
+}
+
+void UGrabber::HideData()
+{
+	FHitResult HitResult = GetFirstPhysicsBodyInReach();
+	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
+
+	AActor* ActorHit = HitResult.GetActor();
+
+	if (ActorHit)
+	{
+		auto InformationActor = Cast<AInformationActor>(HitResult.GetActor());
+		if (InformationActor)
+		{
+			if (InformationActor->IsShowingInfoWidget())
 			{
 				InformationActor->HideWidget();
 			}
