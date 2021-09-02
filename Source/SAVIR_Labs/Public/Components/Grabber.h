@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Containers/WaterContainer.h"
-#include "PhysicsEngine/PhysicsHandleComponent.h" 
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Grabber.generated.h"
 
 class UInputComponent;
@@ -23,27 +23,31 @@ public:
 	UGrabber();
 
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditAnyWhere, Category = "Hands")
-		USkeletalMeshSocket* RightHandSocket;
+	USkeletalMeshSocket* RightHandSocket;
 	UPROPERTY(EditAnyWhere, Category = "Hands")
-		USkeletalMeshSocket* LeftHandSocket;
+	USkeletalMeshSocket* LeftHandSocket;
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
+	UPROPERTY()
+	AInformationActor* HideInfo;
+
 	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
 	bool bIsHandGrabbing;
 
 	UPROPERTY(BlueprintReadOnly, meta=(AllowPrivateAccess))
 	bool bIsLineGrabbing;
-	
+
 	UPROPERTY()
 	ACharacter* OwnerCharacter;
-	
+
 
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess))
 	AInformationActor* HandGrabbedActor;
@@ -51,14 +55,14 @@ private:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess))
 	AInformationActor* LineGrabbedActor;
 
-	
+
 	UPROPERTY()
 	USceneComponent* HandGrabbedRoot;
 
 	UPROPERTY()
 	AInformationActor* ActionGrabbed;
-	
- 
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess))
 	float Reach = 100.0f;
 
@@ -79,16 +83,16 @@ private:
 
 	UFUNCTION(BlueprintCallable)
 	void Action();
-	
+
 	UFUNCTION(BlueprintCallable)
 	void StartHandAction();
-	
+
 	UFUNCTION(BlueprintCallable)
 	void StartLineAction();
-	
+
 	UFUNCTION()
 	void StopHandAction();
-	
+
 	UFUNCTION()
 	void StopLineAction();
 

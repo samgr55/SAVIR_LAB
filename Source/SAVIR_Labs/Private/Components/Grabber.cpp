@@ -80,7 +80,7 @@ void UGrabber::Grab()
 
 	if (ActorHit)
 	{
-		auto InfoActor = Cast<AInformationActor>(HitResult.GetActor()); 
+		auto InfoActor = Cast<AInformationActor>(HitResult.GetActor());
 		if (InfoActor && InfoActor->bCanBeGrabbed)
 		{
 			if (InfoActor->bIsGrabbedWithHand && !HandGrabbedActor)
@@ -88,13 +88,13 @@ void UGrabber::Grab()
 				HandGrabbedActor = InfoActor;
 				GrabWithHand();
 			}
-			else if(!InfoActor->bIsGrabbedWithHand && !LineGrabbedActor)
+			else if (!InfoActor->bIsGrabbedWithHand && !LineGrabbedActor)
 			{
 				LineGrabbedActor = InfoActor;
 				GrabWithLine();
 			}
 		}
-		else if(InfoActor)
+		else if (InfoActor)
 		{
 			ActionGrabbed = InfoActor;
 			ActionGrabbed->CurrentParent = GetOwner();
@@ -106,7 +106,7 @@ void UGrabber::Release()
 {
 	if (bIsHandGrabbing && HandGrabbedActor && !bIsLineGrabbing)
 	{
-		if(HandGrabbedActor->IsIsInAction())
+		if (HandGrabbedActor->IsIsInAction())
 		{
 			StopHandAction();
 		}
@@ -119,10 +119,10 @@ void UGrabber::Release()
 		HandGrabbedActor = nullptr;
 		bIsHandGrabbing = false;
 	}
-	
-	if(bIsLineGrabbing && LineGrabbedActor)
+
+	if (bIsLineGrabbing && LineGrabbedActor)
 	{
-		if(LineGrabbedActor->IsIsInAction())
+		if (LineGrabbedActor->IsIsInAction())
 		{
 			StopLineAction();
 		}
@@ -132,15 +132,14 @@ void UGrabber::Release()
 		LineGrabbedActor = nullptr;
 	}
 
-	if(ActionGrabbed)
+	if (ActionGrabbed)
 	{
-		if(ActionGrabbed->IsIsInAction())
+		if (ActionGrabbed->IsIsInAction())
 		{
 			ActionGrabbed->StopAction_Implementation();
 		}
 		ActionGrabbed = nullptr;
 	}
-
 }
 
 
@@ -154,6 +153,7 @@ void UGrabber::ShowData()
 	if (ActorHit)
 	{
 		auto InformationActor = Cast<AInformationActor>(HitResult.GetActor());
+		HideInfo = InformationActor;
 		if (InformationActor)
 		{
 			if (!InformationActor->IsShowingInfoWidget())
@@ -186,6 +186,11 @@ void UGrabber::HideData()
 			}
 		}
 	}
+	else if (HideInfo)
+	{
+		HideInfo->HideWidget();
+		HideInfo = nullptr;
+	}
 }
 
 void UGrabber::GrabWithHand()
@@ -199,8 +204,8 @@ void UGrabber::GrabWithHand()
 	}
 	HandGrabbedActor->StaticMeshComponent->SetCollisionProfileName(TEXT("OverlapAll"));
 	HandGrabbedActor->AttachToActor(OwnerCharacter,
-									FAttachmentTransformRules::SnapToTargetNotIncludingScale,
-									FName("RightHandSocket"));
+	                                FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+	                                FName("RightHandSocket"));
 	HandGrabbedRoot = HandGrabbedActor->GetRootComponent();
 	if (!HandGrabbedRoot)
 	{
@@ -219,8 +224,8 @@ void UGrabber::GrabWithHand()
 
 
 	if (!HandGrabbedRoot->AttachToComponent(SkeletalMesh,
-										FAttachmentTransformRules::SnapToTargetNotIncludingScale,
-										FName("RightHandSocket")))
+	                                        FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+	                                        FName("RightHandSocket")))
 	{
 		UE_LOG(LogTemp, Error, TEXT("Faild to AttachToComponent in UGrabber::Grab"));
 		return;
@@ -243,8 +248,8 @@ void UGrabber::Action()
 	{
 		StartHandAction();
 	}
-	
-	if(LineGrabbedActor && LineGrabbedActor->IsIsInAction())
+
+	if (LineGrabbedActor && LineGrabbedActor->IsIsInAction())
 	{
 		StopLineAction();
 	}
@@ -253,11 +258,11 @@ void UGrabber::Action()
 		StartLineAction();
 	}
 
-	if(ActionGrabbed && ActionGrabbed->IsIsInAction())
+	if (ActionGrabbed && ActionGrabbed->IsIsInAction())
 	{
 		ActionGrabbed->StopAction_Implementation();
 	}
-	else if(ActionGrabbed)
+	else if (ActionGrabbed)
 	{
 		ActionGrabbed->StartAction_Implementation();
 	}
@@ -315,8 +320,8 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		0,
 		5.0f
 	);
-	
-	
+
+
 	if (LineGrabbedActor && !LineGrabbedActor->bIsGrabbedWithHand && bIsLineGrabbing)
 	{
 		LineGrabbedActor->SetActorLocation(GetPlayerReach());
