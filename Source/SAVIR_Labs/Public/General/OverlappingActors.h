@@ -18,7 +18,7 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnyWhere, BlueprintReadWrite, Category = "Components")
 	UStaticMeshComponent* LiquidMesh;
 
 protected:
