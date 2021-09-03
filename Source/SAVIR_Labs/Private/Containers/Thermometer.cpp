@@ -35,8 +35,6 @@ void AThermometer::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("Text Renderer not found"));
 		return;
 	}
-
-	//Text->SetText(FText::FromString(TEXT("20")));
 }
 
 // Called every frame
