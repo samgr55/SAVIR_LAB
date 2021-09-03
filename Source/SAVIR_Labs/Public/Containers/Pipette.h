@@ -49,4 +49,9 @@ private:
 
 	
 	bool IsFilledWithLiquid = false;
+
+
+public:
+	virtual void StartAction_Implementation() override;
+	virtual void StopAction_Implementation() override;
 };

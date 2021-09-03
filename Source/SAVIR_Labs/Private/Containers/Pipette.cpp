@@ -70,6 +70,15 @@ void APipette::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Other
 	}
 }
 
+void APipette::StartAction_Implementation()
+{
+	Super::StartAction_Implementation();
+}
+
+void APipette::StopAction_Implementation()
+{
+	Super::StopAction_Implementation();
+}
 
 
 bool APipette::GetIsFilledWithLiquid()

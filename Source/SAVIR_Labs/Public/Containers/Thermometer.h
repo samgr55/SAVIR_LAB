@@ -7,6 +7,7 @@
 
 #include "Thermometer.generated.h"
 
+class AWaterContainer;
 class USphereComponent;
 class UTextRenderComponent;
 
@@ -32,6 +33,11 @@ public:
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 						UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 						const FHitResult& SweepResult);
+
+	UFUNCTION()
+		void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+							UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -44,4 +50,15 @@ private:
 	float SphereRaidus = 5.0f;
 	
 	float Temperature = 0.0f;
+
+	bool bIsOverlappingWithWaterContainer;
+
+	AWaterContainer* WaterContainer;
+
+
+public:
+	virtual void StartAction_Implementation() override;
+	virtual void StopAction_Implementation() override;
+	
 };
+

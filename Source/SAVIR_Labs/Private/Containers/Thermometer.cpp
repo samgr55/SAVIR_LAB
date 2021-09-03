@@ -23,6 +23,8 @@ AThermometer::AThermometer()
 	MyCollisionSphere->InitSphereRadius(SphereRaidus);
 	MyCollisionSphere->SetCollisionProfileName("Trigger");
 	MyCollisionSphere->SetupAttachment(RootComponent);
+
+	bIsOverlappingWithWaterContainer = false;
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +33,7 @@ void AThermometer::BeginPlay()
 	Super::BeginPlay();
 
 	MyCollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AThermometer::OnOverlapBegin);
+	MyCollisionSphere->OnComponentEndOverlap.AddDynamic(this, &AThermometer::OnOverlapEnd);
 
 	Text = Cast<UTextRenderComponent>(GetComponentByClass(UTextRenderComponent::StaticClass()));
 	if (!Text)
@@ -38,6 +41,48 @@ void AThermometer::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("Text Renderer not found"));
 		return;
 	}
+
+	Temperature = 25;
+	Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
+}
+
+void AThermometer::StartAction_Implementation()
+{
+	Super::StartAction_Implementation();
+
+	if(!WaterContainer)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not WaterContainer"));
+		return;
+	}
+	Temperature = WaterContainer->GetTemperature();
+	
+	StaticMeshComponent->SetCollisionProfileName(FName("OverlapAll"));
+	StaticMeshComponent->AttachToComponent(WaterContainer->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+	Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
+
+
+	/*if (Temperature == 5.0)
+	{
+		Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
+	}
+	else if (Temperature == 25)
+	{
+		Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
+	}
+	else if (Temperature == 50)
+	{
+		Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
+	}*/
+}
+
+void AThermometer::StopAction_Implementation()
+{
+	Super::StopAction_Implementation();
+	StaticMeshComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	RootComponent = StaticMeshComponent;
+	StaticMeshComponent->SetCollisionProfileName(FName("BlockAll"));
+
 }
 
 // Called every frame
@@ -54,33 +99,31 @@ void AThermometer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 	{
 		if ((OtherActor = Cast<AWaterContainer>(OtherActor)) != nullptr)
 		{
-			auto WaterContainer = Cast<AWaterContainer>(OtherActor);
-
+			WaterContainer = Cast<AWaterContainer>(OtherActor);
+			
 			auto Liquid = Cast<UScaleLerp>(GetComponentByClass(UScaleLerp::StaticClass()));
 
 			if (!Liquid)
 			{
 				UE_LOG(LogTemp, Error, TEXT("Scale Lerp Not Found."));
-				return;
+	
 			}
-
-
-			Temperature = WaterContainer->GetTemperature();
-
-			if (Temperature == 5.0)
-			{
-				Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
-			}
-			else if (Temperature == 25)
-			{
-				Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
-			}
-			else if (Temperature == 50)
-			{
-				Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
-			}
+	
+			bIsOverlappingWithWaterContainer = true;
+			
+			Text->SetText(FText::FromString("Press F to Measure"));
+		
 		}
 	}
+}
+
+void AThermometer::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	bIsOverlappingWithWaterContainer = false;
+
+	Text->SetText(FText::FromString(FString::SanitizeFloat(25)));
+
 }
 
 float AThermometer::GetTemperature()
