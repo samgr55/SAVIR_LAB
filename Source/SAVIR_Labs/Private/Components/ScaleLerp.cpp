@@ -4,6 +4,7 @@
 #include "Components/ScaleLerp.h"
 
 #include "Components/TimelineComponent.h"
+#include "General/OverlappingActors.h"
 
 // Sets default values for this component's properties
 UScaleLerp::UScaleLerp()
@@ -24,11 +25,16 @@ void UScaleLerp::BeginPlay()
 	// ...
 
 	//MeshToScale = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent()->GetChildComponent(MeshIndex));
-	MeshToScale = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(FName("LiquidMesh")));
+	MeshToScale = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(FName("Liquid Mesh")));
+	auto OverlappingActor = GetOwner<AOverlappingActors>();
+	if(OverlappingActor)
+	{
+		MeshToScale = OverlappingActor->LiquidMesh;
+	}
 
 	if (!MeshToScale)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Not Found Child static mesh"));
+		UE_LOG(LogTemp, Error, TEXT("***************Not Found Child static mesh in UScaleLerp::BeginPlay ************************"));
 		return;
 	}
 
@@ -39,7 +45,6 @@ void UScaleLerp::BeginPlay()
 	// 	CurveTimeline.AddInterpFloat(CurveFloat, TimelineProgress);
 	// 	CurveTimeline.SetLooping(false);
 	// }
-
 
 	BeginScale = MeshToScale->GetRelativeScale3D();;
 }
@@ -73,6 +78,11 @@ void UScaleLerp::MaximizeScale(float DeltaTime)
 	{
 		FVector CurrentScale = FMath::Lerp(BeginScale, EndScale, (TimeElapsed / LerpDuration));
 
+		if (!MeshToScale)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Not Found Child static mesh in UScaleLerp::MaximizeScale"));
+			return;
+		}
 		MeshToScale->SetRelativeScale3D(CurrentScale);
 
 		TimeElapsed += DeltaTime;
@@ -85,6 +95,12 @@ void UScaleLerp::MinimizeScale(float DeltaTime)
 	{
 		FVector CurrentScale = FMath::Lerp(EndScale, BeginScale, (TimeElapsed / LerpDuration));
 
+		if (!MeshToScale)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Not Found Child static mesh in UScaleLerp::MinimizeScale"));
+			return;
+		}
+		
 		MeshToScale->SetRelativeScale3D(CurrentScale);
 
 		TimeElapsed += DeltaTime;
@@ -106,6 +122,11 @@ void UScaleLerp::InitiateMinScale()
 void UScaleLerp::InitiateMaxScaleThermometer(FVector Value)
 {
 	bMaximizeThermometer = true;
+	if (!MeshToScale)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not Found Child static mesh in UScaleLerp::InitiateMaxScaleThermometer"));
+		return;
+	}
 	MeshToScale->SetRelativeScale3D(BeginScale);
 	EndScale = Value;
 }
@@ -134,7 +155,11 @@ void UScaleLerp::SetTimeInSeconds(UCurveFloat* Value)
 void UScaleLerp::TimelineProgress(float Value)
 {
 	FVector CurrentScale = FMath::Lerp(BeginScale, EndScale, Value);
-
+	if (!MeshToScale)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not Found Child static mesh in UScaleLerp::TimelineProgress"));
+		return;
+	}
 	MeshToScale->SetRelativeScale3D(CurrentScale);
 }
 
@@ -146,5 +171,10 @@ void UScaleLerp::SetEndScale(FVector Value)
 void UScaleLerp::FastForwardScale(FVector endScale)
 {
 	CurveTimeline.Stop();
+	if (!MeshToScale)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Not Found Child static mesh in UScaleLerp::FastForwardScale"));
+		return;
+	}
 	MeshToScale->SetRelativeScale3D(endScale);
 }
