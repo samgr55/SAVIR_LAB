@@ -329,7 +329,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	if (LineGrabbedActor && !LineGrabbedActor->bIsGrabbedWithHand && bIsLineGrabbing)
 	{
-		LineGrabbedActor->SetActorLocation(GetPlayerReach());
+		LineGrabbedActor->SetActorLocation(GetPlayerReach(), true);
 	}
 }
 
