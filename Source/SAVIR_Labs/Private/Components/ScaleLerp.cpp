@@ -23,7 +23,8 @@ void UScaleLerp::BeginPlay()
 
 	// ...
 
-	MeshToScale = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent()->GetChildComponent(MeshIndex));
+	//MeshToScale = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent()->GetChildComponent(MeshIndex));
+	MeshToScale = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(FName("LiquidMesh")));
 
 	if (!MeshToScale)
 	{
