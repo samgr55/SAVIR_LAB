@@ -7,6 +7,8 @@
 
 #include "Pipette.generated.h"
 
+class AFoodContainer;
+class UScaleLerp;
 class USphereComponent;
 
 UCLASS()
@@ -41,6 +43,9 @@ public:
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 						UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 						const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+							UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 private:
 	
@@ -50,8 +55,18 @@ private:
 	
 	bool IsFilledWithLiquid = false;
 
+	UPROPERTY()
+	UScaleLerp* Liquid;
+
+	UPROPERTY()
+	AFoodContainer* FoodContainer;
+
 
 public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* RootCollisionMesh;
+	
 	virtual void StartAction_Implementation() override;
 	virtual void StopAction_Implementation() override;
 };

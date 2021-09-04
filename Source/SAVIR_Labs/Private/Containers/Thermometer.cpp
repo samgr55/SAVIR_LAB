@@ -16,13 +16,15 @@ AThermometer::AThermometer()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootComponent = StaticMeshComponent; 
-	InformationActorRootComponent->DestroyComponent();
+	RootCollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("RootCollisionMesh"));
+	RootComponent = RootCollisionMesh;
+	InformationActorRootComponent->DestroyComponent(true);
+	InformationActorRootComponent = nullptr;
 
 	MyCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("My Sphere Component"));
 	MyCollisionSphere->InitSphereRadius(SphereRaidus);
 	MyCollisionSphere->SetCollisionProfileName("Trigger");
-	MyCollisionSphere->SetupAttachment(RootComponent);
+	MyCollisionSphere->SetupAttachment(StaticMeshComponent);
 
 	bIsOverlappingWithWaterContainer = false;
 }
@@ -35,6 +37,8 @@ void AThermometer::BeginPlay()
 	MyCollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AThermometer::OnOverlapBegin);
 	MyCollisionSphere->OnComponentEndOverlap.AddDynamic(this, &AThermometer::OnOverlapEnd);
 
+
+	
 	Text = Cast<UTextRenderComponent>(GetComponentByClass(UTextRenderComponent::StaticClass()));
 	if (!Text)
 	{
@@ -42,7 +46,7 @@ void AThermometer::BeginPlay()
 		return;
 	}
 
-	Temperature = 25;
+	Temperature = 27;
 	Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
 }
 
@@ -58,31 +62,17 @@ void AThermometer::StartAction_Implementation()
 	Temperature = WaterContainer->GetTemperature();
 	
 	StaticMeshComponent->SetCollisionProfileName(FName("OverlapAll"));
-	StaticMeshComponent->AttachToComponent(WaterContainer->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+	StaticMeshComponent->AttachToComponent(WaterContainer->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
 	Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
-
-
-	/*if (Temperature == 5.0)
-	{
-		Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
-	}
-	else if (Temperature == 25)
-	{
-		Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
-	}
-	else if (Temperature == 50)
-	{
-		Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
-	}*/
+	
 }
 
 void AThermometer::StopAction_Implementation()
 {
 	Super::StopAction_Implementation();
-	StaticMeshComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-	RootComponent = StaticMeshComponent;
+	//StaticMeshComponent->DetachFromComponent(FDetachmentTransformRules::KeepRelativeTransform);
+	StaticMeshComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	StaticMeshComponent->SetCollisionProfileName(FName("BlockAll"));
-
 }
 
 // Called every frame
@@ -120,10 +110,17 @@ void AThermometer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 void AThermometer::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	bIsOverlappingWithWaterContainer = false;
-
-	Text->SetText(FText::FromString(FString::SanitizeFloat(25)));
-
+	if(Cast<AWaterContainer>(OtherActor))
+	{
+		bIsOverlappingWithWaterContainer = false;
+		Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
+	}
+	else if(WaterContainer)
+	{
+		bIsOverlappingWithWaterContainer = false;
+		Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
+		WaterContainer = nullptr;
+	}
 }
 
 float AThermometer::GetTemperature()

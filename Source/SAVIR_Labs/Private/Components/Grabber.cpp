@@ -5,6 +5,7 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/PlayerController.h"
 #include "Containers/ChemicalContainer.h"
+#include "Containers/Petridish.h"
 #include "GameFramework/Character.h"
 
 #define OUT
@@ -55,6 +56,32 @@ void UGrabber::BeginPlay()
 
 	SetupInputComponent();
 }
+
+// Called every frame
+void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	// DrawDebugLine(
+	// 	GetWorld(),
+	// 	GetPlayerWorldPos(),
+	// 	GetPlayerReach(),
+	// 	FColor(0.0f, 255, 0.0f),
+	// 	false,
+	// 	0.0f,
+	// 	0,
+	// 	5.0f
+	// );
+
+
+	if (LineGrabbedActor && bIsLineGrabbing)
+	{
+		LineGrabbedActor->SetActorLocation(GetPlayerReach(), true);
+		LineGrabbedActor->StaticMeshComponent->SetRelativeLocation(FVector::ZeroVector, true);
+	}
+}
+
+
 
 void UGrabber::SetupInputComponent()
 {
@@ -143,61 +170,6 @@ void UGrabber::Release()
 }
 
 
-void UGrabber::ShowData()
-{
-	FHitResult HitResult = GetFirstPhysicsBodyInReach();
-	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
-
-	AActor* ActorHit = HitResult.GetActor();
-
-	if (ActorHit)
-	{
-		auto InformationActor = Cast<AInformationActor>(HitResult.GetActor());
-		HideInfo = InformationActor;
-		if (InformationActor)
-		{
-			if (!InformationActor->IsShowingInfoWidget())
-			{
-				InformationActor->ShowWidget();
-			}
-			// else
-			// {
-			// 	InformationActor->HideWidget();
-			// }
-		}
-	}
-}
-
-void UGrabber::HideData()
-{
-	FHitResult HitResult = GetFirstPhysicsBodyInReach();
-	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
-
-	AActor* ActorHit = HitResult.GetActor();
-
-	if (ActorHit)
-	{
-		auto InformationActor = Cast<AInformationActor>(HitResult.GetActor());
-		if (InformationActor)
-		{
-			if (InformationActor->IsShowingInfoWidget())
-			{
-				InformationActor->HideWidget();
-			}
-		}
-		else if (HideInfo)
-		{
-			HideInfo->HideWidget();
-			HideInfo = nullptr;
-		}
-	}
-	else if (HideInfo)
-	{
-		HideInfo->HideWidget();
-		HideInfo = nullptr;
-	}
-}
-
 void UGrabber::GrabWithHand()
 {
 	bIsHandGrabbing = true;
@@ -247,7 +219,17 @@ void UGrabber::Action()
 {
 	if (HandGrabbedActor && HandGrabbedActor->IsIsInAction())
 	{
-		StopHandAction();
+		if(ActionGrabbed)
+		{
+			if(!ActionGrabbed->IsA(APetridish::StaticClass()))
+			{
+				StopHandAction();
+			}
+		}
+		else
+		{
+			StopHandAction();
+		}
 	}
 	else if (bIsHandGrabbing)
 	{
@@ -310,29 +292,6 @@ void UGrabber::StopLineAction()
 }
 
 
-// Called every frame
-void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// DrawDebugLine(
-	// 	GetWorld(),
-	// 	GetPlayerWorldPos(),
-	// 	GetPlayerReach(),
-	// 	FColor(0.0f, 255, 0.0f),
-	// 	false,
-	// 	0.0f,
-	// 	0,
-	// 	5.0f
-	// );
-
-
-	if (LineGrabbedActor && !LineGrabbedActor->bIsGrabbedWithHand && bIsLineGrabbing)
-	{
-		LineGrabbedActor->SetActorLocation(GetPlayerReach(), true);
-	}
-}
-
 
 FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 {
@@ -346,9 +305,6 @@ FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 	                                              GetPlayerReach(),
 	                                              ECC_Visibility,
 	                                              TraceParams);
-
-	UE_LOG(LogTemp, Warning, TEXT("Hit %d"), s);
-
 	return Hit;
 }
 
@@ -376,4 +332,60 @@ FVector UGrabber::GetPlayerReach() const
 	);
 
 	return PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
+}
+
+
+void UGrabber::ShowData()
+{
+	FHitResult HitResult = GetFirstPhysicsBodyInReach();
+	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
+
+	AActor* ActorHit = HitResult.GetActor();
+
+	if (ActorHit)
+	{
+		auto InformationActor = Cast<AInformationActor>(HitResult.GetActor());
+		HideInfo = InformationActor;
+		if (InformationActor)
+		{
+			if (!InformationActor->IsShowingInfoWidget())
+			{
+				InformationActor->ShowWidget();
+			}
+			// else
+			// {
+			// 	InformationActor->HideWidget();
+			// }
+		}
+	}
+}
+
+void UGrabber::HideData()
+{
+	FHitResult HitResult = GetFirstPhysicsBodyInReach();
+	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
+
+	AActor* ActorHit = HitResult.GetActor();
+
+	if (ActorHit)
+	{
+		auto InformationActor = Cast<AInformationActor>(HitResult.GetActor());
+		if (InformationActor)
+		{
+			if (InformationActor->IsShowingInfoWidget())
+			{
+				InformationActor->HideWidget();
+			}
+		}
+		else if (HideInfo)
+		{
+			HideInfo->HideWidget();
+			HideInfo = nullptr;
+		}
+	}
+	else if (HideInfo)
+	{
+		HideInfo->HideWidget();
+		HideInfo = nullptr;
+	}
 }

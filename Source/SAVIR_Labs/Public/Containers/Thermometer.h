@@ -35,7 +35,7 @@ public:
 						const FHitResult& SweepResult);
 
 	UFUNCTION()
-		void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 							UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
 protected:
@@ -57,6 +57,10 @@ private:
 
 
 public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* RootCollisionMesh;
+	
 	virtual void StartAction_Implementation() override;
 	virtual void StopAction_Implementation() override;
 	

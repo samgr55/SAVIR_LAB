@@ -37,7 +37,10 @@ AInformationActor::AInformationActor()
 void AInformationActor::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	OriginalPosition = GetActorLocation();
+	OriginalRotation = GetActorRotation().Quaternion();
+	
 	SetUpInfo();
 	
 	WidgetComponent = Cast<UGeneralInfoWidgetComponent>(GetComponentByClass(UGeneralInfoWidgetComponent::StaticClass()));
@@ -48,22 +51,23 @@ void AInformationActor::BeginPlay()
 	}
 	
 	WidgetComponent->SetUpWidgetComponent();
-	OriginalPosition = GetActorLocation();
-	OriginalRotation = GetActorRotation().Quaternion();
+
+
+	
 }
 
 void AInformationActor::SetUpInfo()
 {
 	if(!DataTable)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Cant Get DataTable in AInformationActor::SetUpInfo"));
+		UE_LOG(LogTemp, Error, TEXT("Cant Get DataTable in AInformationActor::SetUpInfo in: %s"), *GetName());
 		return;
 	}
 	DataRow = DataTable->FindRow<FGeneralInfoDT>(FName(FString::FromInt(RowID)), "");
 	
 	if(!DataRow)
 	{
-		UE_LOG(LogTemp, Error, TEXT("!DataRow in AInformationActor::SetUpInfo"));
+		UE_LOG(LogTemp, Error, TEXT("!DataRow in AInformationActor::SetUpInfo in: "), *GetName());
 		return;
 	}
 	Description = DataRow->Description;

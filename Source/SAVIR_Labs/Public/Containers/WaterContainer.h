@@ -22,6 +22,9 @@ public:
 
 	float GetTemperature();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* RootCollisionMesh;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
