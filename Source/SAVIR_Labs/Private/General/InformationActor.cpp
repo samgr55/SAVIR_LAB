@@ -75,7 +75,8 @@ void AInformationActor::SetUpInfo()
 
 void AInformationActor::ResetToOriginalPosition()
 {
-	SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::ResetPhysics);
+	//SetActorLocationAndRotation(OriginalPosition, OriginalRotation, false, nullptr, ETeleportType::ResetPhysics);
+	SetActorLocation(OriginalPosition, false, nullptr, ETeleportType::ResetPhysics);
 }
 
 bool AInformationActor::IsIsInAction() const

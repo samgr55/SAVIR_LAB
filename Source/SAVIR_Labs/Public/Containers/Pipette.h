@@ -10,6 +10,7 @@
 class AFoodContainer;
 class UScaleLerp;
 class USphereComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class SAVIR_LABS_API APipette : public AOverlappingActors
@@ -38,6 +39,12 @@ public:
 
 	bool GetIsFilledWithLiquid();
 	void SetIsFilledWithLiquid(bool Value);
+	
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UTextRenderComponent* Text;
+
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UTextRenderComponent* State;
 	
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

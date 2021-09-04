@@ -7,6 +7,7 @@
 
 #include "WaterContainer.generated.h"
 
+class UTextRenderComponent;
 UCLASS()
 class SAVIR_LABS_API AWaterContainer : public AOverlappingActors
 {
@@ -24,6 +25,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* RootCollisionMesh;
+
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UTextRenderComponent* Text;
 
 protected:
 	// Called when the game starts or when spawned

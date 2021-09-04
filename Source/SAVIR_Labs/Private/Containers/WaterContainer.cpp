@@ -3,6 +3,8 @@
 
 #include "Containers/WaterContainer.h"
 
+#include "Components/TextRenderComponent.h"
+
 // Sets default values
 AWaterContainer::AWaterContainer()
 {
@@ -23,12 +25,31 @@ AWaterContainer::AWaterContainer()
 void AWaterContainer::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Text = Cast<UTextRenderComponent>(GetComponentByClass(UTextRenderComponent::StaticClass()));
+	if (!Text)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Text Renderer not found"));
+		return;
+	}
+
+	Text->SetText(FText::FromString((TEXT("Grab G"))));
 }
 
 // Called every frame
 void AWaterContainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (CurrentParent)
+	{
+		Text->SetText(FText::FromString((TEXT("Release R"))));
+	}
+	else
+	{
+		Text->SetText(FText::FromString((TEXT("Grab G"))));
+	}
+	
 }
 
 float AWaterContainer::GetTemperature()

@@ -3,8 +3,6 @@
 
 #include "Containers/Thermometer.h"
 
-#include <string>
-
 #include "Components/ScaleLerp.h"
 #include "Components/SphereComponent.h"
 #include "Components/TextRenderComponent.h"
@@ -16,10 +14,15 @@ AThermometer::AThermometer()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootCollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("RootCollisionMesh"));
-	RootComponent = RootCollisionMesh;
-	InformationActorRootComponent->DestroyComponent(true);
+	InformationActorRootComponent->DestroyComponent();
 	InformationActorRootComponent = nullptr;
+	
+	RootCollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("RootCollisionMesh"));
+	//RootComponent = RootCollisionMesh;
+	SetRootComponent(RootCollisionMesh);
+
+	StaticMeshComponent->SetupAttachment(RootCollisionMesh);
+	LiquidMesh->SetupAttachment(StaticMeshComponent);
 
 	MyCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("My Sphere Component"));
 	MyCollisionSphere->InitSphereRadius(SphereRaidus);
@@ -37,7 +40,7 @@ void AThermometer::BeginPlay()
 	MyCollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AThermometer::OnOverlapBegin);
 	MyCollisionSphere->OnComponentEndOverlap.AddDynamic(this, &AThermometer::OnOverlapEnd);
 
-	Text = Cast<UTextRenderComponent>(GetComponentByClass(UTextRenderComponent::StaticClass()));
+	Text = Cast<UTextRenderComponent>(GetDefaultSubobjectByName(FName("TextRender")));
 	if (!Text)
 	{
 		UE_LOG(LogTemp, Error, TEXT("Text Renderer not found"));
@@ -45,7 +48,18 @@ void AThermometer::BeginPlay()
 	}
 
 	Temperature = 0;
+	
 	Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
+
+	State = Cast<UTextRenderComponent>(GetDefaultSubobjectByName(FName("Stats")));
+
+	if (!State)
+	{
+		UE_LOG(LogTemp, Error, TEXT("State not found"));
+		return;
+	}
+	
+	State->SetText(FText::FromString((TEXT("Grab G"))));
 }
 
 void AThermometer::StartAction_Implementation()
@@ -76,6 +90,15 @@ void AThermometer::StopAction_Implementation()
 void AThermometer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (CurrentParent)
+	{
+		State->SetText(FText::FromString((TEXT("Release R"))));
+	}
+	else
+	{
+		State->SetText(FText::FromString((TEXT("Grab G"))));
+	}
 }
 
 void AThermometer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
