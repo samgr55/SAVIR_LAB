@@ -22,6 +22,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category="Timeline")
 	UCurveFloat* CurveFloat_3;
+
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components")
+	UStaticMeshComponent* SpotMesh;
 	
 	// Sets default values for this actor's properties
 	APetridish();
@@ -43,9 +46,6 @@ protected:
 
 
 private:
-	
-	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* SpotMesh;
 	
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* MyCollisionSphere;

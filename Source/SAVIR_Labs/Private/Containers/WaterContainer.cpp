@@ -6,12 +6,17 @@
 // Sets default values
 AWaterContainer::AWaterContainer()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	RootCollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("RootCollisionMesh"));
-	RootComponent = RootCollisionMesh;
+	
 	InformationActorRootComponent->DestroyComponent();
 	InformationActorRootComponent = nullptr;
+	
+	RootCollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("RootCollisionMesh"));
+	//RootComponent = RootCollisionMesh;
+	SetRootComponent(RootCollisionMesh);
+	StaticMeshComponent->SetupAttachment(RootCollisionMesh);
+	LiquidMesh->SetupAttachment(StaticMeshComponent);
 }
 
 // Called when the game starts or when spawned
@@ -24,12 +29,9 @@ void AWaterContainer::BeginPlay()
 void AWaterContainer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 float AWaterContainer::GetTemperature()
 {
 	return Temperature;
 }
-
-

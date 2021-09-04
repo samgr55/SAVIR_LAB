@@ -4,6 +4,8 @@
 #include "Components/ScaleLerp.h"
 
 #include "Components/TimelineComponent.h"
+#include "Containers/Petridish.h"
+#include "Containers/Pipette.h"
 #include "General/OverlappingActors.h"
 
 // Sets default values for this component's properties
@@ -26,15 +28,29 @@ void UScaleLerp::BeginPlay()
 
 	//MeshToScale = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent()->GetChildComponent(MeshIndex));
 	MeshToScale = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(FName("Liquid Mesh")));
-	auto OverlappingActor = GetOwner<AOverlappingActors>();
-	if(OverlappingActor)
+	// auto OverlappingActor = GetOwner<AOverlappingActors>();
+	// if (OverlappingActor)
+	// {
+	// 	MeshToScale = OverlappingActor->LiquidMesh;
+	// }
+
+	auto Petridish = GetOwner<APetridish>();
+	if (Petridish)
 	{
-		MeshToScale = OverlappingActor->LiquidMesh;
+		MeshToScale = Petridish->SpotMesh;
 	}
+
+	auto piepte = GetOwner<APipette>();
+	if (piepte)
+	{
+		MeshToScale = piepte->LiquidMesh;
+	}
+
 
 	if (!MeshToScale)
 	{
-		UE_LOG(LogTemp, Error, TEXT("***************Not Found Child static mesh in UScaleLerp::BeginPlay ************************"));
+		UE_LOG(LogTemp, Error,
+		       TEXT("***************Not Found Child static mesh in UScaleLerp::BeginPlay ************************"));
 		return;
 	}
 
@@ -100,7 +116,7 @@ void UScaleLerp::MinimizeScale(float DeltaTime)
 			UE_LOG(LogTemp, Error, TEXT("Not Found Child static mesh in UScaleLerp::MinimizeScale"));
 			return;
 		}
-		
+
 		MeshToScale->SetRelativeScale3D(CurrentScale);
 
 		TimeElapsed += DeltaTime;

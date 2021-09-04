@@ -37,8 +37,6 @@ void AThermometer::BeginPlay()
 	MyCollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AThermometer::OnOverlapBegin);
 	MyCollisionSphere->OnComponentEndOverlap.AddDynamic(this, &AThermometer::OnOverlapEnd);
 
-
-	
 	Text = Cast<UTextRenderComponent>(GetComponentByClass(UTextRenderComponent::StaticClass()));
 	if (!Text)
 	{
@@ -46,7 +44,7 @@ void AThermometer::BeginPlay()
 		return;
 	}
 
-	Temperature = 27;
+	Temperature = 0;
 	Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
 }
 
@@ -64,7 +62,6 @@ void AThermometer::StartAction_Implementation()
 	StaticMeshComponent->SetCollisionProfileName(FName("OverlapAll"));
 	StaticMeshComponent->AttachToComponent(WaterContainer->GetRootComponent(), FAttachmentTransformRules::KeepWorldTransform);
 	Text->SetText(FText::FromString(FString::SanitizeFloat(Temperature)));
-	
 }
 
 void AThermometer::StopAction_Implementation()
@@ -102,7 +99,6 @@ void AThermometer::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* O
 			bIsOverlappingWithWaterContainer = true;
 			
 			Text->SetText(FText::FromString("Press F to Measure"));
-		
 		}
 	}
 }
