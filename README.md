@@ -27,6 +27,5 @@ r.texturestreaming 0
   - **Left Ctrl** : It makes the whole global diliation in time.
     - it's located in PATH **../Content/ThirdPersonBP/Blueprints/ThirdPersonCharacter**
   
-  - 
 
 
